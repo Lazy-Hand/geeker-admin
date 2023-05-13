@@ -31,6 +31,9 @@ dependencies:
   element-plus:
     specifier: ^2.3.4
     version: 2.3.4(vue@3.2.47)
+  js-cookie:
+    specifier: ^3.0.5
+    version: registry.npmmirror.com/js-cookie@3.0.5
   js-md5:
     specifier: ^0.7.3
     version: 0.7.3
@@ -75,6 +78,9 @@ devDependencies:
   '@commitlint/config-conventional':
     specifier: ^17.4.4
     version: 17.4.4
+  '@types/js-cookie':
+    specifier: ^3.0.3
+    version: registry.npmmirror.com/@types/js-cookie@3.0.3
   '@types/js-md5':
     specifier: ^0.7.0
     version: 0.7.0
@@ -6752,6 +6758,12 @@ packages:
     version: 1.0.0
     dev: true
 
+  registry.npmmirror.com/@types/js-cookie@3.0.3:
+    resolution: {integrity: sha512-Xe7IImK09HP1sv2M/aI+48a20VX+TdRJucfq4vfRVy6nWN8PYPOEnlMRSgxJAgYQIXJVL8dZ4/ilAM7dWNaOww==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/js-cookie/-/js-cookie-3.0.3.tgz}
+    name: '@types/js-cookie'
+    version: 3.0.3
+    dev: true
+
   registry.npmmirror.com/@unocss/astro@0.51.12(vite@4.3.5):
     resolution: {integrity: sha512-za+gcEZzS1lXOestMHu7/3IAk5l+sgA8jCM1SmA7fpt1qEGpIBGZCNr/MyBRY+HVWPfqAu7Bgc8Gr6pm6gvLYA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@unocss/astro/-/astro-0.51.12.tgz}
     id: registry.npmmirror.com/@unocss/astro/0.51.12
@@ -7349,6 +7361,13 @@ packages:
     version: 1.18.2
     hasBin: true
     dev: true
+
+  registry.npmmirror.com/js-cookie@3.0.5:
+    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/js-cookie/-/js-cookie-3.0.5.tgz}
+    name: js-cookie
+    version: 3.0.5
+    engines: {node: '>=14'}
+    dev: false
 
   registry.npmmirror.com/kolorist@1.8.0:
     resolution: {integrity: sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/kolorist/-/kolorist-1.8.0.tgz}

@@ -1,39 +1,40 @@
 <template>
   <div class="card filter">
-    <h4 class="title sle" v-if="title">{{ title }}</h4>
+    <div class="flex justify-between">
+      <h4 class="title sle" v-if="title">{{ title }}</h4>
+      <el-button type="primary" class="w-20" v-if="submitBtn" @click="defaultClick" :loading="loading">{{ submitBtn }}</el-button>
+    </div>
     <el-input v-model="filterText" placeholder="输入关键字进行过滤" clearable />
-    <el-scrollbar :style="{ height: title ? `calc(100% - 95px)` : `calc(100% - 56px)` }">
+    <el-scrollbar
+      :style="{
+        height: title && submitBtn ? `calc(100% - 140px)` : title || submitBtn ? `calc(100% - 95px)` : `calc(100% - 56px)`
+      }"
+    >
       <el-tree
         ref="treeRef"
-        default-expand-all
+        :default-expand-all="false"
+        :lazy="lazy"
+        :load="load"
         :node-key="id"
-        :data="multiple ? treeData : treeAllData"
+        :data="treeData"
         :show-checkbox="multiple"
         :check-strictly="false"
-        :current-node-key="!multiple ? selected : ''"
+        :current-node-key="!multiple ? defaultValue : ''"
         :highlight-current="!multiple"
         :expand-on-click-node="false"
         :check-on-click-node="multiple"
         :props="defaultProps"
         :filter-node-method="filterNode"
-        :default-checked-keys="multiple ? selected : []"
+        :default-checked-keys="multiple ? defaultValue : []"
         @node-click="handleNodeClick"
         @check="handleCheckChange"
-      >
-        <template #default="scope">
-          <span class="el-tree-node__label">
-            <slot :row="scope">
-              {{ scope.node.label }}
-            </slot>
-          </span>
-        </template>
-      </el-tree>
+      />
     </el-scrollbar>
   </div>
 </template>
 
 <script setup lang="ts" name="TreeFilter">
-import { ref, watch, onBeforeMount, nextTick } from "vue";
+import { ref, watch, onBeforeMount } from "vue";
 import { ElTree } from "element-plus";
 
 // 接收父组件参数并设置默认值
@@ -45,60 +46,52 @@ interface TreeFilterProps {
   label?: string; // 显示的label ==> 非必传，默认为 “label”
   multiple?: boolean; // 是否为多选 ==> 非必传，默认为 false
   defaultValue?: any; // 默认选中的值 ==> 非必传
+  submitBtn?: string; // 按钮显示-文字 ==> 非必传
+  lazy?: boolean; // 子节点懒加载 ==> 非必传
+  submit?: (data?: any) => Promise<any>; // 按钮点击事件处理函数 ==> 非必传， 需传submitBtn生效
+  load?: (node: any, resolve: any) => void; // 子节点懒加载事件 ==> 非必传，需lazy生效
 }
 const props = withDefaults(defineProps<TreeFilterProps>(), {
   id: "id",
   label: "label",
-  multiple: false
+  multiple: false,
+  lazy: false
 });
-
 const defaultProps = {
   children: "children",
   label: props.label
 };
-
+const filterText = ref<string>("");
 const treeRef = ref<InstanceType<typeof ElTree>>();
 const treeData = ref<{ [key: string]: any }[]>([]);
-const treeAllData = ref<{ [key: string]: any }[]>([]);
-
-const selected = ref();
-const setSelected = () => {
-  if (props.multiple) selected.value = Array.isArray(props.defaultValue) ? props.defaultValue : [props.defaultValue];
-  else selected.value = typeof props.defaultValue === "string" ? props.defaultValue : "";
-};
-
+const loading = ref(false);
 onBeforeMount(async () => {
-  setSelected();
-  if (props.requestApi) {
-    const { data } = await props.requestApi!();
-    treeData.value = data;
-    treeAllData.value = [{ id: "", [props.label]: "全部" }, ...data];
-  }
+  if (props.data?.length) return (treeData.value = props.data);
+  const { data } = await props.requestApi!();
+  const newData = data.map((item: any) => {
+    return {
+      ...item,
+      children: item.children ? item.children : item.childMenu
+    };
+  });
+  if (props.multiple) return (treeData.value = newData);
+  treeData.value = [{ id: "", [props.label]: "全部" }, ...newData];
 });
 
-// 使用 nextTick 防止打包后赋值不生效，开发环境是正常的
-watch(
-  () => props.defaultValue,
-  () => nextTick(() => setSelected()),
-  { deep: true, immediate: true }
-);
-
-watch(
-  () => props.data,
-  () => {
-    if (props.data?.length) {
-      treeData.value = props.data;
-      treeAllData.value = [{ id: "", [props.label]: "全部" }, ...props.data];
-    }
-  },
-  { deep: true, immediate: true }
-);
-
-const filterText = ref("");
 watch(filterText, val => {
   treeRef.value!.filter(val);
 });
-
+// 按钮点击事件
+const defaultClick = async () => {
+  if (props.submitBtn && props.submit) {
+    loading.value = true;
+    await props.submit();
+    loading.value = false;
+    console.log("点击按钮");
+  } else {
+    console.log("默认点击事件");
+  }
+};
 // 过滤
 const filterNode = (value: string, data: { [key: string]: any }, node: any) => {
   if (!value) return true;
@@ -128,9 +121,6 @@ const handleNodeClick = (data: { [key: string]: any }) => {
 const handleCheckChange = () => {
   emit("change", treeRef.value?.getCheckedKeys());
 };
-
-// 暴露给父组件使用
-defineExpose({ treeData, treeAllData, treeRef });
 </script>
 
 <style scoped lang="scss">

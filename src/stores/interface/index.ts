@@ -26,7 +26,22 @@ export interface GlobalState {
 /* UserState */
 export interface UserState {
   token: string;
-  userInfo: { name: string };
+  userInfo: UserInfo;
+}
+
+export interface UserInfo {
+  id: number;
+  tenantId: number;
+  tenantName?: string;
+  phone: string;
+  account: string;
+  name: string;
+  realName?: string;
+  headImg?: string;
+  status: number;
+  sex: number;
+  gmtCreate: string;
+  gmtModified: string;
 }
 
 /* tabsMenuProps */
@@ -50,6 +65,7 @@ export interface AuthState {
     [key: string]: string[];
   };
   authMenuList: Menu.MenuOptions[];
+  authRoles: string[];
 }
 
 /* KeepAliveState */

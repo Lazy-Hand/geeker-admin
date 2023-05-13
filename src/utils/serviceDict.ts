@@ -15,3 +15,21 @@ export const userStatus = [
   { label: "启用", value: 1 },
   { label: "禁用", value: 0 }
 ];
+export const isNo = [
+  { label: "是", value: true },
+  { label: "否", value: false }
+];
+export const dictStatus = [
+  { label: "开启", value: true },
+  { label: "关闭", value: false }
+];
+export const articleStatus = [
+  { label: "草稿", value: 0 },
+  { label: "发布", value: 1 },
+  { label: "未发布", value: 2 }
+];
+
+export const articleType = [
+  { label: "原创", value: 0 },
+  { label: "转载", value: 1 }
+];

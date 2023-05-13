@@ -60,10 +60,11 @@ export const useTable = (
       // 先把初始化参数和分页参数放到总参数里面
       Object.assign(state.totalParam, initParam, isPageable ? pageParam.value : {});
       let { data } = await api({ ...state.searchInitParam, ...state.totalParam });
+
       dataCallBack && (data = dataCallBack(data));
       state.tableData = isPageable ? data.list : data;
       // 解构后台返回的分页数据 (如果有分页更新分页信息)
-      const { pageNum, pageSize, total } = data;
+      const { pageNum, pageSize, total } = data.page;
       isPageable && updatePageable({ pageNum, pageSize, total });
     } catch (error) {
       requestError && requestError(error);

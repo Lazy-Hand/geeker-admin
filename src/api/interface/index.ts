@@ -33,14 +33,25 @@ export namespace Upload {
 // 登录模块
 export namespace Login {
   export interface ReqLoginForm {
-    username: string;
-    password: string;
+    loginName: string;
+    passwd: string;
+    captcha: string;
+    captchaKey: string;
+    rememberMe: boolean;
   }
   export interface ResLogin {
     access_token: string;
   }
   export interface ResAuthButtons {
     [key: string]: string[];
+  }
+  export interface AuthRequest {
+    auths: string[];
+    roles: string[];
+  }
+  export interface Captcha {
+    base64: string;
+    keyCode: string;
   }
 }
 
@@ -86,5 +97,31 @@ export namespace User {
     id: string;
     name: string;
     children?: ResDepartment[];
+  }
+}
+
+export namespace PresentMenu {
+  export interface Datum {
+    id: number;
+    parentId: number;
+    tenantId: number;
+    name: string;
+    title: string;
+    component?: any;
+    path: string;
+    permission?: any;
+    menuType: string;
+    icon: string;
+    menuSort: number;
+    link: string;
+    full: boolean;
+    affix: boolean;
+    cache: boolean;
+    hidden: boolean;
+    createBy: number;
+    updateBy: number;
+    gmtCreate: string;
+    gmtModified: string;
+    childMenu: Datum[];
   }
 }

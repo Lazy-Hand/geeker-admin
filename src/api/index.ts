@@ -37,8 +37,8 @@ class RequestHttp {
         const userStore = useUserStore();
         // 当前请求不需要显示 loading，在 api 服务中通过指定的第三个参数: { noLoading: true } 来控制
         config.noLoading || showFullScreenLoading();
-        if (config.headers && typeof config.headers.set === "function") {
-          config.headers.set("x-access-token", userStore.token);
+        if (config.headers && userStore.token) {
+          config.headers.Authorization = userStore.token;
         }
         return config;
       },
@@ -55,6 +55,10 @@ class RequestHttp {
       (response: AxiosResponse) => {
         const { data } = response;
         const userStore = useUserStore();
+
+        if (response.headers.authorization && !userStore.token) {
+          userStore.setToken(response.headers.authorization);
+        }
         tryHideFullScreenLoading();
         // 登陆失效
         if (data.code == ResultEnum.OVERDUE) {
@@ -65,6 +69,8 @@ class RequestHttp {
         }
         // 全局错误信息拦截（防止下载文件的时候返回数据流，没有 code 直接报错）
         if (data.code && data.code !== ResultEnum.SUCCESS) {
+          console.log("错误拦截");
+
           ElMessage.error(data.msg);
           return Promise.reject(data);
         }

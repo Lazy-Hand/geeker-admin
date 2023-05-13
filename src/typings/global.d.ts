@@ -1,10 +1,19 @@
 /* Menu */
 declare namespace Menu {
   interface MenuOptions {
+    id: number;
+    parentId: number;
+    tenantId: number;
     path: string;
     name: string;
     component?: string | (() => Promise<unknown>);
     redirect?: string;
+    createBy: number;
+    gmtCreate: string;
+    gmtModified: string;
+    permission?: string;
+    menuType: string;
+    updateBy: number;
     meta: MetaProps;
     children?: MenuOptions[];
   }
@@ -17,6 +26,7 @@ declare namespace Menu {
     isFull: boolean;
     isAffix: boolean;
     isKeepAlive: boolean;
+    menuSort: number;
   }
 }
 

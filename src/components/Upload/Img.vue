@@ -14,8 +14,8 @@
       :drag="drag"
       :accept="fileType.join(',')"
     >
-      <template v-if="imageUrl">
-        <img :src="imageUrl" class="upload-image" />
+      <template v-if="imageUrl.httpUrl">
+        <img :src="imageUrl.httpUrl" class="upload-image" />
         <div class="upload-handle" @click.stop>
           <div class="handle-icon" @click="editImg" v-if="!self_disabled">
             <el-icon><Edit /></el-icon>
@@ -43,7 +43,7 @@
     <div class="el-upload__tip">
       <slot name="tip"></slot>
     </div>
-    <el-image-viewer v-if="imgViewVisible" @close="imgViewVisible = false" :url-list="[imageUrl]" />
+    <el-image-viewer v-if="imgViewVisible" @close="imgViewVisible = false" :url-list="[imageUrl.httpUrl]" />
   </div>
 </template>
 
@@ -55,7 +55,7 @@ import { ElNotification, formContextKey, formItemContextKey } from "element-plus
 import type { UploadProps, UploadRequestOptions } from "element-plus";
 
 interface UploadFileProps {
-  imageUrl: string; // 图片地址 ==> 必传
+  imageUrl: ImgInfo; // 图片地址 ==> 必传
   api?: (params: any) => Promise<any>; // 上传图片的 api 方法，一般项目上传都是同一个 api 方法，在组件里直接引入即可 ==> 非必传
   drag?: boolean; // 是否支持拖拽上传 ==> 非必传（默认为 true）
   disabled?: boolean; // 是否禁用上传组件 ==> 非必传（默认为 false）
@@ -65,10 +65,29 @@ interface UploadFileProps {
   width?: string; // 组件宽度 ==> 非必传（默认为 150px）
   borderRadius?: string; // 组件边框圆角 ==> 非必传（默认为 8px）
 }
-
+interface ImgInfo {
+  id?: number;
+  tenantId?: number;
+  businessId?: any;
+  businessType?: any;
+  fileName?: string;
+  fileType?: string;
+  url?: string;
+  content?: any;
+  fileSize?: number;
+  storageType?: string;
+  sequenceNo?: any;
+  md5?: any;
+  deleted?: boolean;
+  createBy?: number;
+  updateBy?: number;
+  gmtCreate?: string;
+  gmtModified?: string;
+  httpUrl?: string;
+}
 // 接受父组件参数
 const props = withDefaults(defineProps<UploadFileProps>(), {
-  imageUrl: "",
+  imageUrl: () => ({}),
   drag: true,
   disabled: false,
   fileSize: 5,
@@ -106,7 +125,7 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
   try {
     const api = props.api ?? uploadImg;
     const { data } = await api(formData);
-    emit("update:imageUrl", data.fileUrl);
+    emit("update:imageUrl", data);
     // 调用 el-form 内部的校验方法（可自动校验）
     formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);
   } catch (error) {

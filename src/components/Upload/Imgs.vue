@@ -51,6 +51,7 @@ import type { UploadProps, UploadFile, UploadUserFile, UploadRequestOptions } fr
 import { ElNotification, formContextKey, formItemContextKey } from "element-plus";
 
 interface UploadFileProps {
+  imgInfo: ImgInfo[]; // 图片信息
   fileList: UploadUserFile[];
   api?: (params: any) => Promise<any>; // 上传图片的 api 方法，一般项目上传都是同一个 api 方法，在组件里直接引入即可 ==> 非必传
   drag?: boolean; // 是否支持拖拽上传 ==> 非必传（默认为 true）
@@ -62,8 +63,29 @@ interface UploadFileProps {
   width?: string; // 组件宽度 ==> 非必传（默认为 150px）
   borderRadius?: string; // 组件边框圆角 ==> 非必传（默认为 8px）
 }
-
+interface ImgInfo {
+  id?: number;
+  tenantId?: number;
+  businessId?: any;
+  businessType?: any;
+  fileName?: string;
+  fileType?: string;
+  url?: string;
+  content?: any;
+  fileSize?: number;
+  storageType?: string;
+  sequenceNo?: any;
+  md5?: any;
+  deleted?: boolean;
+  createBy?: number;
+  updateBy?: number;
+  gmtCreate?: string;
+  gmtModified?: string;
+  httpUrl?: string;
+  [key: string]: any;
+}
 const props = withDefaults(defineProps<UploadFileProps>(), {
+  imgInfo: () => [],
   fileList: () => [],
   drag: true,
   disabled: false,
@@ -128,7 +150,7 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
   try {
     const api = props.api ?? uploadImg;
     const { data } = await api(formData);
-    options.onSuccess(data);
+    options.onSuccess({ fileUrl: data.httpUrl, ...data });
   } catch (error) {
     options.onError(error as any);
   }
@@ -141,12 +163,16 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
  * */
 interface UploadEmits {
   (e: "update:fileList", value: UploadUserFile[]): void;
+  (e: "update:imgInfo", value: ImgInfo[]): void;
 }
+const imgInfo = ref<ImgInfo[]>(props.fileList);
 const emit = defineEmits<UploadEmits>();
-const uploadSuccess = (response: { fileUrl: string } | undefined, uploadFile: UploadFile) => {
+const uploadSuccess = (response: any | undefined, uploadFile: UploadFile) => {
   if (!response) return;
   uploadFile.url = response.fileUrl;
+  imgInfo.value.push(response);
   emit("update:fileList", fileList.value);
+  emit("update:imgInfo", imgInfo.value);
   // 调用 el-form 内部的校验方法（可自动校验）
   formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);
   ElNotification({
@@ -162,7 +188,9 @@ const uploadSuccess = (response: { fileUrl: string } | undefined, uploadFile: Up
  * */
 const handleRemove = (file: UploadFile) => {
   fileList.value = fileList.value.filter(item => item.url !== file.url || item.name !== file.name);
+  imgInfo.value = imgInfo.value.filter(item => item.httpUrl !== file.url);
   emit("update:fileList", fileList.value);
+  emit("update:imgInfo", imgInfo.value);
 };
 
 /**

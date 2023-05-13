@@ -45,6 +45,7 @@
     "echarts": "^5.4.1",
     "echarts-liquidfill": "^3.1.0",
     "element-plus": "^2.3.4",
+    "js-cookie": "^3.0.5",
     "js-md5": "^0.7.3",
     "mitt": "^3.0.0",
     "nprogress": "^0.2.0",
@@ -61,6 +62,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
+    "@types/js-cookie": "^3.0.3",
     "@types/js-md5": "^0.7.0",
     "@types/nprogress": "^0.2.0",
     "@types/qs": "^6.9.7",

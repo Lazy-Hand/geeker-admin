@@ -1,5 +1,6 @@
 import { isArray } from "@/utils/is";
 import { FieldNamesProps } from "@/components/ProTable/interface";
+import { PresentMenu } from "@/api/interface";
 
 /**
  * @description 获取localStorage
@@ -152,6 +153,78 @@ export function getShowMenuList(menuList: Menu.MenuOptions[]) {
   return newMenuList.filter(item => {
     item.children?.length && (item.children = getShowMenuList(item.children));
     return !item.meta?.isHide;
+  });
+}
+
+/**
+ * @description 处理成自己需要的数据
+ * @param array 响应按钮权限数据 - 默认权限
+ */
+export function getAuthButtonsData(array: string[] = ["system:role:add"]) {
+  const arr = array.map(item => {
+    return {
+      [item.split(":")[1]]: [item.split(":")[2]]
+    };
+  });
+  return arr.reduce(
+    (target, item) => ({
+      ...target,
+      ...Object.keys(item).reduce(
+        (object, key) => ({
+          ...object,
+          [key]: Array.isArray(target[key])
+            ? target[key].concat(item[key])
+            : target.hasOwnProperty(key)
+            ? [target[key], item[key]]
+            : item[key]
+        }),
+        {}
+      )
+    }),
+    {}
+  );
+}
+
+/**
+ * @description 使用递归，排序
+ * @param menuList
+ */
+export function getSortData(menuList: any) {
+  menuList.sort((a: Menu.MenuOptions, b: Menu.MenuOptions) => {
+    return a.meta.menuSort - b.meta.menuSort;
+  });
+  menuList.forEach((item: Menu.MenuOptions) => {
+    if (item.children && item.children.length) {
+      getSortData(item.children);
+    }
+  });
+  return menuList;
+}
+
+/**
+ * @description 递归重组请求数组
+ * @param {Array} menuList 请求数据
+ * @return {Array}
+ */
+export function getPresentMenu(menuList: PresentMenu.Datum[]): Menu.MenuOptions[] {
+  return menuList.map(item => {
+    return {
+      component: item.component,
+      redirect: "",
+      ...item,
+      meta: {
+        icon: item.icon,
+        title: item.title,
+        activeMenu: item.path.split("/")[item.path.split("/").length - 1].indexOf(":") === -1 ? "" : item.path,
+        isLink: item.link,
+        isHide: item.hidden,
+        isFull: item.full,
+        isAffix: item.affix,
+        isKeepAlive: item.cache,
+        menuSort: item.menuSort
+      },
+      children: getPresentMenu(item.childMenu)
+    };
   });
 }
 
