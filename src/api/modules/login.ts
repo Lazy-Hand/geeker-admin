@@ -10,7 +10,7 @@ import { UserInfo } from "@/stores/interface";
  */
 
 // 获取验证码
-export const getCodeImg = () => http.get<Login.Captcha>(PORT1 + "/login/captcha", {}, { headers: { noLoading: true } });
+export const getCodeImg = () => http.get<Login.Captcha>(PORT1 + "/login/captcha", {}, { noLoading: true });
 
 // 用户登录
 export const loginApi = (params: Login.ReqLoginForm) => {
