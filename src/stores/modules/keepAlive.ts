@@ -9,8 +9,6 @@ export const useKeepAliveStore = defineStore({
   actions: {
     // Add KeepAliveName
     async addKeepAliveName(name: string) {
-      console.log(name);
-
       !this.keepAliveName.includes(name) && this.keepAliveName.push(name);
     },
     // Remove KeepAliveName

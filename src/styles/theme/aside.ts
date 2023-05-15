@@ -13,9 +13,9 @@ export const asideTheme: Record<AsideThemeType, { [key: string]: string }> = {
   },
   inverted: {
     "--el-logo-text-color": "#dadada",
-    "--el-menu-bg-color": "#191a20",
-    "--el-menu-hover-bg-color": "#000000",
-    "--el-menu-active-bg-color": "#000000",
+    "--el-menu-bg-color": "#304156",
+    "--el-menu-hover-bg-color": "#263445",
+    "--el-menu-active-bg-color": "#263445",
     "--el-menu-text-color": "#bdbdc0",
     "--el-menu-active-color": "#ffffff",
     "--el-menu-hover-text-color": "#ffffff",
