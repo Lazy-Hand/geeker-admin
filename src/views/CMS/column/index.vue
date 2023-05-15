@@ -27,6 +27,7 @@ const imgInfo = ref(fileList.value);
 const test = () => {
   console.log(fileList.value);
   console.log(imgInfo.value);
+  console.log(avatar1);
 };
 </script>
 

@@ -116,7 +116,7 @@ const self_disabled = computed(() => {
  * @param options upload 所有配置项
  * */
 interface UploadEmits {
-  (e: "update:imageUrl", value: string): void;
+  (e: "update:imageUrl", value: ImgInfo): void;
 }
 const emit = defineEmits<UploadEmits>();
 const handleHttpUpload = async (options: UploadRequestOptions) => {
@@ -137,7 +137,7 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
  * @description 删除图片
  * */
 const deleteImg = () => {
-  emit("update:imageUrl", "");
+  emit("update:imageUrl", {});
 };
 
 /**
