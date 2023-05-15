@@ -4,7 +4,6 @@ import { getAuthMenuListApi } from "@/api/modules/login";
 import { ref } from "vue";
 import Add from "./components/AddMenus.vue";
 import { reqAddMenu, reqPutMenu, reqDelMenu, reqBatchDelMenu } from "@/api/modules/management";
-import dayjs from "dayjs";
 import { isNo } from "@/utils/serviceDict";
 import { ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
@@ -126,9 +125,7 @@ const columns: ColumnProps[] = [
       el: "date-picker",
       props: { type: "datetimerange", valueFormat: "YYYY-MM-DD HH:mm:ss" }
     },
-    render: scope => {
-      return <span>{dayjs(scope.row.gmtCreate).format("YYYY-MM-DD HH:mm:ss")}</span>;
-    }
+    format: "YYYY-MM-DD HH:mm:ss"
   },
   { prop: "operation", label: "操作", width: 180, fixed: "right" }
 ];
