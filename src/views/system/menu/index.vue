@@ -136,8 +136,10 @@ const columns: ColumnProps[] = [
       <ProTable
         ref="proTable"
         title="用户列表"
-        :tree="{ children: 'childMenu' }"
+        :tree-props="{ children: 'childMenu' }"
         :columns="columns"
+        :indent="30"
+        row-key="id"
         :requestApi="getAuthMenuListApi"
         highlight-current-row
         :pagination="false"
