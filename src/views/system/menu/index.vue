@@ -14,10 +14,10 @@ const init = async () => {
   const newMenu = getPresentMenu(data);
   tableData.value = await getSortData(newMenu);
 };
-init();
 const tableData = ref<Menu.MenuOptions[]>();
 const addRef = ref();
-const openDialog = (title: string, rowData: any = {}) => {
+const openDialog = async (title: string, rowData: any = {}) => {
+  await init();
   let params = {
     title,
     rowData:
