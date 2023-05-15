@@ -1,5 +1,6 @@
 <template>
   <el-config-provider :locale="locale" :size="assemblySize" :button="buttonConfig">
+    <OpenDialog></OpenDialog>
     <router-view></router-view>
   </el-config-provider>
 </template>
@@ -12,6 +13,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { ElConfigProvider } from "element-plus";
 import { LanguageType } from "./stores/interface";
 import { useGlobalStore } from "@/stores/modules/global";
+import OpenDialog from "./components/OpenDialog/OpenDialog.vue";
 
 import en from "element-plus/es/locale/lang/en";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
