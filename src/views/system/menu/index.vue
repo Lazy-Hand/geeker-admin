@@ -139,11 +139,11 @@ const columns: ColumnProps[] = [
       <ProTable
         ref="proTable"
         title="用户列表"
+        :tree="{ children: 'childMenu' }"
         :columns="columns"
         :requestApi="getAuthMenuListApi"
         highlight-current-row
         :pagination="false"
-        :tree-props="{ children: 'childMenu' }"
         :border="false"
       >
         <template #tableHeader="scope">

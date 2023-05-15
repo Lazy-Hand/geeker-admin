@@ -35,6 +35,7 @@
       :border="border"
       :row-key="rowKey"
       @selection-change="selectionChange"
+      :tree-props="tree"
     >
       <!-- 默认插槽 -->
       <slot></slot>
@@ -100,7 +101,6 @@ import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
 import printJS from "print-js";
-
 interface ProTableProps extends Partial<TableProps<any>> {
   columns: ColumnProps[]; // 列配置项  ==> 必传
   data?: any[]; // 静态 table data 数据，若存在则不会使用 requestApi 返回的 data ==> 非必传
@@ -115,8 +115,8 @@ interface ProTableProps extends Partial<TableProps<any>> {
   toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
   rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
   searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
+  tree?: { children: string; hasChildren: string }; // 树形表格配置项 ==> 非必传
 }
-
 // 接受父组件参数，配置默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
   requestAuto: true,
@@ -126,7 +126,8 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   border: true,
   toolButton: true,
   rowKey: "id",
-  searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
+  searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }),
+  tree: () => ({ children: "children", hasChildren: "hasChildren" })
 });
 
 // 是否显示搜索模块
