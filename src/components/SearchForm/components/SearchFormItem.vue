@@ -2,7 +2,7 @@
   <component
     :is="column.search?.render ?? `el-${column.search?.el}`"
     v-bind="{ ...handleSearchProps, ...placeholder, searchParam, clearable }"
-    v-model.trim="searchParam[column.search?.key ?? handleProp(column.prop!)]"
+    v-model="searchParam[column.search?.key ?? handleProp(column.prop!)]"
     :data="column.search?.el === 'tree-select' ? columnEnum : []"
     :options="['cascader', 'select-v2'].includes(column.search?.el!) ? columnEnum : []"
   >
@@ -32,7 +32,6 @@ interface SearchFormItem {
   searchParam: { [key: string]: any };
 }
 const props = defineProps<SearchFormItem>();
-
 // 判断 fieldNames 设置 label && value && children 的 key 值
 const fieldNames = computed(() => {
   return {
@@ -41,7 +40,6 @@ const fieldNames = computed(() => {
     children: props.column.fieldNames?.children ?? "children"
   };
 });
-
 // 接收 enumMap (el 为 select-v2 需单独处理 enumData)
 const enumMap = inject("enumMap", ref(new Map()));
 const columnEnum = computed(() => {

@@ -1,12 +1,6 @@
 <template>
   <div class="table-box">
-    <ProTable
-      :requestApi="getArticleList"
-      ref="proTable"
-      title="用户列表"
-      :columns="columns"
-      :searchCol="{ xs: 1, sm: 1, md: 3, lg: 4, xl: 3 }"
-    >
+    <ProTable :requestApi="getTableList" ref="proTable" title="用户列表" :columns="columns">
       <template #tableHeader="scope">
         <el-button type="primary" :icon="CirclePlus" @click="openDialog('新增')">新增</el-button>
         <el-button type="primary" plain :icon="EditPen" :disabled="scope.selectedListIds.length !== 1">修改</el-button>
@@ -29,7 +23,6 @@ import { getArticleList, getColumnList } from "@/api/modules/cms/article";
 import { ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
 import { articleStatus, articleType } from "@/utils/serviceDict";
-import dayjs from "dayjs";
 import AddArticle from "./components/AddArticle.vue";
 const proTable = ref();
 const articleColumn = ref<{ label: string; value: number }[]>([]);
@@ -93,11 +86,9 @@ const columns: ColumnProps[] = [
     width: 180,
     search: {
       el: "date-picker",
-      props: { type: "datetimerange" }
+      props: { type: "datetimerange", valueFormat: "YYYY-MM-DD HH:mm:ss" }
     },
-    render: scope => {
-      return <span>{dayjs(scope.row.gmtCreate).format("YYYY-MM-DD HH:mm:ss")}</span>;
-    }
+    format: "YYYY-MM-DD HH:mm:ss"
   },
   { prop: "operation", label: "操作", fixed: "right" }
 ];
@@ -112,6 +103,15 @@ const openDialog = (title: string, rowData: any = {}) => {
     articleColumn: articleColumn.value
   };
   addRef.value.acceptParams(params);
+};
+// 如果你想在请求之前对当前请求参数做一些操作，可以自定义如下函数：params 为当前所有的请求参数（包括分页），最后返回请求列表接口
+// 默认不做操作就直接在 ProTable 组件上绑定	:requestApi="getUserList"
+const getTableList = (params: any) => {
+  let newParams = JSON.parse(JSON.stringify(params));
+  newParams.gmtCreate && (newParams.startTime = newParams.gmtCreate[0]);
+  newParams.gmtCreate && (newParams.endTime = newParams.gmtCreate[1]);
+  delete newParams.gmtCreate;
+  return getArticleList(newParams);
 };
 </script>
 
