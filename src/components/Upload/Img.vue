@@ -53,9 +53,10 @@ import { generateUUID } from "@/utils";
 import { uploadImg } from "@/api/modules/upload";
 import { ElNotification, formContextKey, formItemContextKey } from "element-plus";
 import type { UploadProps, UploadRequestOptions } from "element-plus";
+import { Upload } from "@/api/interface";
 
 interface UploadFileProps {
-  imageUrl: ImgInfo; // 图片地址 ==> 必传
+  imageUrl: Upload.ResFileUrl; // 图片地址 ==> 必传
   api?: (params: any) => Promise<any>; // 上传图片的 api 方法，一般项目上传都是同一个 api 方法，在组件里直接引入即可 ==> 非必传
   drag?: boolean; // 是否支持拖拽上传 ==> 非必传（默认为 true）
   disabled?: boolean; // 是否禁用上传组件 ==> 非必传（默认为 false）
@@ -65,26 +66,7 @@ interface UploadFileProps {
   width?: string; // 组件宽度 ==> 非必传（默认为 150px）
   borderRadius?: string; // 组件边框圆角 ==> 非必传（默认为 8px）
 }
-interface ImgInfo {
-  id?: number;
-  tenantId?: number;
-  businessId?: any;
-  businessType?: any;
-  fileName?: string;
-  fileType?: string;
-  url?: string;
-  content?: any;
-  fileSize?: number;
-  storageType?: string;
-  sequenceNo?: any;
-  md5?: any;
-  deleted?: boolean;
-  createBy?: number;
-  updateBy?: number;
-  gmtCreate?: string;
-  gmtModified?: string;
-  httpUrl?: string;
-}
+
 // 接受父组件参数
 const props = withDefaults(defineProps<UploadFileProps>(), {
   imageUrl: () => ({}),
@@ -116,7 +98,7 @@ const self_disabled = computed(() => {
  * @param options upload 所有配置项
  * */
 interface UploadEmits {
-  (e: "update:imageUrl", value: ImgInfo): void;
+  (e: "update:imageUrl", value: Upload.ResFileUrl): void;
 }
 const emit = defineEmits<UploadEmits>();
 const handleHttpUpload = async (options: UploadRequestOptions) => {

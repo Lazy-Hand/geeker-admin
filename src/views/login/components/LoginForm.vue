@@ -110,8 +110,8 @@ const login = (formEl: FormInstance | undefined) => {
         duration: 3000
       });
     } finally {
-      loading.value = false;
       await getCode();
+      loading.value = false;
     }
   });
 };

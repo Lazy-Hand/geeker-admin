@@ -49,9 +49,10 @@ import { Plus } from "@element-plus/icons-vue";
 import { uploadImg } from "@/api/modules/upload";
 import type { UploadProps, UploadFile, UploadUserFile, UploadRequestOptions } from "element-plus";
 import { ElNotification, formContextKey, formItemContextKey } from "element-plus";
+import { Upload } from "@/api/interface";
 
 interface UploadFileProps {
-  imgInfo: ImgInfo[]; // 图片信息
+  imgInfo: Upload.ResFileUrl[]; // 图片信息
   fileList: UploadUserFile[];
   api?: (params: any) => Promise<any>; // 上传图片的 api 方法，一般项目上传都是同一个 api 方法，在组件里直接引入即可 ==> 非必传
   drag?: boolean; // 是否支持拖拽上传 ==> 非必传（默认为 true）
@@ -62,27 +63,6 @@ interface UploadFileProps {
   height?: string; // 组件高度 ==> 非必传（默认为 150px）
   width?: string; // 组件宽度 ==> 非必传（默认为 150px）
   borderRadius?: string; // 组件边框圆角 ==> 非必传（默认为 8px）
-}
-interface ImgInfo {
-  id?: number;
-  tenantId?: number;
-  businessId?: any;
-  businessType?: any;
-  fileName?: string;
-  fileType?: string;
-  url?: string;
-  content?: any;
-  fileSize?: number;
-  storageType?: string;
-  sequenceNo?: any;
-  md5?: any;
-  deleted?: boolean;
-  createBy?: number;
-  updateBy?: number;
-  gmtCreate?: string;
-  gmtModified?: string;
-  httpUrl?: string;
-  [key: string]: any;
 }
 const props = withDefaults(defineProps<UploadFileProps>(), {
   imgInfo: () => [],
@@ -163,9 +143,9 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
  * */
 interface UploadEmits {
   (e: "update:fileList", value: UploadUserFile[]): void;
-  (e: "update:imgInfo", value: ImgInfo[]): void;
+  (e: "update:imgInfo", value: Upload.ResFileUrl[]): void;
 }
-const imgInfo = ref<ImgInfo[]>(props.fileList);
+const imgInfo = ref<Upload.ResFileUrl[]>(props.fileList);
 const emit = defineEmits<UploadEmits>();
 const uploadSuccess = (response: any | undefined, uploadFile: UploadFile) => {
   if (!response) return;

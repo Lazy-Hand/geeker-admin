@@ -8,7 +8,7 @@
     destroy-on-close
     align-center
   >
-    <el-form ref="ruleFormRef" :model="dialogProps.rowData">
+    <el-form ref="ruleFormRef" :model="dialogProps.rowData" overflow-auto h-180>
       <el-row>
         <el-col :span="8">
           <el-form-item label="所属栏目">
@@ -76,7 +76,7 @@
       </el-form-item>
       <el-form-item label="内容">
         <WangEditor height="400px" v-model:value="dialogProps.rowData.content" />
-        <el-button type="primary" @click="htmlVisible = true">预览</el-button>
+        <el-button type="primary" @click="htmlVisible = true" mt-1>预览</el-button>
       </el-form-item>
     </el-form>
     <template #footer>

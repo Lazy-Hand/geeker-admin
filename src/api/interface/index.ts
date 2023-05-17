@@ -26,7 +26,24 @@ export interface ReqPage {
 // 文件上传模块
 export namespace Upload {
   export interface ResFileUrl {
-    fileUrl: string;
+    id?: number;
+    tenantId?: number;
+    businessId?: any;
+    businessType?: any;
+    fileName?: string;
+    fileType?: string;
+    url?: string;
+    content?: any;
+    fileSize?: number;
+    storageType?: string;
+    sequenceNo?: any;
+    md5?: any;
+    deleted?: boolean;
+    createBy?: number;
+    updateBy?: number;
+    gmtCreate?: string;
+    gmtModified?: string;
+    httpUrl?: string;
   }
 }
 
