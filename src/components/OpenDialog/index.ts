@@ -4,6 +4,7 @@ type dialogOptions = {
   component: any;
   props?: Object;
   width: string;
+  draggable?: boolean;
   visible?: any;
   callBack?: Function;
 };

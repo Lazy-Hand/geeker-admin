@@ -75,7 +75,7 @@
         </UploadImg>
       </el-form-item>
       <el-form-item label="内容">
-        <WangEditor height="400px" v-model:value="dialogProps.rowData.content" />
+        <WangEditor height="400px" v-model:value="dialogProps.rowData.content" customize />
         <el-button type="primary" @click="htmlVisible = true" mt-1>预览</el-button>
       </el-form-item>
     </el-form>

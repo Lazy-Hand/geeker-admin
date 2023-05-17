@@ -5,6 +5,7 @@
       :key="index"
       :title="item.title"
       :width="item.width"
+      :draggable="item.draggable"
       v-model="item.visible"
       @close="() => closeDialog(item, index, '', true)"
     >
