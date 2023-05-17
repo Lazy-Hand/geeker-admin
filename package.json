@@ -39,6 +39,8 @@
     "@vueuse/core": "^10.1.0",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
+    "@wangeditor/plugin-md": "^1.0.0",
+    "@wangeditor/plugin-upload-attachment": "^1.1.0",
     "axios": "^1.4.0",
     "dayjs": "^1.11.7",
     "driver.js": "^0.9.8",

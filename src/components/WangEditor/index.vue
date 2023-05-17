@@ -14,21 +14,24 @@
 </template>
 
 <script setup lang="ts" name="WangEditor">
-import { nextTick, computed, inject, shallowRef, onBeforeUnmount } from "vue";
-import { IToolbarConfig, IEditorConfig } from "@wangeditor/editor";
+import { nextTick, computed, inject, shallowRef, onBeforeUnmount, ref, markRaw } from "vue";
+import { IToolbarConfig, IEditorConfig, Boot } from "@wangeditor/editor";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import { uploadImg, uploadVideo } from "@/api/modules/upload";
 import "@wangeditor/editor/dist/css/style.css";
 import { formContextKey, formItemContextKey } from "element-plus";
+import markdownModule from "@wangeditor/plugin-md";
+import { addDialog } from "@/components/OpenDialog";
+import Upload from "./components/UploadImg.vue";
 
-// 富文本 DOM 元素
 const editorRef = shallowRef();
-
+// // 注册插件markdown
+Boot.registerModule(markdownModule);
+// 富文本 DOM 元素
 // 实列化编辑器
 const handleCreated = (editor: any) => {
   editorRef.value = editor;
 };
-
 // 接收父组件参数，并设置默认值
 interface RichEditorProps {
   value: string; // 富文本值 ==> 必传
@@ -56,6 +59,8 @@ const props = withDefaults(defineProps<RichEditorProps>(), {
   hideToolBar: false,
   disabled: false
 });
+
+const insert = ref();
 
 // 获取 el-form 组件上下文
 const formContext = inject(formContextKey, void 0);
@@ -106,6 +111,14 @@ props.editorConfig.MENU_CONF!["uploadImage"] = {
   }
 };
 
+// 自定义选择图片方式
+props.editorConfig.MENU_CONF!["uploadImage"] = {
+  // 自定义选择图片
+  customBrowseAndUpload(insertFn: InsertFnTypeVideo) {
+    insert.value = insertFn;
+    open();
+  }
+};
 // 图片上传前判断
 const uploadImgValidate = (file: File): boolean => {
   console.log(file);
@@ -131,7 +144,6 @@ props.editorConfig.MENU_CONF!["uploadVideo"] = {
     }
   }
 };
-
 // 视频上传前判断
 const uploadVideoValidate = (file: File): boolean => {
   console.log(file);
@@ -141,6 +153,21 @@ const uploadVideoValidate = (file: File): boolean => {
 // 编辑框失去焦点时触发
 const handleBlur = () => {
   formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);
+};
+
+// 自定义上传图片dialog
+const open = () => {
+  addDialog({
+    title: "我是dialog",
+    width: "500px",
+    props: {
+      id: 0
+    },
+    component: markRaw(Upload),
+    callBack: (data: { submit: boolean; url: string }) => {
+      insert.value(data.url);
+    }
+  });
 };
 
 // 组件销毁时，也及时销毁编辑器
