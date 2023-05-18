@@ -22,7 +22,7 @@
           </el-icon>
         </template>
       </el-input>
-      <div class="login-code">
+      <div class="login-code w-[130px] h-[40px] leading-[40px]">
         <img :src="codeUrl" @click="getCode" alt="" />
       </div>
       <el-checkbox style="margin: 0" v-model="loginForm.rememberMe"> 记住我</el-checkbox>
