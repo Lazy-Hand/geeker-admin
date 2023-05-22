@@ -9,6 +9,7 @@ import eslintPlugin from "vite-plugin-eslint";
 import viteCompression from "vite-plugin-compression";
 import vueSetupExtend from "unplugin-vue-setup-extend-plus/vite";
 import UnoCSS from "unocss/vite";
+// import { warmup } from "vite-plugin-warmup";
 /**
  * 创建 vite 插件
  * @param viteEnv
@@ -23,6 +24,10 @@ export const createVitePlugins = (viteEnv: ViteEnv): (PluginOption | PluginOptio
     eslintPlugin(),
     // name 可以写在 script 标签上
     vueSetupExtend({}),
+    // warmup({
+    //   // warm up the files and its imported JS modules recursively
+    //   clientFiles: ["./**/*.html", "./src/components/*.jsx"]
+    // }),
     // 创建打包压缩配置
     createCompression(viteEnv),
     // 注入变量到 html 文件
