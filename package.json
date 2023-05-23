@@ -57,6 +57,7 @@
     "qs": "^6.11.2",
     "sortablejs": "^1.15.0",
     "vform3-builds": "^3.0.10",
+    "vite-plugin-warmup": "^0.1.0",
     "vue": "^3.3.4",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.2.1",
@@ -105,7 +106,6 @@
     "vite-plugin-html": "^3.2.0",
     "vite-plugin-pwa": "^0.15.0",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vite-plugin-warmup": "^0.1.0",
     "vue-tsc": "^1.6.4"
   },
   "engines": {

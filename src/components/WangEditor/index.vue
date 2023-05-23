@@ -160,7 +160,7 @@ const handleBlur = () => {
 // 自定义上传图片dialog
 const open = () => {
   addDialog({
-    title: "我是dialog",
+    title: "上传图片",
     width: "45%",
     draggable: true,
     component: markRaw(Upload),

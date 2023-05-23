@@ -6,7 +6,7 @@
     <ProTable ref="proTableRef" title="商品列表" :columns="columns">
       <!-- 表格 header 按钮 -->
       <template #tableHeader>
-        <el-button type="primary" :icon="CirclePlus">添加商品</el-button>
+        <el-button type="primary" :icon="CirclePlus" @click="toAdd">添加商品</el-button>
         <el-button type="success" :icon="Delete">商品采集</el-button>
         <el-button :icon="Download">导出</el-button>
       </template>
@@ -26,9 +26,9 @@ import { reactive, ref } from "vue";
 import ProTable from "@/components/ProTable/index.vue";
 import { CirclePlus, Delete, Download, View } from "@element-plus/icons-vue";
 import { ProTableInstance, ColumnProps } from "@/components/ProTable/interface";
-
+import { useRouter } from "vue-router";
 const proTableRef = ref<ProTableInstance>();
-
+const router = useRouter();
 const columns: ColumnProps[] = [
   { type: "expand", label: "", width: 100 },
   { type: "index", label: "ID", width: 80 },
@@ -108,6 +108,10 @@ const selectFilterData = reactive([
 ]);
 // 默认 selectFilter 参数
 const selectFilterValues = ref({ userStatus: "" });
+
+const toAdd = () => {
+  router.push("/commodity/addCommodity");
+};
 </script>
 
 <style lang="scss" scoped></style>

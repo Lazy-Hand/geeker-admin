@@ -10,6 +10,8 @@ import viteCompression from "vite-plugin-compression";
 import vueSetupExtend from "unplugin-vue-setup-extend-plus/vite";
 import UnoCSS from "unocss/vite";
 import { VitePWA } from "vite-plugin-pwa";
+// import { warmup } from "vite-plugin-warmup";
+
 /**
  * 创建 vite 插件
  * @param viteEnv
@@ -42,6 +44,10 @@ export const createVitePlugins = (viteEnv: ViteEnv): (PluginOption | PluginOptio
     }),
     // 是否生成包预览，分析依赖包大小做优化处理
     VITE_REPORT && (visualizer({ filename: "stats.html", gzipSize: true, brotliSize: true }) as PluginOption)
+    // warmup({
+    //   // warm up the files and its imported JS modules recursively
+    //   clientFiles: ["./**/*.html", "./src/components/*.vue"]
+    // })
   ];
 };
 
