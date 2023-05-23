@@ -162,9 +162,15 @@ export function getShowMenuList(menuList: Menu.MenuOptions[]) {
  */
 export function getAuthButtonsData(array: string[] = ["system:role:add"]) {
   const arr = array.map(item => {
-    return {
-      [item.split(":")[1]]: [item.split(":")[2]]
-    };
+    if (item.split(":").length === 3) {
+      return {
+        [item.split(":")[1]]: [item.split(":")[2]]
+      };
+    } else {
+      return {
+        [item.split(":")[0]]: [item.split(":")[1]]
+      };
+    }
   });
   return arr.reduce(
     (target, item) => ({
