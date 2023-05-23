@@ -207,27 +207,28 @@ export function getSortData(menuList: any) {
  * @return {Array}
  */
 export function getPresentMenu(menuList: PresentMenu.Datum[]): Menu.MenuOptions[] {
-  return menuList.map(item => {
-    return {
-      component: item.component,
-      redirect: "",
-      ...item,
-      meta: {
-        icon: item.icon,
-        title: item.title,
-        activeMenu: item.path.split("/")[item.path.split("/").length - 1].indexOf(":") === -1 ? "" : item.path,
-        isLink: item.link,
-        isHide: item.hidden,
-        isFull: item.full,
-        isAffix: item.affix,
-        isKeepAlive: item.cache,
-        menuSort: item.menuSort
-      },
-      children: getPresentMenu(item.childMenu)
-    };
-  });
+  return menuList
+    .filter(item => item.menuType !== "A")
+    .map(item => {
+      return {
+        component: item.component,
+        redirect: "",
+        ...item,
+        meta: {
+          icon: item.icon,
+          title: item.title,
+          activeMenu: item.path.split("/")[item.path.split("/").length - 1].indexOf(":") === -1 ? "" : item.path,
+          isLink: item.link,
+          isHide: item.hidden,
+          isFull: item.full,
+          isAffix: item.affix,
+          isKeepAlive: item.cache,
+          menuSort: item.menuSort
+        },
+        children: getPresentMenu(item.childMenu)
+      };
+    });
 }
-
 /**
  * @description 使用递归找出所有面包屑存储到 pinia/vuex 中
  * @param {Array} menuList 菜单列表

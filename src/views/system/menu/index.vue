@@ -5,10 +5,11 @@ import { ref } from "vue";
 import Add from "./components/AddMenus.vue";
 import { reqAddMenu, reqPutMenu, reqDelMenu, reqBatchDelMenu } from "@/api/modules/management";
 import { isNo, menuType } from "@/utils/serviceDict";
-import { ColumnProps } from "@/components/ProTable/interface";
+import { ColumnProps, ProTableInstance } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
 import { useHandleData } from "@/hooks/useHandleData";
 import { getSortData, getPresentMenu } from "@/utils";
+import { PresentMenu } from "@/api/interface";
 const init = async () => {
   const { data } = await getAuthMenuListApi();
   const newMenu = getPresentMenu(data);
@@ -36,7 +37,7 @@ const openDialog = async (title: string, rowData: any = {}) => {
           },
     isView: title === "查看",
     api: title === "新增" ? reqAddMenu : title === "编辑" ? reqPutMenu : null,
-    getTableList: proTable.value.getTableList,
+    getTableList: proTable.value?.getTableList,
     tableData: [{ id: 0, title: "顶级目录", children: tableData.value }]
   };
   addRef.value.acceptParams(params);
@@ -47,18 +48,18 @@ const openDialog = async (title: string, rowData: any = {}) => {
  */
 const deleteMenu = async (row: any) => {
   await useHandleData(reqDelMenu, { id: row.id }, `删除【${row.title}】菜单`);
-  proTable.value.getTableList();
+  proTable.value?.getTableList();
 };
 const batchDel = async (ids: string[]) => {
   await useHandleData(reqBatchDelMenu, ids, `删除所选菜单`);
-  proTable.value.getTableList();
+  proTable.value?.getTableList();
 };
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
-const proTable = ref();
+const proTable = ref<ProTableInstance>();
 /**
  * @description 表格配置项
  */
-const columns: ColumnProps[] = [
+const columns: ColumnProps<PresentMenu.Datum>[] = [
   { type: "selection", fixed: "left", width: 40 },
   { prop: "title", label: "菜单标题", width: 140, search: { el: "input" } },
   { prop: "name", label: "组件名称", width: 120 },
@@ -152,7 +153,7 @@ const columns: ColumnProps[] = [
         :border="false"
       >
         <template #tableHeader="scope">
-          <el-button class="btn" type="primary" :icon="Plus" @click="openDialog('新增')">新增</el-button>
+          <el-button class="btn" type="primary" v-auth="['add']" :icon="Plus" @click="openDialog('新增')">新增</el-button>
           <el-button class="btn" type="primary" plain :icon="Edit" :disabled="scope.selectedListIds.length !== 1">修改</el-button>
           <el-button
             class="btn"

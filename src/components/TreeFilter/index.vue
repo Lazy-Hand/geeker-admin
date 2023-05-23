@@ -68,16 +68,18 @@ const loading = ref(false);
 onBeforeMount(async () => {
   if (props.data?.length) return (treeData.value = props.data);
   const { data } = await props.requestApi!();
-  const newData = data.map((item: any) => {
-    return {
-      ...item,
-      children: item.children ? item.children : item.childMenu
-    };
-  });
+  const newData = treeDataEdit(data);
   if (props.multiple) return (treeData.value = newData);
   treeData.value = [{ id: "", [props.label]: "全部" }, ...newData];
 });
-
+function treeDataEdit(data: any[]): any[] {
+  return data.map((item: any) => {
+    return {
+      ...item,
+      children: item.children ? item.children : treeDataEdit(item.childMenu)
+    };
+  });
+}
 watch(filterText, val => {
   treeRef.value!.filter(val);
 });

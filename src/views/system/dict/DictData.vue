@@ -10,10 +10,11 @@ import AddSendDict from "./components/AddSendDict.vue";
 import { useHandleData } from "@/hooks/useHandleData";
 const proTable = ref();
 const route = useRoute();
+
 const addSendDict = ref();
 // 如果表格需要初始化请求参数，直接定义传给 ProTable(之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
 const initParam = reactive({
-  id: route.params.id
+  id: route.params.paramCode
 });
 // 表格配置项
 const columns: ColumnProps[] = [
@@ -48,7 +49,7 @@ const columns: ColumnProps[] = [
 const openDialog = (title: string, rowData: any = {}) => {
   let params = {
     title,
-    rowData: { ...rowData, parentCode: route.params.id },
+    rowData: { ...rowData, parentCode: route.params.paramCode },
     isView: title === "查看",
     api: title === "新增" ? reqAddDictChild : title === "编辑" ? null : null,
     getTableList: proTable.value.getTableList

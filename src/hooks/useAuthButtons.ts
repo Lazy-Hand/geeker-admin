@@ -8,8 +8,12 @@ import { useAuthStore } from "@/stores/modules/auth";
 export const useAuthButtons = () => {
   const route = useRoute();
   const authStore = useAuthStore();
-  const authButtons = authStore.authButtonListGet[route.name as string] || [];
-
+  let authButtons: string[] = [];
+  if (authStore.authButtonListGet[authStore.routeName]) {
+    authButtons = [...authStore.authButtonListGet[route.name as string], ...authStore.authRoles] || [];
+  } else {
+    authButtons = [...authStore.authRoles] || [];
+  }
   const BUTTONS = computed(() => {
     let currentPageAuthButton: { [key: string]: boolean } = {};
     authButtons.forEach(item => (currentPageAuthButton[item] = true));

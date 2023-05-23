@@ -6,7 +6,7 @@ const dialogVisible = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({
   paramName: [{ required: true, message: "请输入字典名称", trigger: "change" }],
-  paramValue: [{ required: true, message: "请输入字典名称", trigger: "change" }]
+  paramValue: [{ required: true, message: "请输入字典值", trigger: "change" }]
 });
 interface DialogProps {
   title: string;
