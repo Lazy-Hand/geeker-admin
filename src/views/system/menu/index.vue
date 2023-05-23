@@ -4,7 +4,7 @@ import { getAuthMenuListApi } from "@/api/modules/login";
 import { ref } from "vue";
 import Add from "./components/AddMenus.vue";
 import { reqAddMenu, reqPutMenu, reqDelMenu, reqBatchDelMenu } from "@/api/modules/management";
-import { isNo } from "@/utils/serviceDict";
+import { isNo, menuType } from "@/utils/serviceDict";
 import { ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
 import { useHandleData } from "@/hooks/useHandleData";
@@ -92,6 +92,12 @@ const columns: ColumnProps[] = [
     prop: "link",
     label: "外链",
     width: 180
+  },
+  {
+    prop: "menuType",
+    label: "类型",
+    tag: true,
+    enum: menuType
   },
   {
     prop: "affix",

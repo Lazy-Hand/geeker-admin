@@ -21,7 +21,7 @@
       <div class="header-button-ri" v-if="toolButton">
         <slot name="toolButton">
           <el-button :icon="Refresh" circle @click="getTableList" />
-          <el-button :icon="Printer" circle v-if="columns.length" @click="handlePrint" />
+          <el-button :icon="Printer" circle v-if="columns.length" @click="print" />
           <el-button :icon="Operation" circle v-if="columns.length" @click="openColSetting" />
           <el-button :icon="Search" circle v-if="searchColumns.length" @click="isShowSearch = !isShowSearch" />
         </slot>
@@ -88,11 +88,11 @@
 
 <script setup lang="ts" name="ProTable">
 import { ref, watch, computed, provide, onMounted } from "vue";
+import { ElTable } from "element-plus";
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
 import { ColumnProps } from "@/components/ProTable/interface";
-import { ElTable, TableProps } from "element-plus";
 import { Refresh, Printer, Operation, Search } from "@element-plus/icons-vue";
 import { filterEnum, formatValue, handleProp, handleRowAccordingToProp } from "@/utils";
 import SearchForm from "@/components/SearchForm/index.vue";
@@ -100,7 +100,8 @@ import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
 import printJS from "print-js";
-interface ProTableProps extends Partial<TableProps<any>> {
+
+export interface ProTableProps {
   columns: ColumnProps[]; // 列配置项  ==> 必传
   data?: any[]; // 静态 table data 数据，若存在则不会使用 requestApi 返回的 data ==> 非必传
   requestApi?: (params: any) => Promise<any>; // 请求表格数据的 api ==> 非必传
@@ -115,10 +116,11 @@ interface ProTableProps extends Partial<TableProps<any>> {
   rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
   searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
 }
+
 // 接受父组件参数，配置默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
-  requestAuto: true,
   columns: () => [],
+  requestAuto: true,
   pagination: true,
   initParam: {},
   border: true,
@@ -205,7 +207,7 @@ const colSetting = tableColumns.value!.filter(
 );
 const openColSetting = () => colRef.value.openColSetting();
 
-// 🙅‍♀️ 不需要打印可以把以下方法删除，打印功能目前存在很多 bug（目前数据处理比较复杂 210-248 行）
+// 🙅‍♀️ 不需要打印可以把以下方法删除，打印功能目前存在很多 bug
 // 处理打印数据（把后台返回的值根据 enum 做转换）
 const printData = computed(() => {
   const handleData = props.data ?? tableData.value;
@@ -229,7 +231,7 @@ const printData = computed(() => {
 });
 
 // 打印表格数据（💥 多级表头数据打印时，只能扁平化成一维数组，printJs 不支持多级表头打印）
-const handlePrint = () => {
+const print = () => {
   const header = `<div style="text-align: center"><h2>${props.title}</h2></div>`;
   const gridHeaderStyle = "border: 1px solid #ebeef5;height: 45px;color: #232425;text-align: center;background-color: #fafafa;";
   const gridStyle = "border: 1px solid #ebeef5;height: 40px;color: #494b4e;text-align: center";
@@ -249,10 +251,14 @@ const handlePrint = () => {
 defineExpose({
   element: tableRef,
   tableData,
-  searchParam,
   pageable,
+  searchParam,
+  searchInitParam,
   getTableList,
+  search,
   reset,
+  handleSizeChange,
+  handleCurrentChange,
   clearSelection,
   enumMap,
   isSelected,

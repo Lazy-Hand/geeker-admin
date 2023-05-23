@@ -33,3 +33,9 @@ export const articleType = [
   { label: "原创", value: 0 },
   { label: "转载", value: 1 }
 ];
+
+export const menuType = [
+  { label: "目录", value: "M" },
+  { label: "菜单", value: "C" },
+  { label: "按钮", value: "A" }
+];

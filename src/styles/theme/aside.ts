@@ -9,17 +9,17 @@ export const asideTheme: Record<AsideThemeType, { [key: string]: string }> = {
     "--el-menu-text-color": "#333333",
     "--el-menu-active-color": "var(--el-color-primary)",
     "--el-menu-hover-text-color": "#333333",
-    "--el-menu-horizontal-sub-item-height": "55px"
+    "--el-menu-horizontal-sub-item-height": "50px"
   },
   inverted: {
     "--el-logo-text-color": "#dadada",
-    "--el-menu-bg-color": "#304156",
-    "--el-menu-hover-bg-color": "#263445",
-    "--el-menu-active-bg-color": "#263445",
+    "--el-menu-bg-color": "#191a20",
+    "--el-menu-hover-bg-color": "#000000",
+    "--el-menu-active-bg-color": "#000000",
     "--el-menu-text-color": "#bdbdc0",
     "--el-menu-active-color": "#ffffff",
     "--el-menu-hover-text-color": "#ffffff",
-    "--el-menu-horizontal-sub-item-height": "55px"
+    "--el-menu-horizontal-sub-item-height": "50px"
   },
   dark: {
     "--el-logo-text-color": "#dadada",
@@ -29,6 +29,6 @@ export const asideTheme: Record<AsideThemeType, { [key: string]: string }> = {
     "--el-menu-text-color": "#bdbdc0",
     "--el-menu-active-color": "#ffffff",
     "--el-menu-hover-text-color": "#ffffff",
-    "--el-menu-horizontal-sub-item-height": "55px"
+    "--el-menu-horizontal-sub-item-height": "50px"
   }
 };

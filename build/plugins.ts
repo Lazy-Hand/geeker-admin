@@ -9,12 +9,13 @@ import eslintPlugin from "vite-plugin-eslint";
 import viteCompression from "vite-plugin-compression";
 import vueSetupExtend from "unplugin-vue-setup-extend-plus/vite";
 import UnoCSS from "unocss/vite";
-// import { warmup } from "vite-plugin-warmup";
+import { VitePWA } from "vite-plugin-pwa";
 /**
  * 创建 vite 插件
  * @param viteEnv
  */
 export const createVitePlugins = (viteEnv: ViteEnv): (PluginOption | PluginOption[])[] => {
+  const { VITE_GLOB_APP_TITLE, VITE_REPORT, VITE_PWA } = viteEnv;
   return [
     vue(),
     // vue 可以使用 jsx/tsx 语法
@@ -24,16 +25,14 @@ export const createVitePlugins = (viteEnv: ViteEnv): (PluginOption | PluginOptio
     eslintPlugin(),
     // name 可以写在 script 标签上
     vueSetupExtend({}),
-    // warmup({
-    //   // warm up the files and its imported JS modules recursively
-    //   clientFiles: ["./**/*.html", "./src/components/*.jsx"]
-    // }),
+    // vitePWA
+    VITE_PWA && createVitePwa(viteEnv),
     // 创建打包压缩配置
     createCompression(viteEnv),
     // 注入变量到 html 文件
     createHtmlPlugin({
       inject: {
-        data: { title: viteEnv.VITE_GLOB_APP_TITLE }
+        data: { title: VITE_GLOB_APP_TITLE }
       }
     }),
     // 使用 svg 图标
@@ -42,7 +41,7 @@ export const createVitePlugins = (viteEnv: ViteEnv): (PluginOption | PluginOptio
       symbolId: "icon-[dir]-[name]"
     }),
     // 是否生成包预览，分析依赖包大小做优化处理
-    viteEnv.VITE_REPORT && (visualizer({ filename: "stats.html", gzipSize: true, brotliSize: true }) as PluginOption)
+    VITE_REPORT && (visualizer({ filename: "stats.html", gzipSize: true, brotliSize: true }) as PluginOption)
   ];
 };
 
@@ -75,4 +74,37 @@ const createCompression = (viteEnv: ViteEnv): PluginOption | PluginOption[] => {
   }
 
   return plugins;
+};
+/**
+ * @description VitePwa
+ * @param viteEnv
+ */
+const createVitePwa = (viteEnv: ViteEnv): PluginOption | PluginOption[] => {
+  const { VITE_GLOB_APP_TITLE } = viteEnv;
+  return VitePWA({
+    registerType: "autoUpdate",
+    manifest: {
+      name: VITE_GLOB_APP_TITLE,
+      short_name: VITE_GLOB_APP_TITLE,
+      theme_color: "#ffffff",
+      icons: [
+        {
+          src: "/logo.png",
+          sizes: "192x192",
+          type: "image/png"
+        },
+        {
+          src: "/logo.png",
+          sizes: "512x512",
+          type: "image/png"
+        },
+        {
+          src: "/logo.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "any maskable"
+        }
+      ]
+    }
+  });
 };
