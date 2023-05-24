@@ -67,7 +67,12 @@ const columns: ColumnProps[] = [
     prop: "tags",
     label: "标签",
     tag: true,
-    search: { el: "input" }
+    search: { el: "input" },
+    render: scope => {
+      return scope.row.tags.split(",").map((item: any) => {
+        return <el-tag mr-1>{item}</el-tag>;
+      });
+    }
   },
   {
     prop: "status",
