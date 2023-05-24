@@ -4,7 +4,7 @@
       action="#"
       list-type="picture-card"
       :class="['upload', self_disabled ? 'disabled' : '', drag ? 'no-border' : '']"
-      v-model:file-list="fileList"
+      v-model:file-list="_fileList"
       :multiple="true"
       :disabled="self_disabled"
       :limit="limit"
@@ -86,13 +86,13 @@ const self_disabled = computed(() => {
   return props.disabled || formContext?.disabled;
 });
 
-const fileList = ref<UploadUserFile[]>(props.fileList);
+const _fileList = ref<UploadUserFile[]>(props.fileList);
 
 // 监听 props.fileList 列表默认值改变
 watch(
   () => props.fileList,
   (n: UploadUserFile[]) => {
-    fileList.value = n;
+    _fileList.value = n;
   }
 );
 
@@ -151,7 +151,7 @@ const uploadSuccess = (response: any | undefined, uploadFile: UploadFile) => {
   if (!response) return;
   uploadFile.url = response.fileUrl;
   imgInfo.value.push(response);
-  emit("update:fileList", fileList.value);
+  emit("update:fileList", _fileList.value);
   emit("update:imgInfo", imgInfo.value);
   // 调用 el-form 内部的校验方法（可自动校验）
   formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);
@@ -167,9 +167,9 @@ const uploadSuccess = (response: any | undefined, uploadFile: UploadFile) => {
  * @param file 删除的文件
  * */
 const handleRemove = (file: UploadFile) => {
-  fileList.value = fileList.value.filter(item => item.url !== file.url || item.name !== file.name);
+  _fileList.value = _fileList.value.filter(item => item.url !== file.url || item.name !== file.name);
   imgInfo.value = imgInfo.value.filter(item => item.httpUrl !== file.url);
-  emit("update:fileList", fileList.value);
+  emit("update:fileList", _fileList.value);
   emit("update:imgInfo", imgInfo.value);
 };
 

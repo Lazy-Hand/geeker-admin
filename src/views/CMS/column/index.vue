@@ -21,11 +21,10 @@
 import { ref } from "vue";
 import UploadImg from "@/components/Upload/Img.vue";
 import UploadImgMultiple from "@/components/Upload/Imgs.vue";
-const fileList = ref([{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" }]);
-const avatar1 = ref({ httpUrl: "" });
+const fileList = ref([]);
+const avatar1 = ref();
 const imgInfo = ref(fileList.value);
 const test = () => {
-  console.log(fileList.value);
   console.log(imgInfo.value);
   console.log(avatar1);
 };
