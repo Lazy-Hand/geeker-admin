@@ -136,6 +136,15 @@ const columns: ColumnProps<PresentMenu.Datum>[] = [
   },
   { prop: "operation", label: "操作", width: 180, fixed: "right" }
 ];
+// 请求之前处理时间条件
+
+const getTableList = (params: any) => {
+  const newParams = { ...params };
+  newParams.startTime = params.gmtCreate?.[0];
+  newParams.endTime = params.gmtCreate?.[1];
+  delete newParams.gmtCreate;
+  return getAuthMenuListApi(newParams);
+};
 </script>
 <template>
   <div class="main-box">
@@ -147,7 +156,7 @@ const columns: ColumnProps<PresentMenu.Datum>[] = [
         :columns="columns"
         :indent="30"
         row-key="id"
-        :requestApi="getAuthMenuListApi"
+        :requestApi="getTableList"
         highlight-current-row
         :pagination="false"
         :border="false"

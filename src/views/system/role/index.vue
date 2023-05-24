@@ -16,7 +16,6 @@ import { CirclePlus, Delete, EditPen, Download } from "@element-plus/icons-vue";
 // import { getRoleMenus } from '@/api/modules/user'
 import { getAuthMenuListApi } from "@/api/modules/login";
 import { ElMessage } from "element-plus";
-import dayjs from "dayjs";
 import { isNo } from "@/utils/serviceDict";
 import { ResultEnum } from "@/enums/httpEnum";
 import AddRoles from "./components/AddRoles.vue";
@@ -66,11 +65,9 @@ const columns: ColumnProps[] = [
     width: 180,
     search: {
       el: "date-picker",
-      props: { type: "datetimerange" }
+      props: { type: "datetimerange", valueFormat: "YYYY-MM-DD HH:mm:ss" }
     },
-    render: scope => {
-      return <span>{dayjs(scope.row.gmtCreate).format("YYYY-MM-DD HH:mm:ss")}</span>;
-    }
+    format: "YYYY-MM-DD HH:mm:ss"
   },
   { prop: "operation", label: "操作", width: 180, fixed: "right" }
 ];
@@ -120,6 +117,14 @@ const batchDelRoles = async (id: string[]) => {
   proTable.value.clearSelection();
   proTable.value.getTableList();
 };
+
+const getTableList = (params: any) => {
+  const newParams = { ...params };
+  newParams.startTime = params.gmtCreate?.[0];
+  newParams.endTime = params.gmtCreate?.[1];
+  delete newParams.gmtCreate;
+  return getRoleList(newParams);
+};
 </script>
 <template>
   <div class="main-box">
@@ -137,7 +142,7 @@ const batchDelRoles = async (id: string[]) => {
         ref="proTable"
         title="用户列表"
         :columns="columns"
-        :requestApi="getRoleList"
+        :requestApi="getTableList"
         highlight-current-row
         :pagination="false"
         :searchCol="{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3 }"
