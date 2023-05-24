@@ -10,7 +10,7 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="SelectServerAssets">
 import TreeFilter from "@/components/TreeFilter/index.vue";
 import { getAuthMenuListApi } from "@/api/modules/login";
 import { ElMessage } from "element-plus";

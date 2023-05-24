@@ -22,7 +22,7 @@ import "@wangeditor/editor/dist/css/style.css";
 import { formContextKey, formItemContextKey } from "element-plus";
 import markdownModule from "@wangeditor/plugin-md";
 import { addDialog } from "@/components/OpenDialog";
-import Upload from "./components/UploadImg.vue";
+import SelectServerAssets from "@/components/SelectServerAssets/index.vue";
 
 const editorRef = shallowRef();
 // // 注册插件markdown
@@ -41,7 +41,8 @@ interface RichEditorProps {
   mode?: "default" | "simple"; // 富文本模式 ==> 非必传（默认为 default）
   hideToolBar?: boolean; // 是否隐藏工具栏 ==> 非必传（默认为false）
   disabled?: boolean; // 是否禁用编辑器 ==> 非必传（默认为false）
-  customize?: boolean; // 是否自定义上传图片和视频 ==> 非必传（默认为false）
+  customizeImg?: boolean; // 是否自定义上传图片 ==> 非必传（默认为false）
+  customizeVideo?: boolean; // 是否自定义上传图片 ==> 非必传（默认为false）
 }
 const props = withDefaults(defineProps<RichEditorProps>(), {
   toolbarConfig: () => {
@@ -59,7 +60,8 @@ const props = withDefaults(defineProps<RichEditorProps>(), {
   mode: "default",
   hideToolBar: false,
   disabled: false,
-  customize: false
+  customizeImg: false,
+  customizeVideo: false
 });
 
 const insert = ref();
@@ -99,7 +101,7 @@ const valueHtml = computed({
  * @param insertFn 上传成功后的回调函数（插入到富文本编辑器中）
  * */
 type InsertFnTypeImg = (url: string, alt?: string, href?: string) => void;
-props.editorConfig.MENU_CONF!["uploadImage"] = !props.customize
+props.editorConfig.MENU_CONF!["uploadImage"] = !props.customizeImg
   ? {
       async customUpload(file: File, insertFn: InsertFnTypeImg) {
         if (!uploadImgValidate(file)) return;
@@ -133,19 +135,27 @@ const uploadImgValidate = (file: File): boolean => {
  * @param insertFn 上传成功后的回调函数（插入到富文本编辑器中）
  * */
 type InsertFnTypeVideo = (url: string, poster?: string) => void;
-props.editorConfig.MENU_CONF!["uploadVideo"] = {
-  async customUpload(file: File, insertFn: InsertFnTypeVideo) {
-    if (!uploadVideoValidate(file)) return;
-    let formData = new FormData();
-    formData.append("file", file);
-    try {
-      const { data } = await uploadVideo(formData);
-      insertFn(data.httpUrl!);
-    } catch (error) {
-      console.log(error);
+props.editorConfig.MENU_CONF!["uploadVideo"] = !props.customizeVideo
+  ? {
+      async customUpload(file: File, insertFn: InsertFnTypeVideo) {
+        if (!uploadVideoValidate(file)) return;
+        let formData = new FormData();
+        formData.append("file", file);
+        try {
+          const { data } = await uploadVideo(formData);
+          insertFn(data.httpUrl!);
+        } catch (error) {
+          console.log(error);
+        }
+      }
     }
-  }
-};
+  : {
+      // 自定义选择图片
+      customBrowseAndUpload(insertFn: InsertFnTypeVideo) {
+        insert.value = insertFn;
+        open();
+      }
+    };
 // 视频上传前判断
 const uploadVideoValidate = (file: File): boolean => {
   console.log(file);
@@ -163,9 +173,9 @@ const open = () => {
     title: "上传图片",
     width: "45%",
     draggable: true,
-    component: markRaw(Upload),
+    component: markRaw(SelectServerAssets),
     callBack: (data: { submit: boolean; url: string }) => {
-      insert.value(data.url);
+      data.submit && insert.value(data.url);
     }
   });
 };
