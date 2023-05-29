@@ -10,8 +10,8 @@ Geeker-Admin 一款基于 Vue3.2、TypeScript、Vite4、Pinia、Element-Plus 开
 
 ### 代码仓库 ⭐
 
-- Gitee：https://gitee.com/HalseySpicy/Geeker-Admin
-- GitHub：https://github.com/HalseySpicy/Geeker-Admin
+- Gitee：https://gitee.com/lazy-hand/geeker-admin
+- GitHub：https://github.com/Lazy-Hand/geeker-admin
 
 ### 项目文档 📚
 
@@ -39,9 +39,9 @@ Geeker-Admin 一款基于 Vue3.2、TypeScript、Vite4、Pinia、Element-Plus 开
 
 ```text
 # Gitee
-git clone https://gitee.com/HalseySpicy/Geeker-Admin.git
+git clone https://gitee.com/lazy-hand/geeker-admin.git
 # GitHub
-git clone https://github.com/HalseySpicy/Geeker-Admin.git
+git clone https://github.com/Lazy-Hand/geeker-admin.git
 ```
 
 - **Install：**
@@ -185,22 +185,3 @@ Geeker-Admin
 
 - FastMock： https://www.fastmock.site
 - EasyMock：https://mock.mengxuegu.com
-
-### 微信交流群 👨‍👨‍👦‍👦
-
-微信一群、二群已满，三群已超过 200 人，需要加微信好友，拉大家进群 🤪
-
-|                           微信二维码                           |
-| :------------------------------------------------------------: |
-| <img src="https://i.imgtg.com/2023/01/16/QRbJL.png" width=170> |
-
-### 捐赠 🍵
-
-如果你正在使用这个项目或者喜欢这个项目的，可以通过以下方式支持我：
-
-- Star、Fork、Watch 一键三连 🚀
-- 通过微信、支付宝一次性捐款 ❤
-
-|                                        微信                                        |                                       支付宝                                       |
-| :--------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: |
-| <img src="https://i.imgtg.com/2023/01/16/QRzBX.png" alt="Alipay QRcode" width=170> | <img src="https://i.imgtg.com/2023/01/16/QRFZt.png" alt="Wechat QRcode" width=170> |
