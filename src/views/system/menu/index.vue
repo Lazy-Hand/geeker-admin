@@ -61,7 +61,7 @@ const proTable = ref<ProTableInstance>();
  */
 const columns: ColumnProps<PresentMenu.Datum>[] = [
   { type: "selection", fixed: "left", width: 40 },
-  { prop: "title", label: "菜单标题", width: 140, search: { el: "input" } },
+  { prop: "title", label: "菜单标题", width: 140, search: { el: "input" }, align: "left" },
   { prop: "name", label: "组件名称", width: 120 },
   {
     prop: "icon",
@@ -154,7 +154,6 @@ const getTableList = (params: any) => {
         title="用户列表"
         :tree-props="{ children: 'childMenu' }"
         :columns="columns"
-        :indent="30"
         row-key="id"
         :requestApi="getTableList"
         highlight-current-row
