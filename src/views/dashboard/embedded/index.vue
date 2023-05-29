@@ -1,6 +1,6 @@
 <template>
-  <div class="card content-box">
-    <iframe src="https://cn.bing.com/" frameborder="0" class="full-iframe"></iframe>
+  <div class="card content-box" style="padding: 0">
+    <iframe src="https://admin.spicyboy.cn" frameborder="0" class="full-iframe"></iframe>
   </div>
 </template>
 

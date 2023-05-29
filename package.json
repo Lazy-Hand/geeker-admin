@@ -6,17 +6,17 @@
   "description": "geeker-admin open source management system",
   "author": {
     "name": "Geeker",
-    "email": "848130454@qq.com",
-    "url": "https://github.com/HalseySpicy"
+    "email": "17662073174@163.com",
+    "url": "https://github.com/Lazy-Hand"
   },
   "license": "MIT",
-  "homepage": "https://github.com/HalseySpicy/Geeker-Admin",
+  "homepage": "https://github.com/Lazy-Hand/geeker-admin",
   "repository": {
     "type": "git",
-    "url": "git@github.com:HalseySpicy/Geeker-Admin.git"
+    "url": "git@github.com:Lazy-Hand/geeker-admin.git"
   },
   "bugs": {
-    "url": "https://github.com/HalseySpicy/Geeker-Admin/issues"
+    "url": "https://github.com/Lazy-Hand/geeker-admin/issues"
   },
   "scripts": {
     "dev": "vite",
