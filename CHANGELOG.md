@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.1.0 (2023-05-29)
+
+### Features
+
+- 🚀 新增原子化 cunocss ([2e225ee](https://github.com/HalseySpicy/Geeker-Admin/commit/2e225ee7dad4515363b5ab3afeddbb0a95624cf9))
+- 🚀 修改端口号 ([48a6cf6](https://github.com/HalseySpicy/Geeker-Admin/commit/48a6cf67832b3fb64ab5100a22c2c9577e4d7ca1))
+- **build:** 🚀 去掉 vite 打包预加载 ([0473585](https://github.com/HalseySpicy/Geeker-Admin/commit/047358534b5a22e7799bcae3bfc7cceeb73272b8))
+- **component:** 🚀 表格配置项时间格式化能力 ([c6ef58a](https://github.com/HalseySpicy/Geeker-Admin/commit/c6ef58a9428d32427307ddee6d11c99588819e80))
+- **component:** 🚀 富文本编辑器自定义选择图片 ([27457de](https://github.com/HalseySpicy/Geeker-Admin/commit/27457de5d82a528f35ce0a07932fd59af96fb5f1))
+- **component:** 🚀 稍微优雅一点的 dialog 组件 ([3cd336c](https://github.com/HalseySpicy/Geeker-Admin/commit/3cd336ce4e04557d1706ac1796df8bd89b4df884))
+- **component:** 🚀 proTable 添加 column 时间格式化属性 ([cdbd410](https://github.com/HalseySpicy/Geeker-Admin/commit/cdbd4107e2eda5109527076ee1cd5c4f40506762))
+- **component:** 🚀 wangEditor 组件自定义选择图片 ([34d266d](https://github.com/HalseySpicy/Geeker-Admin/commit/34d266daac5e8410ad019fb659d1bb9e0cd799cd))
+- **unocss:** 🚀 新增 unocss jsx 类写法 ([8656340](https://github.com/HalseySpicy/Geeker-Admin/commit/86563401690e24ec97d5b691127fdd353a32cc08))
+- **view:** 🚀 商品管理 ([115fb5f](https://github.com/HalseySpicy/Geeker-Admin/commit/115fb5fb8184ee15fd547a6662fed829b99cbff1))
+- **view:** 🚀 新增表单设计器 ([35f4117](https://github.com/HalseySpicy/Geeker-Admin/commit/35f41179d83970b516a25aef2f64712ee4dac3c3))
+- **view:** 🚀 dept 组织架构 ([5ca5024](https://github.com/HalseySpicy/Geeker-Admin/commit/5ca5024ced5403a5f0ccc912d2725b040f813be3))
+- **vite:** 🚀 pwa ([2d6a240](https://github.com/HalseySpicy/Geeker-Admin/commit/2d6a2400bc12c42a84991f8621c198d559271e8a))
+
+### Bug Fixes
+
+- 🧩 unocss 文件集成 ([4a298c1](https://github.com/HalseySpicy/Geeker-Admin/commit/4a298c19cd8f6bea309159982839774a398cc35f))
+- **component:** 🧩 抽出公共组件 SelectServerAssets ([6fedecc](https://github.com/HalseySpicy/Geeker-Admin/commit/6fedecc914a6ee3d9cff16ac0f13a407e5cabcb9))
+- **component:** 🧩 富文本编辑器文件上传路径问题 ([4a24347](https://github.com/HalseySpicy/Geeker-Admin/commit/4a24347d478401fd8760154bdd48be532cafdab6))
+- **component:** 🧩 上传组件 emit 回传 response ([e56e689](https://github.com/HalseySpicy/Geeker-Admin/commit/e56e689c92bb4cf7183ad1ff50f4798c99168d25))
+- **component:** 🧩 修复 proTable 透传问题 ([82e6979](https://github.com/HalseySpicy/Geeker-Admin/commit/82e6979aba453424af185c4583cb9ce4b529121d))
+- **component:** 🧩 修复 upload 上传类型定义导致打包失败 ([ae9c1fd](https://github.com/HalseySpicy/Geeker-Admin/commit/ae9c1fde211839a71bc480f1fc9959960a67fa59))
+- **component:** 🧩 展示删除 v-model 的 trim 功能 ([cceed1b](https://github.com/HalseySpicy/Geeker-Admin/commit/cceed1b02320007afa4646254f2128edb1b9e0c5))
+- **component:** 🧩 selectIcon 图表大小 ([dcedcfd](https://github.com/HalseySpicy/Geeker-Admin/commit/dcedcfd193a34bc08097f6ba01f6c8215f33c88f))
+- **directive:** 🧩 按钮权限增加 auth ([43466b7](https://github.com/HalseySpicy/Geeker-Admin/commit/43466b7d4ded695916928c4bd8cdcff300bb9e02))
+- **directive:** 🧩 auth 按钮权限兼容不可迭代 ([9c91057](https://github.com/HalseySpicy/Geeker-Admin/commit/9c9105796e6ae386a74d1e9d6918ecc1097e1dc9))
+- **layout:** 🧩 logo 大小 ([85ddc6f](https://github.com/HalseySpicy/Geeker-Admin/commit/85ddc6f938f790b9e2e12c2f9b48d18d8b5307d6))
+- **layout:** 🧩 vue3.3 新特性 Suspense ([fa0c622](https://github.com/HalseySpicy/Geeker-Admin/commit/fa0c622066fbca9cd188871ce3c3fca2e7857e46))
+- **README:** 🧩 文档地址 ([e03da31](https://github.com/HalseySpicy/Geeker-Admin/commit/e03da31aea84a3ce8f86fae80931d5727fd119ef))
+- **style:** 🧩 改变侧边栏背景色 ([e9b8fdb](https://github.com/HalseySpicy/Geeker-Admin/commit/e9b8fdb150add4beb3730a54223442834fc8d3ff))
+- **style:** 🧩 路由动画优化 ([0d4deb0](https://github.com/HalseySpicy/Geeker-Admin/commit/0d4deb070372f553309f291964c1d85b53ef4115))
+- **util:** 🧩 按钮权限匹配规则 ([fb955ca](https://github.com/HalseySpicy/Geeker-Admin/commit/fb955cad14a9526ab8fcc1d8685e2d98b3d0dc08))
+- **view:** 🧩 menu 菜单名称对齐方式 ([158cbf0](https://github.com/HalseySpicy/Geeker-Admin/commit/158cbf0e92cd27ec3bc0b4cade30ce290673295a))
+- **view:** 🧩 menu 接口优化 ([5d33c43](https://github.com/HalseySpicy/Geeker-Admin/commit/5d33c437de0264e9db6eb2dd3c0423873ac4b14f))
+
 ## [1.0.0](https://github.com/HalseySpicy/Geeker-Admin/compare/v0.0.7...v1.0.0) (2023-04-15)
 
 ### Features
