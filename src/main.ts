@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import "virtual:uno.css";
 // reset style sheet
 import "@/styles/reset.scss";
 // CSS common style sheet

@@ -137,7 +137,7 @@ const getTableList = (params: any) => {
       v-if="1 !== 1"
     />
 
-    <div class="table-box mr-3">
+    <div class="table-box" style="margin-right: 0.75rem">
       <ProTable
         ref="proTable"
         title="用户列表"

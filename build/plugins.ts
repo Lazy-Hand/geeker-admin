@@ -8,9 +8,8 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import eslintPlugin from "vite-plugin-eslint";
 import viteCompression from "vite-plugin-compression";
 import vueSetupExtend from "unplugin-vue-setup-extend-plus/vite";
-import UnoCSS from "unocss/vite";
 import { VitePWA } from "vite-plugin-pwa";
-// import { warmup } from "vite-plugin-warmup";
+import { warmup } from "vite-plugin-warmup";
 
 /**
  * 创建 vite 插件
@@ -22,7 +21,6 @@ export const createVitePlugins = (viteEnv: ViteEnv): (PluginOption | PluginOptio
     vue(),
     // vue 可以使用 jsx/tsx 语法
     vueJsx(),
-    UnoCSS(),
     // esLint 报错信息显示在浏览器界面上
     eslintPlugin(),
     // name 可以写在 script 标签上
@@ -43,11 +41,11 @@ export const createVitePlugins = (viteEnv: ViteEnv): (PluginOption | PluginOptio
       symbolId: "icon-[dir]-[name]"
     }),
     // 是否生成包预览，分析依赖包大小做优化处理
-    VITE_REPORT && (visualizer({ filename: "stats.html", gzipSize: true, brotliSize: true }) as PluginOption)
-    // warmup({
-    //   // warm up the files and its imported JS modules recursively
-    //   clientFiles: ["./**/*.html", "./src/components/*.vue"]
-    // })
+    VITE_REPORT && (visualizer({ filename: "stats.html", gzipSize: true, brotliSize: true }) as PluginOption),
+    warmup({
+      // warm up the files and its imported JS modules recursively
+      clientFiles: ["./**/*.html", "./src/components/*.vue"]
+    })
   ];
 };
 
