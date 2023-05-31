@@ -22,7 +22,7 @@
           </el-icon>
         </template>
       </el-input>
-      <div class="login-code w-[130px] h-[40px] leading-[40px]">
+      <div class="login-code">
         <img :src="codeUrl" @click="getCode" alt="" />
       </div>
       <el-checkbox style="margin: 0" v-model="loginForm.rememberMe"> 记住我</el-checkbox>
@@ -147,4 +147,9 @@ onMounted(() => {
 
 <style scoped lang="scss">
 @import "../index.scss";
+.login-code {
+  width: 130px;
+  height: 40px;
+  line-height: 40px;
+}
 </style>

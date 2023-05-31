@@ -70,7 +70,7 @@ const columns: ColumnProps[] = [
     search: { el: "input" },
     render: scope => {
       return scope.row.tags.split(",").map((item: any) => {
-        return <el-tag mr-1>{item}</el-tag>;
+        return <el-tag style={{ marginRight: "0.5rem" }}>{item}</el-tag>;
       });
     }
   },
