@@ -44,7 +44,7 @@ export const createVitePlugins = (viteEnv: ViteEnv): (PluginOption | PluginOptio
     VITE_REPORT && (visualizer({ filename: "stats.html", gzipSize: true, brotliSize: true }) as PluginOption),
     warmup({
       // warm up the files and its imported JS modules recursively
-      clientFiles: ["./**/*.html", "./src/components/*.vue"]
+      clientFiles: ["../src/main.ts", "../src/App.vue", "../src/routers/modules/staticRouter.ts"]
     })
   ];
 };
