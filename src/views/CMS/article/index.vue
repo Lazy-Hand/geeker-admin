@@ -3,13 +3,14 @@
     <ProTable :requestApi="getTableList" ref="proTable" title="用户列表" :columns="columns">
       <template #tableHeader="scope">
         <el-button type="primary" :icon="CirclePlus" @click="openDialog('新增')">新增</el-button>
-        <el-button type="primary" plain :icon="EditPen" :disabled="scope.selectedListIds.length !== 1">修改</el-button>
-        <el-button type="danger" plain :icon="Delete" :disabled="!scope.isSelected">删除</el-button>
+        <el-button type="danger" plain :icon="Delete" :disabled="!scope.isSelected" @click="deleteArticles(scope.selectedListIds)"
+          >批量删除</el-button
+        >
         <el-button type="primary" plain :icon="Download">导出</el-button>
       </template>
-      <template #operation>
-        <el-button type="primary" :icon="EditPen" link>编辑</el-button>
-        <el-button type="danger" :icon="Delete" link>删除</el-button>
+      <template #operation="scope">
+        <el-button type="primary" :icon="EditPen" link @click="openDialog('编辑', scope.row)">编辑</el-button>
+        <el-button type="danger" :icon="Delete" link @click="deleteArticle(scope.row)">删除</el-button>
       </template>
     </ProTable>
     <AddArticle ref="addRef" />
@@ -19,11 +20,12 @@
 <script setup lang="tsx" name="Article">
 import { CirclePlus, Delete, Download, EditPen } from "@element-plus/icons-vue";
 import { ref } from "vue";
-import { getArticleList, getColumnList } from "@/api/modules/cms/article";
+import { addArticle, delArticle, getArticleList, getColumnList, updateArticle } from "@/api/modules/cms/article";
 import { ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
 import { articleStatus, articleType } from "@/utils/serviceDict";
 import AddArticle from "./components/AddArticle.vue";
+import { useHandleData } from "@/hooks/useHandleData";
 const proTable = ref();
 const articleColumn = ref<{ label: string; value: number }[]>([]);
 
@@ -101,9 +103,12 @@ const addRef = ref();
 const openDialog = (title: string, rowData: any = {}) => {
   let params = {
     title,
-    rowData: { ...rowData, hot: true, type: 0, top: 0, content: "" },
+    rowData:
+      title === "编辑"
+        ? { ...rowData, tags: rowData.tags.split(","), coverImage: { httpUrl: rowData.coverImage } }
+        : { ...rowData, hot: true, type: 0, top: 0, content: "", status: 0 },
     isView: title === "查看",
-    api: title === "新增" ? null : title === "编辑" ? null : null,
+    api: title === "新增" ? addArticle : title === "编辑" ? updateArticle : null,
     getTableList: proTable.value.getTableList,
     articleColumn: articleColumn.value
   };
@@ -117,6 +122,18 @@ const getTableList = (params: any) => {
   newParams.gmtCreate && (newParams.endTime = newParams.gmtCreate[1]);
   delete newParams.gmtCreate;
   return getArticleList(newParams);
+};
+
+// 单条删除
+const deleteArticle = async (row: any) => {
+  await useHandleData(delArticle, { id: row.id }, `删除【${row.title}】文章`);
+  proTable.value.getTableList();
+};
+
+// 批量删除
+const deleteArticles = async (ids: string[]) => {
+  await useHandleData(delArticle, { ids }, `删除所选文章`);
+  proTable.value.getTableList();
 };
 </script>
 

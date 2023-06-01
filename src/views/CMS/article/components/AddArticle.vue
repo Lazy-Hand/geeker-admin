@@ -51,12 +51,20 @@
         <el-col :span="8">
           <el-form-item label="置顶">
             <el-radio-group v-model="dialogProps.rowData.top">
-              <el-radio :label="0">是</el-radio>
-              <el-radio :label="1">否</el-radio>
+              <el-radio :label="true">是</el-radio>
+              <el-radio :label="false">否</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
-        <el-col :span="12" v-if="dialogProps.rowData.type === 1">
+        <el-col :span="8">
+          <el-form-item label="发布">
+            <el-radio-group v-model="dialogProps.rowData.status">
+              <el-radio :label="0">草稿</el-radio>
+              <el-radio :label="1">直接发布</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="转载来源">
             <el-input v-model="dialogProps.rowData.reprintSource"></el-input>
           </el-form-item>
@@ -81,7 +89,7 @@
     </el-form>
     <template #footer>
       <el-button @click="dialogVisible = false">关闭</el-button>
-      <el-button type="primary">提交</el-button>
+      <el-button type="primary" @click="handleSubmit(ruleFormRef)">提交</el-button>
     </template>
   </el-dialog>
   <el-dialog v-model="htmlVisible" title="富文本内容预览" width="1300px" top="50px">
@@ -93,8 +101,10 @@
 import { ref } from "vue";
 import WangEditor from "@/components/WangEditor/index.vue";
 import UploadImg from "@/components/Upload/Img.vue";
+import { ElMessage, FormInstance } from "element-plus";
 const dialogVisible = ref(false);
 const htmlVisible = ref(false);
+const ruleFormRef = ref<FormInstance>();
 interface DialogProps {
   title: string;
   rowData?: any;
@@ -114,6 +124,29 @@ const dialogProps = ref<DialogProps>({
 const acceptParams = (params: DialogProps): void => {
   dialogProps.value = params;
   dialogVisible.value = true;
+};
+
+// 提交
+const handleSubmit = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  await formEl.validate(async valid => {
+    if (!valid) return console.log("submit!");
+    const newForm: Record<any, any> = {
+      ...dialogProps.value.rowData,
+      tags: dialogProps.value.rowData.tags.join(","),
+      coverImage: dialogProps.value.rowData.coverImage.httpUrl
+    };
+    try {
+      await dialogProps.value.api!({
+        ...newForm
+      });
+      ElMessage.success({ message: `${dialogProps.value.title}成功！` });
+      await dialogProps.value.getTableList!();
+      dialogVisible.value = false;
+    } catch (error) {
+      console.log(error);
+    }
+  });
 };
 // 暴露方法
 defineExpose({
