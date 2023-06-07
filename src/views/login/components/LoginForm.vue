@@ -52,6 +52,8 @@ import { CircleClose, UserFilled } from "@element-plus/icons-vue";
 import type { ElForm } from "element-plus";
 import { getCodeImg } from "@/api/modules/login";
 import cookies from "js-cookie";
+import { AdminUser } from "@/enums/admin";
+
 const router = useRouter();
 const userStore = useUserStore();
 const tabsStore = useTabsStore();
@@ -67,8 +69,8 @@ const loginRules = reactive({
 
 const loading = ref(false);
 const loginForm = reactive<Login.ReqLoginForm>({
-  loginName: "",
-  passwd: "",
+  loginName: AdminUser.ADMIN,
+  passwd: AdminUser.PASSWORD,
   captcha: "",
   captchaKey: "",
   rememberMe: false

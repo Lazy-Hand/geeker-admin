@@ -21,10 +21,11 @@ export function createProxy(list: ProxyList = []) {
       target: target,
       changeOrigin: true,
       ws: true,
-      rewrite: path => path.replace(new RegExp(`^${prefix}`), ""),
+      rewrite: path => path.replace(new RegExp(`^${prefix}`), "/cloud"),
       // https is require secure=false
       ...(isHttps ? { secure: false } : {})
     };
   }
   return ret;
+  console.log(ret);
 }
