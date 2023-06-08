@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Department">
+<script setup lang="ts" name="DepartmentData">
 import TreeFilter from "@/components/TreeFilter/index.vue";
 import ProTable from "@/components/ProTable/index.vue";
 import { ref, reactive } from "vue";

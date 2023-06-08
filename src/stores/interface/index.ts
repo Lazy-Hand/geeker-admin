@@ -21,6 +21,7 @@ export interface GlobalState {
   tabs: boolean;
   tabsIcon: boolean;
   footer: boolean;
+  title: string;
 }
 
 /* UserState */

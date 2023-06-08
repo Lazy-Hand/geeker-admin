@@ -1,18 +1,10 @@
 <script setup lang="tsx" name="Role">
 import TreeFilter from "@/components/TreeFilter/index.vue";
 import ProTable from "@/components/ProTable/index.vue";
-import {
-  getRoleList,
-  getRoleMenuList,
-  addRoleMenu,
-  reqAddRole,
-  reqPutRole,
-  reqDelRole,
-  reqBatchDelRoles
-} from "@/api/modules/system/role";
+import { getRoleList, getRoleMenuList, addRoleMenu, reqAddRole, reqPutRole, reqDelRole } from "@/api/modules/system/role";
 import { ref } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
-import { CirclePlus, Delete, EditPen, Download } from "@element-plus/icons-vue";
+import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
 // import { getRoleMenus } from '@/api/modules/user'
 import { getAuthMenuListApi } from "@/api/modules/login";
 import { ElMessage } from "element-plus";
@@ -64,6 +56,7 @@ const columns: ColumnProps[] = [
     label: "角色状态",
     enum: roleStatus,
     width: 120,
+    search: { el: "select", props: { placeholder: "角色状态" } },
     render: scope => {
       return (
         <>
@@ -132,12 +125,12 @@ const deleteRole = async (row: any) => {
   proTable.value.getTableList();
 };
 
-// 批量删除
-const batchDelRoles = async (id: string[]) => {
-  await useHandleData(reqBatchDelRoles, id, "删除所选角色");
-  proTable.value.clearSelection();
-  proTable.value.getTableList();
-};
+// // 批量删除
+// const batchDelRoles = async (id: string[]) => {
+//   await useHandleData(reqBatchDelRoles, id, "删除所选角色");
+//   proTable.value.clearSelection();
+//   proTable.value.getTableList();
+// };
 
 // 改变角色状态
 const changeStatus = async (e: any, row: any) => {
@@ -157,15 +150,6 @@ const getTableList = (params: any) => {
 </script>
 <template>
   <div class="main-box">
-    <TreeFilter
-      label="title"
-      title="租户"
-      :requestApi="getAuthMenuListApi"
-      @change="changeTreeFilter"
-      :defaultValue="1"
-      v-if="1 !== 1"
-    />
-
     <div class="table-box" style="margin-right: 0.75rem">
       <ProTable
         ref="proTable"
@@ -174,12 +158,11 @@ const getTableList = (params: any) => {
         :requestApi="getTableList"
         highlight-current-row
         :pagination="false"
-        :searchCol="{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3 }"
         @current-change="handleCurrentChange"
       >
-        <template #tableHeader="scope">
+        <template #tableHeader>
           <el-button type="primary" :icon="CirclePlus" @click="openDialog('新增')">新增</el-button>
-          <el-button type="primary" plain :icon="EditPen" :disabled="scope.selectedListIds.length !== 1">修改</el-button>
+          <!-- <el-button type="primary" plain :icon="EditPen" :disabled="scope.selectedListIds.length !== 1">修改</el-button>
           <el-button
             type="danger"
             plain
@@ -188,7 +171,7 @@ const getTableList = (params: any) => {
             @click="batchDelRoles(scope.selectedListIds)"
             >删除</el-button
           >
-          <el-button type="primary" plain :icon="Download">导出</el-button>
+          <el-button type="primary" plain :icon="Download">导出</el-button> -->
         </template>
         <!-- 表格操作 -->
         <template #operation="scope">

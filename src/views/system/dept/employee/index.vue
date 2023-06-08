@@ -1,0 +1,11 @@
+<template>
+  <div class="card content-box">
+    <span class="text"> 员工管理（待完善） 🍓🍇🍈🍉</span>
+  </div>
+</template>
+
+<script setup lang="ts" name="PostManage"></script>
+
+<style scoped lang="scss">
+@import "./index.scss";
+</style>

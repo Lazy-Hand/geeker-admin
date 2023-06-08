@@ -128,10 +128,6 @@ const columns: ColumnProps<PresentMenu.Datum>[] = [
     prop: "gmtCreate",
     label: "创建时间",
     width: 180,
-    search: {
-      el: "date-picker",
-      props: { type: "datetimerange", valueFormat: "YYYY-MM-DD HH:mm:ss" }
-    },
     format: "YYYY-MM-DD HH:mm:ss"
   },
   { prop: "operation", label: "操作", width: 180, fixed: "right" }

@@ -36,7 +36,9 @@ export const useGlobalStore = defineStore({
     // 标签页图标
     tabsIcon: true,
     // 页脚
-    footer: true
+    footer: true,
+    // 网站标题
+    title: import.meta.env.VITE_GLOB_APP_TITLE as string
   }),
   getters: {},
   actions: {

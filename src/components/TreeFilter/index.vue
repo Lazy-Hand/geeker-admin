@@ -128,7 +128,7 @@ const handleNodeClick = (data: { [key: string]: any }) => {
 
 // 多选
 const handleCheckChange = () => {
-  emit("change", treeRef.value?.getCheckedKeys());
+  emit("change", [...treeRef.value!.getHalfCheckedKeys(), ...treeRef.value!.getCheckedKeys()]);
 };
 // 清空选择
 const clearChecked = () => {

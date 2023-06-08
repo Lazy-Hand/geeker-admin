@@ -104,6 +104,12 @@ import TableColumn from "./components/TableColumn.vue";
 import printJS from "print-js";
 
 export interface ProTableProps {
+  /**
+   * @name columns
+   * @description 表格列配置项
+   * @type {ColumnProps[]}
+   * @required
+   */
   columns: ColumnProps[]; // 列配置项  ==> 必传
   data?: any[]; // 静态 table data 数据，若存在则不会使用 requestApi 返回的 data ==> 非必传
   requestApi?: (params: any) => Promise<any>; // 请求表格数据的 api ==> 非必传

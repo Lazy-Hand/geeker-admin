@@ -53,12 +53,13 @@ import type { ElForm } from "element-plus";
 import { getCodeImg } from "@/api/modules/login";
 import cookies from "js-cookie";
 import { AdminUser } from "@/enums/admin";
+import { useGlobalStore } from "@/stores/modules/global";
 
 const router = useRouter();
 const userStore = useUserStore();
 const tabsStore = useTabsStore();
 const keepAliveStore = useKeepAliveStore();
-
+const globalStore = useGlobalStore();
 type FormInstance = InstanceType<typeof ElForm>;
 const loginFormRef = ref<FormInstance>();
 const loginRules = reactive({
@@ -107,7 +108,7 @@ const login = (formEl: FormInstance | undefined) => {
       router.push(HOME_URL);
       ElNotification({
         title: getTimeState(),
-        message: "欢迎登录 Geeker-Admin",
+        message: `欢迎登录 ${globalStore.title}`,
         type: "success",
         duration: 3000
       });

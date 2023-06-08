@@ -8,7 +8,7 @@
       <div class="login-form">
         <div class="login-logo">
           <img class="login-icon" src="@/assets/images/logo.svg" alt="" />
-          <h2 class="logo-text">Geeker-Admin</h2>
+          <h2 class="logo-text">{{ globalStore.title }}</h2>
         </div>
         <LoginForm />
       </div>
@@ -17,8 +17,10 @@
 </template>
 
 <script setup lang="ts" name="login">
+import { useGlobalStore } from "@/stores/modules/global";
 import LoginForm from "./components/LoginForm.vue";
 import SwitchDark from "@/components/SwitchDark/index.vue";
+const globalStore = useGlobalStore();
 </script>
 
 <style scoped lang="scss">
