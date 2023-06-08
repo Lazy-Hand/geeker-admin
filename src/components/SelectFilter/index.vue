@@ -32,21 +32,76 @@
 import { ref, watch } from "vue";
 
 interface OptionsProps {
+  /**
+   * @name value
+   * @description 筛选项值
+   * @type {string | number}
+   */
   value: string | number;
+
+  /**
+   * @name label
+   * @description 筛选项名称
+   * @type {string}
+   */
   label: string;
+
+  /**
+   * @name icon
+   * @description 筛选项图标
+   * @type {string}
+   */
   icon?: string;
 }
 
 interface SelectDataProps {
-  title: string; // 列表标题
-  key: string; // 当前筛选项 key 值
-  multiple?: boolean; // 是否为多选
-  options: OptionsProps[]; // 筛选数据
+  /**
+   * @name title
+   * @description 列表标题
+   * @type {string}
+   */
+  title: string;
+
+  /**
+   * @name key
+   * @description 当前筛选项 key 值
+   * @type {string}
+   */
+  key: string;
+
+  /**
+   * @name multiple
+   * @description 是否为多选
+   * @type {boolean}
+   * @default false
+   */
+  multiple?: boolean;
+
+  /**
+   * @name options
+   * @description 筛选数据
+   * @type {OptionsProps[]}
+   * @default []
+   */
+  options: OptionsProps[];
 }
 
 interface SelectFilterProps {
-  data?: SelectDataProps[]; // 选择的列表数据
-  defaultValues?: { [key: string]: any }; // 默认值
+  /**
+   * @name data
+   * @description 筛选项数据
+   * @type {SelectDataProps[]}
+   * @default []
+   */
+  data?: SelectDataProps[];
+
+  /**
+   * @name defaultValues
+   * @description 默认值
+   * @type {{ [key: string]: any }}
+   * @default {}
+   */
+  defaultValues?: { [key: string]: any };
 }
 
 const props = withDefaults(defineProps<SelectFilterProps>(), {
