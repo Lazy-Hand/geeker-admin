@@ -63,7 +63,7 @@ defineExpose({
       <el-form-item label="角色名称" prop="roleName">
         <el-input v-model="dialogProps.rowData!.roleName"></el-input>
       </el-form-item>
-      <el-form-item label="是否有效">
+      <el-form-item label="角色状态">
         <el-radio-group v-model="dialogProps.rowData!.validFlag">
           <el-radio :label="1">是</el-radio>
           <el-radio :label="0">否</el-radio>

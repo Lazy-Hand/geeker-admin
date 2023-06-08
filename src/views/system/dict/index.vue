@@ -2,10 +2,10 @@
 import { ref } from "vue";
 import ProTable from "@/components/ProTable/index.vue";
 import { ColumnProps } from "@/components/ProTable/interface";
-import { reqGetDict, reqPutDict, reqDelDict } from "@/api/modules/management";
+import { reqGetDict, reqPutDict, reqDelDict } from "@/api/modules/system/management";
 import AddDict from "./components/AddDict.vue";
 import { Delete, EditPen, CirclePlus, Download } from "@element-plus/icons-vue";
-import { reqAddDict } from "@/api/modules/management";
+import { reqAddDict } from "@/api/modules/system/management";
 import { useRouter } from "vue-router";
 import { dictStatus } from "@/utils/serviceDict";
 import { useHandleData } from "@/hooks/useHandleData";

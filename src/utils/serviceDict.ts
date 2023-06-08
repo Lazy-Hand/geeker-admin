@@ -39,3 +39,7 @@ export const menuType = [
   { label: "菜单", value: "C" },
   { label: "按钮", value: "A" }
 ];
+export const roleStatus = [
+  { label: "启用", value: true },
+  { label: "禁用", value: false }
+];

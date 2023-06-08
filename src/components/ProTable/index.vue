@@ -20,7 +20,8 @@
       </div>
       <div class="header-button-ri" v-if="toolButton">
         <slot name="toolButton">
-          <el-button :icon="Refresh" circle @click="getTableList" />
+          <el-button :icon="CirclePlus" circle v-if="treeProps?.children" @click="toggleRowExpansion"></el-button>
+          <el-button :icon="Refresh" circle @click="refresh" />
           <el-button :icon="Printer" circle v-if="columns.length" @click="print" />
           <el-button :icon="Operation" circle v-if="columns.length" @click="openColSetting" />
           <el-button :icon="Search" circle v-if="searchColumns.length" @click="isShowSearch = !isShowSearch" />
@@ -34,6 +35,7 @@
       :data="data ?? tableData"
       :border="border"
       :row-key="rowKey"
+      :tree-props="treeProps"
       @selection-change="selectionChange"
     >
       <!-- 默认插槽 -->
@@ -93,7 +95,7 @@ import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
 import { ColumnProps } from "@/components/ProTable/interface";
-import { Refresh, Printer, Operation, Search } from "@element-plus/icons-vue";
+import { Refresh, Printer, Operation, Search, CirclePlus } from "@element-plus/icons-vue";
 import { filterEnum, formatValue, handleProp, handleRowAccordingToProp } from "@/utils";
 import SearchForm from "@/components/SearchForm/index.vue";
 import Pagination from "./components/Pagination.vue";
@@ -115,6 +117,7 @@ export interface ProTableProps {
   toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
   rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
   searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
+  treeProps?: { children: string; hasChildren?: string }; // 树形表格配置项 ==> 非必传
 }
 
 // 接受父组件参数，配置默认值
@@ -131,6 +134,9 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 
 // 是否显示搜索模块
 const isShowSearch = ref(true);
+
+// 是否默认展开树形表格
+const isExpandAll = ref(false);
 
 // 表格 DOM 元素
 const tableRef = ref<InstanceType<typeof ElTable>>();
@@ -178,6 +184,7 @@ const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) =>
     // 设置 enumMap
     setEnumMap(col);
   });
+
   return flatArr.filter(item => !item._children?.length);
 };
 
@@ -246,7 +253,25 @@ const print = () => {
     gridStyle
   });
 };
+const refresh = () => {
+  tableRef.value?.setCurrentRow(undefined);
+  getTableList();
+};
 
+const toggleRowExpansion = () => {
+  isExpandAll.value = !isExpandAll.value;
+
+  toggleRowExpansionAll(tableData.value, isExpandAll.value);
+};
+
+const toggleRowExpansionAll = (data: any, isExpansion: boolean) => {
+  data.forEach((item: any) => {
+    tableRef.value?.toggleRowExpansion(item, isExpansion);
+    if (item[props.treeProps!.children] && item[props.treeProps!.children].length) {
+      toggleRowExpansionAll(item[props.treeProps!.children], isExpansion);
+    }
+  });
+};
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
 defineExpose({
   element: tableRef,

@@ -4,7 +4,7 @@ import ProTable from "@/components/ProTable/index.vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { Delete, EditPen, CirclePlus, Download } from "@element-plus/icons-vue";
 import { useRoute } from "vue-router";
-import { reqGetDictDetail, reqAddDictChild, reqDelDictChild } from "@/api/modules/management";
+import { reqGetDictDetail, reqAddDictChild, reqDelDictChild } from "@/api/modules/system/management";
 import { dictStatus } from "@/utils/serviceDict";
 import AddSendDict from "./components/AddSendDict.vue";
 import { useHandleData } from "@/hooks/useHandleData";

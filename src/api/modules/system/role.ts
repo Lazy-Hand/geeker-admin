@@ -1,5 +1,5 @@
 import { PresentMenu } from "@/api/interface/index";
-import { Role } from "../interface/user";
+import { Role } from "../../interface/user";
 import { PORT1 } from "@/api/config/servicePort";
 import http from "@/api";
 import { AddRole } from "@/views/system/role/components/AddRoles.vue";

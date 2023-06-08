@@ -10,6 +10,10 @@ const rules = reactive<FormRules>({
   path: [{ required: true, message: "请输入路由地址", trigger: "change" }],
   name: [{ required: true, message: "请输入组件name", trigger: "change" }]
 });
+const directoryRules = reactive<FormRules>({
+  title: [{ required: true, message: "请输入菜单标题", trigger: "change" }],
+  path: [{ required: true, message: "请输入路由地址", trigger: "change" }]
+});
 const buttonRules = reactive<FormRules>({
   title: [{ required: true, message: "请输入按钮名称", trigger: "change" }]
 });
@@ -46,7 +50,6 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
           link: dialogProps.value.rowData.isLink ? dialogProps.value.rowData.path : null,
           title: dialogProps.value.rowData.title,
           path: dialogProps.value.rowData.path,
-          name: dialogProps.value.rowData.name,
           menuSort: dialogProps.value.rowData.menuSort,
           parentId: dialogProps.value.rowData.parentId
         };
@@ -110,7 +113,11 @@ defineExpose({
 </script>
 <template>
   <el-dialog el-dialog v-model="dialogVisible" :title="dialogProps.title" width="700" draggable destroy-on-close>
-    <el-form ref="ruleFormRef" :model="dialogProps.rowData" :rules="dialogProps.rowData.menuType !== 'A' ? rules : buttonRules">
+    <el-form
+      ref="ruleFormRef"
+      :model="dialogProps.rowData"
+      :rules="dialogProps.rowData.menuType === 'C' ? rules : dialogProps.rowData.menuType === 'M' ? directoryRules : buttonRules"
+    >
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="菜单类型">
@@ -197,7 +204,7 @@ defineExpose({
             ></el-input-number>
           </el-form-item>
         </el-col>
-        <el-col :span="12" v-if="dialogProps.rowData.menuType !== 'A'">
+        <el-col :span="12" v-if="dialogProps.rowData.menuType == 'C'">
           <el-form-item label="组件名称" prop="name">
             <el-input v-model="dialogProps.rowData.name"></el-input>
           </el-form-item>

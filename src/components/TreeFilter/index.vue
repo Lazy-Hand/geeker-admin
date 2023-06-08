@@ -1,10 +1,12 @@
 <template>
   <div class="card filter">
-    <div class="flex justify-between">
-      <h4 class="title sle" v-if="title">{{ title }}</h4>
-      <el-button type="primary" class="w-20" v-if="submitBtn" @click="defaultClick" :loading="loading">{{ submitBtn }}</el-button>
+    <div class="header" v-if="title || submitBtn">
+      <h4 class="title sle">{{ title ? title : "" }}</h4>
+      <el-button type="primary" style="margin-bottom: 15px" v-if="submitBtn" @click="defaultClick" :loading="loading">{{
+        submitBtn
+      }}</el-button>
     </div>
-    <el-input v-model="filterText" placeholder="输入关键字进行过滤" clearable />
+    <el-input v-if="props.searchVisibel" v-model="filterText" placeholder="输入关键字进行过滤" clearable />
     <el-scrollbar
       :style="{
         height: title && submitBtn ? `calc(100% - 140px)` : title || submitBtn ? `calc(100% - 95px)` : `calc(100% - 56px)`
@@ -44,18 +46,23 @@ interface TreeFilterProps {
   title?: string; // treeFilter 标题 ==> 非必传
   id?: string; // 选择的id ==> 非必传，默认为 “id”
   label?: string; // 显示的label ==> 非必传，默认为 “label”
+  /**
+   * @description 是否为多选
+   */
   multiple?: boolean; // 是否为多选 ==> 非必传，默认为 false
   defaultValue?: any; // 默认选中的值 ==> 非必传
   submitBtn?: string; // 按钮显示-文字 ==> 非必传
   lazy?: boolean; // 子节点懒加载 ==> 非必传
   submit?: (data?: any) => Promise<any>; // 按钮点击事件处理函数 ==> 非必传， 需传submitBtn生效
   load?: (node: any, resolve: any) => void; // 子节点懒加载事件 ==> 非必传，需lazy生效
+  searchVisibel?: boolean; // 显示搜索框 ==> 非必穿，默认为true
 }
 const props = withDefaults(defineProps<TreeFilterProps>(), {
   id: "id",
   label: "label",
   multiple: false,
-  lazy: false
+  lazy: false,
+  searchVisibel: true
 });
 const defaultProps = {
   children: "children",
@@ -123,6 +130,13 @@ const handleNodeClick = (data: { [key: string]: any }) => {
 const handleCheckChange = () => {
   emit("change", treeRef.value?.getCheckedKeys());
 };
+// 清空选择
+const clearChecked = () => {
+  treeRef.value?.setCheckedKeys([]);
+};
+defineExpose({
+  clearChecked
+});
 </script>
 
 <style scoped lang="scss">

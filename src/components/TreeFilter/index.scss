@@ -1,9 +1,13 @@
 .filter {
   box-sizing: border-box;
-  width: 220px;
+  width: 100%;
   height: 100%;
   padding: 18px;
   margin-right: 10px;
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
   .title {
     margin: 0 0 15px;
     font-size: 18px;

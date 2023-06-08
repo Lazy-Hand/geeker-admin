@@ -3,7 +3,7 @@ import { Delete, Download, Plus, Edit, EditPen } from "@element-plus/icons-vue";
 import { getAuthMenuListApi } from "@/api/modules/login";
 import { ref } from "vue";
 import Add from "./components/AddMenus.vue";
-import { reqAddMenu, reqPutMenu, reqDelMenu, reqBatchDelMenu } from "@/api/modules/management";
+import { reqAddMenu, reqPutMenu, reqDelMenu, reqBatchDelMenu } from "@/api/modules/system/management";
 import { isNo, menuType } from "@/utils/serviceDict";
 import { ColumnProps, ProTableInstance } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";

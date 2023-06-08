@@ -1,7 +1,7 @@
 import http from "@/api";
 import { PORT1 } from "@/api/config/servicePort";
 import type { AddForm } from "@/views/system/menu/interface/addForm";
-import { DictSubItem } from "../interface/dict";
+import { DictSubItem } from "../../interface/dict";
 //*****************************菜单*************************/
 
 /**
