@@ -41,21 +41,92 @@ import { ElTree } from "element-plus";
 
 // 接收父组件参数并设置默认值
 interface TreeFilterProps {
-  requestApi?: (data?: any) => Promise<any>; // 请求分类数据的 api ==> 非必传
-  data?: { [key: string]: any }[]; // 分类数据，如果有分类数据，则不会执行 api 请求 ==> 非必传
-  title?: string; // treeFilter 标题 ==> 非必传
-  id?: string; // 选择的id ==> 非必传，默认为 “id”
-  label?: string; // 显示的label ==> 非必传，默认为 “label”
   /**
-   * @description 是否为多选
+   * @name requestApi
+   * @description 请求分类数据的 api ==> 非必传, 如果有data，则不会执行 api 请求
+   * @type {(data?: any) => Promise<any>}
    */
-  multiple?: boolean; // 是否为多选 ==> 非必传，默认为 false
-  defaultValue?: any; // 默认选中的值 ==> 非必传
-  submitBtn?: string; // 按钮显示-文字 ==> 非必传
-  lazy?: boolean; // 子节点懒加载 ==> 非必传
-  submit?: (data?: any) => Promise<any>; // 按钮点击事件处理函数 ==> 非必传， 需传submitBtn生效
-  load?: (node: any, resolve: any) => void; // 子节点懒加载事件 ==> 非必传，需lazy生效
-  searchVisibel?: boolean; // 显示搜索框 ==> 非必穿，默认为true
+  requestApi?: (data?: any) => Promise<any>;
+
+  /**
+   * @name data
+   * @description 分类数据，如果有分类数据，则不会执行 api 请求 ==> 非必传
+   * @type {{ [key: string]: any }[]}
+   */
+  data?: { [key: string]: any }[];
+
+  /**
+   * @name title
+   * @description treeFilter 标题 ==> 非必传
+   * @type {string}
+   */
+  title?: string;
+
+  /**
+   * @name id
+   * @description 选择的id ==> 非必传，默认为 “id”
+   * @type {string}
+   */
+  id?: string;
+
+  /**
+   * @name label
+   * @description 显示的label ==> 非必传，默认为 “label”
+   * @type {string}
+   */
+  label?: string;
+
+  /**
+   * @name multiple
+   * @description 是否为多选 ==> 非必传，默认为 false
+   * @type {boolean}
+   * @default false
+   */
+  multiple?: boolean;
+
+  /**
+   * @name defaultValue
+   * @description 默认选中的值 ==> 非必传
+   * @type {any}
+   */
+  defaultValue?: any;
+
+  /**
+   * @name submitBtn
+   * @description 按钮显示-文字 ==> 非必传
+   * @type {string}
+   */
+  submitBtn?: string;
+
+  /**
+   * @name lazy
+   * @description 子节点懒加载 ==> 非必传
+   * @type {boolean}
+   * @default false
+   */
+  lazy?: boolean;
+
+  /**
+   * @name submit
+   * @description 按钮点击事件处理函数 ==> 非必传， 需传submitBtn生效
+   * @type {(data?: any) => Promise<any>}
+   */
+  submit?: (data?: any) => Promise<any>;
+
+  /**
+   * @name load
+   * @description 子节点懒加载事件 ==> 非必传，需lazy生效
+   * @type {(node: any, resolve: any) => void}
+   */
+  load?: (node: any, resolve: any) => void;
+
+  /**
+   * @name searchVisibel
+   * @description 显示搜索框 ==> 非必传，默认为true
+   * @type {boolean}
+   * @default true
+   */
+  searchVisibel?: boolean;
 }
 const props = withDefaults(defineProps<TreeFilterProps>(), {
   id: "id",
