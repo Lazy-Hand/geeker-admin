@@ -160,7 +160,7 @@ export function getShowMenuList(menuList: Menu.MenuOptions[]) {
  * @description 处理成自己需要的数据
  * @param array 响应按钮权限数据 - 默认权限
  */
-export function getAuthButtonsData(array: string[] = ["system:role:add"]) {
+export function getAuthButtonsData(array: string[] = ["system:MenuMabage:add"]) {
   const arr = array.map(item => {
     if (item.split(":").length === 3) {
       return {

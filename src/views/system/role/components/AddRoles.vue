@@ -23,12 +23,10 @@ interface DialogProps {
   isView: boolean;
   api?: (params: AddRole) => Promise<any>;
   getTableList?: () => Promise<any>;
-  tableData: Menu.MenuOptions[];
 }
 const dialogProps = ref<DialogProps>({
   isView: false,
-  title: "新增",
-  tableData: []
+  title: "新增"
 });
 // 接收父组件传过来的参数
 const acceptParams = (params: DialogProps): void => {

@@ -178,8 +178,8 @@ const getTableList = (params: any) => {
         </template>
         <!-- 表格操作 -->
         <template #operation="scope">
-          <el-button :icon="EditPen" type="primary" @click="openDialog('编辑', scope.row)" link>编辑</el-button>
-          <el-button :icon="Delete" type="danger" @click="deleteMenu(scope.row)" link>删除</el-button>
+          <el-button :icon="EditPen" type="primary" @click.stop="openDialog('编辑', scope.row)" link>编辑</el-button>
+          <el-button :icon="Delete" type="danger" @click.stop="deleteMenu(scope.row)" link>删除</el-button>
         </template>
       </ProTable>
     </div>

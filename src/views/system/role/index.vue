@@ -3,8 +3,8 @@ import TreeFilter from "@/components/TreeFilter/index.vue";
 import ProTable from "@/components/ProTable/index.vue";
 import { getRoleList, getRoleMenuList, addRoleMenu, reqAddRole, reqPutRole, reqDelRole } from "@/api/modules/system/role";
 import { ref } from "vue";
-import { ColumnProps } from "@/components/ProTable/interface";
-import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
+import { ColumnProps, ProTableInstance } from "@/components/ProTable/interface";
+import { Plus, Delete, EditPen } from "@element-plus/icons-vue";
 // import { getRoleMenus } from '@/api/modules/user'
 import { getAuthMenuListApi } from "@/api/modules/login";
 import { ElMessage } from "element-plus";
@@ -12,9 +12,10 @@ import { roleStatus } from "@/utils/serviceDict";
 import { ResultEnum } from "@/enums/httpEnum";
 import AddRoles from "./components/AddRoles.vue";
 import { useHandleData } from "@/hooks/useHandleData";
+import { useAuthButtons } from "@/hooks/useAuthButtons";
 const addRoles = ref();
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
-const proTable = ref();
+const proTable = ref<ProTableInstance>();
 const treeFilterRef = ref();
 // 点击当前行
 const handleCurrentChange = async (val: any) => {
@@ -60,13 +61,17 @@ const columns: ColumnProps[] = [
     render: scope => {
       return (
         <>
-          <el-switch
-            model-value={scope.row.validFlag}
-            active-text={scope.row.validFlag ? "启用" : "禁用"}
-            active-value={true}
-            inactive-value={false}
-            onClick={(event: Event) => changeStatus(event, scope.row)}
-          />
+          {BUTTONS.value.validFlag ? (
+            <el-switch
+              model-value={scope.row.validFlag}
+              active-text={scope.row.validFlag ? "启用" : "禁用"}
+              active-value={true}
+              inactive-value={false}
+              onClick={(event: Event) => changeStatus(event, scope.row)}
+            />
+          ) : (
+            <el-tag type={scope.row.validFlag ? "success" : "danger"}>{scope.row.validFlag ? "启用" : "禁用"}</el-tag>
+          )}
         </>
       );
     }
@@ -114,7 +119,7 @@ const openDialog = (title: string, rowData: any = {}) => {
     rowData: { ...rowData, validFlag: title === "新增" ? 1 : title === "编辑" && rowData.validFlag ? 1 : 0 },
     isView: title === "查看",
     api: title === "新增" ? reqAddRole : title === "编辑" ? reqPutRole : null,
-    getTableList: proTable.value.getTableList
+    getTableList: proTable.value?.getTableList
   };
   addRoles.value.acceptParams(params);
 };
@@ -122,7 +127,7 @@ const openDialog = (title: string, rowData: any = {}) => {
 // 单条删除
 const deleteRole = async (row: any) => {
   await useHandleData(reqDelRole, { id: row.id }, `删除【${row.roleName}】角色`);
-  proTable.value.getTableList();
+  proTable.value?.getTableList();
 };
 
 // // 批量删除
@@ -136,7 +141,7 @@ const deleteRole = async (row: any) => {
 const changeStatus = async (e: any, row: any) => {
   e.stopPropagation();
   await useHandleData(reqPutRole, { validFlag: row.validFlag ? 0 : 1, id: row.id }, `切换【${row.roleName}】角色状态`);
-  proTable.value.getTableList();
+  proTable.value?.getTableList();
 };
 
 // 处理列表请求数据
@@ -147,6 +152,8 @@ const getTableList = (params: any) => {
   delete newParams.gmtCreate;
   return getRoleList(newParams);
 };
+
+const { BUTTONS } = useAuthButtons();
 </script>
 <template>
   <div class="main-box">
@@ -161,7 +168,7 @@ const getTableList = (params: any) => {
         @current-change="handleCurrentChange"
       >
         <template #tableHeader>
-          <el-button type="primary" :icon="CirclePlus" @click="openDialog('新增')">新增</el-button>
+          <el-button type="primary" :icon="Plus" @click="openDialog('新增')">新增</el-button>
           <!-- <el-button type="primary" plain :icon="EditPen" :disabled="scope.selectedListIds.length !== 1">修改</el-button>
           <el-button
             type="danger"

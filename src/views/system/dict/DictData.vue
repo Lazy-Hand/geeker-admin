@@ -1,14 +1,14 @@
 <script setup lang="tsx" name="DictDetail">
 import { ref, reactive } from "vue";
 import ProTable from "@/components/ProTable/index.vue";
-import { ColumnProps } from "@/components/ProTable/interface";
+import { ColumnProps, ProTableInstance } from "@/components/ProTable/interface";
 import { Delete, EditPen, CirclePlus, Download } from "@element-plus/icons-vue";
 import { useRoute } from "vue-router";
 import { reqGetDictDetail, reqAddDictChild, reqDelDictChild } from "@/api/modules/system/management";
 import { dictStatus } from "@/utils/serviceDict";
 import AddSendDict from "./components/AddSendDict.vue";
 import { useHandleData } from "@/hooks/useHandleData";
-const proTable = ref();
+const proTable = ref<ProTableInstance>();
 const route = useRoute();
 
 const addSendDict = ref();
@@ -52,13 +52,13 @@ const openDialog = (title: string, rowData: any = {}) => {
     rowData: { ...rowData, parentCode: route.params.paramCode },
     isView: title === "查看",
     api: title === "新增" ? reqAddDictChild : title === "编辑" ? null : null,
-    getTableList: proTable.value.getTableList
+    getTableList: proTable.value?.getTableList
   };
   addSendDict.value.acceptParams(params);
 };
 const deleteRole = async (row: any) => {
   await useHandleData(reqDelDictChild, { id: row.id }, `删除【${row.paramName}】字典子项`);
-  proTable.value.getTableList();
+  proTable.value?.getTableList();
 };
 </script>
 

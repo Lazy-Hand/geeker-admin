@@ -1,0 +1,15 @@
+{
+  "code": 200,
+  "data": {
+    "nickName": "林芳",
+    "userName": "万伟",
+    "name": "董敏",
+    "userPhone": "18128733676",
+    "department": "叶洋",
+    "post": "魏刚",
+    "role": "Brown",
+    "status": false,
+    "createTime": "1980-07-01 05:49:08"
+  },
+  "msg": "成功"
+}

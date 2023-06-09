@@ -30,7 +30,7 @@ export const useAuthStore = defineStore({
     // Get AuthButtonList
     async getAuthButtonList() {
       const { data } = await getAuthButtonListApi(useUserStore().userInfo.id);
-      this.authButtonList = getAuthButtonsData([...data.auths, "proTable:useProTable:add"]);
+      this.authButtonList = getAuthButtonsData(data.auths);
       this.authRoles = data.roles;
     },
     // Get AuthMenuList

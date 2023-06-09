@@ -1,7 +1,7 @@
 <script lang="tsx" name="Dict" setup>
 import { ref } from "vue";
 import ProTable from "@/components/ProTable/index.vue";
-import { ColumnProps } from "@/components/ProTable/interface";
+import { ColumnProps, ProTableInstance } from "@/components/ProTable/interface";
 import { reqGetDict, reqPutDict, reqDelDict } from "@/api/modules/system/management";
 import AddDict from "./components/AddDict.vue";
 import { Delete, EditPen, CirclePlus, Download } from "@element-plus/icons-vue";
@@ -10,7 +10,7 @@ import { useRouter } from "vue-router";
 import { dictStatus } from "@/utils/serviceDict";
 import { useHandleData } from "@/hooks/useHandleData";
 const router = useRouter();
-const proTable = ref();
+const proTable = ref<ProTableInstance>();
 const addDict = ref();
 // dataCallback 是对于返回的表格数据做处理，如果你后台返回的数据不是 datalist && total && pageNum && pageSize 这些字段，那么你可以在这里进行处理成这些字段
 // 表格配置项
@@ -44,7 +44,7 @@ const openDialog = (title: string, rowData: any = {}) => {
     rowData: { ...rowData },
     isView: title === "查看",
     api: title === "新增" ? reqAddDict : title === "编辑" ? reqPutDict : null,
-    getTableList: proTable.value.getTableList
+    getTableList: proTable.value?.getTableList
   };
   addDict.value.acceptParams(params);
 };
@@ -54,9 +54,9 @@ const toDictData = (row: any) => {
 const deleteDict = async (ids: string[], row?: any) => {
   await useHandleData(reqDelDict, ids, ids.length === 1 ? `删除【${row.paramName}】字典` : "删除选中字典");
   if (ids.length > 0) {
-    proTable.value.clearSelection();
+    proTable.value?.clearSelection();
   }
-  proTable.value.getTableList();
+  proTable.value?.getTableList();
 };
 </script>
 <template>
