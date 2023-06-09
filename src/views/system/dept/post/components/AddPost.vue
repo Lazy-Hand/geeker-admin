@@ -1,4 +1,4 @@
-<script setup lang="ts" name="AddRoles">
+<script setup lang="ts" name="AddPost">
 import { ref, reactive } from "vue";
 import { ElMessage } from "element-plus";
 export interface AddRole {
@@ -47,31 +47,29 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     }
   });
 };
+
 // 暴露方法
 defineExpose({
   acceptParams
 });
 </script>
 <template>
-  <el-dialog el-dialog v-model="dialogVisible" :title="dialogProps.title" width="500" draggable destroy-on-close>
+  <el-dialog el-dialog v-model="dialogVisible" :title="dialogProps.title" width="30%" draggable destroy-on-close>
     <el-form ref="ruleFormRef" :model="dialogProps.rowData" label-width="80px" :rules="rules">
-      <el-form-item label="角色标识" prop="roleCode">
-        <el-input v-model="dialogProps.rowData!.roleCode"></el-input>
+      <el-form-item label="岗位名称">
+        <el-input />
       </el-form-item>
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="dialogProps.rowData!.roleName"></el-input>
-      </el-form-item>
-      <el-form-item label="角色状态">
-        <el-radio-group v-model="dialogProps.rowData!.validFlag">
-          <el-radio :label="1">启用</el-radio>
-          <el-radio :label="0">禁用</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="描述" prop="roleDesc">
-        <el-input v-model="dialogProps.rowData!.roleDesc"></el-input>
+      <el-form-item label="描述">
+        <el-input />
       </el-form-item>
       <el-form-item label="排序">
-        <el-input v-model.number="dialogProps.rowData!.sequenceNo" controls-position="right"></el-input>
+        <el-input />
+      </el-form-item>
+      <el-form-item label="状态">
+        <el-radio-group>
+          <el-radio>正常</el-radio>
+          <el-radio>禁用</el-radio>
+        </el-radio-group>
       </el-form-item>
     </el-form>
     <template #footer>

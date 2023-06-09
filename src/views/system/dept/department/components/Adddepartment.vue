@@ -43,84 +43,55 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     }
   });
 };
-const options = ref([
-  { label: "启用", value: 1 },
-  { label: "禁用", value: 0 }
-]);
-
+const treeList = ref([{ id: 0, title: "顶级目录", children: [{ id: 1, title: "上海分公司" }] }]);
 // 暴露方法
 defineExpose({
   acceptParams
 });
 </script>
 <template>
-  <el-dialog el-dialog v-model="dialogVisible" :title="dialogProps.title" width="35%" draggable destroy-on-close>
+  <el-dialog el-dialog v-model="dialogVisible" :title="dialogProps.title" width="30%" draggable destroy-on-close>
     <el-form ref="ruleFormRef" :model="dialogProps.rowData" label-width="80px" :rules="rules">
+      <el-form-item label="部门名称">
+        <el-input />
+      </el-form-item>
+      <el-form-item label="描述">
+        <el-input />
+      </el-form-item>
+      <el-form-item label="排序">
+        <el-input />
+      </el-form-item>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="用户名">
-            <el-input></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="电话">
-            <el-input></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="昵称">
-            <el-input></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="真实姓名">
-            <el-input></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="邮箱">
-            <el-input></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="性别">
+          <el-form-item label="是否顶级">
             <el-radio-group>
-              <el-radio>男</el-radio>
-              <el-radio>女</el-radio>
-              <el-radio>保密</el-radio>
+              <el-radio label="1">是</el-radio>
+              <el-radio label="0">否</el-radio>
             </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="部门">
-            <el-select>
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="岗位">
-            <el-select>
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="角色">
-            <el-select>
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="状态">
             <el-radio-group>
-              <el-radio>正常</el-radio>
-              <el-radio>禁用</el-radio>
+              <el-radio label="1">正常</el-radio>
+              <el-radio label="0">禁用</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item label="上级部门">
+        <el-tree-select
+          style="width: 100%"
+          accordion
+          check-strictly
+          :data="treeList"
+          :props="{
+            value: 'id',
+            label: 'title',
+            children: 'children'
+          }"
+        ></el-tree-select>
+      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="dialogVisible = false">关闭</el-button>

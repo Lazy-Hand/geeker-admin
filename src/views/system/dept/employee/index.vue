@@ -4,6 +4,11 @@
       <template #tableHeader>
         <el-button type="primary" :icon="Plus" @click="openDialog('新增')">新增用户</el-button>
       </template>
+      <template #operation="scope">
+        <el-button type="primary" link :icon="EditPen" @click="openDialog('编辑', scope.row)"> 编辑 </el-button>
+        <el-button type="primary" link :icon="Refresh"> 重置密码 </el-button>
+        <el-button type="primary" link :icon="Delete"> 删除 </el-button>
+      </template>
     </ProTable>
     <AddEmployee ref="addEmployeeRef" />
   </div>
@@ -17,6 +22,7 @@ import { ColumnProps, ProTableInstance } from "@/components/ProTable/interface";
 import { roleStatus } from "@/utils/serviceDict";
 import { Plus } from "@element-plus/icons-vue";
 import AddEmployee from "./components/AddEmployee.vue";
+import { Delete, EditPen, Refresh } from "@element-plus/icons-vue";
 const proTableRef = ref<ProTableInstance>();
 const addEmployeeRef = ref();
 const columns: ColumnProps[] = [
