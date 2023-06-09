@@ -13,24 +13,21 @@ import { ResultEnum } from "@/enums/httpEnum";
 import AddRoles from "./components/AddRoles.vue";
 import { useHandleData } from "@/hooks/useHandleData";
 import { useAuthButtons } from "@/hooks/useAuthButtons";
+import { flattenTree } from "@/utils";
 const addRoles = ref();
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
 const proTable = ref<ProTableInstance>();
 const treeFilterRef = ref();
 // 点击当前行
 const handleCurrentChange = async (val: any) => {
-  if (!val) {
-    defaultValue.value = [];
-    treeFilterRef.value?.clearChecked();
-    return;
-  }
   const { data } = await getRoleMenuList(val.id);
-  defaultValue.value = data.map(item => {
-    return item.id;
-  });
+  defaultValue.value = flattenTree(data, "childMenu");
+
+  treeFilterRef.value.handleSetCheckedKeys(defaultValue.value);
   selectVal.value = defaultValue.value;
   roleId.value = val.id;
 };
+
 /**
  * @description 表格配置项
  */

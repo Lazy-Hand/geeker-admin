@@ -163,13 +163,14 @@ watch(filterText, val => {
 });
 // 按钮点击事件
 const defaultClick = async () => {
-  if (props.submitBtn && props.submit) {
-    loading.value = true;
-    await props.submit();
+  try {
+    if (props.submitBtn && props.submit) {
+      loading.value = true;
+      await props.submit();
+      loading.value = false;
+    }
+  } catch (error) {
     loading.value = false;
-    console.log("点击按钮");
-  } else {
-    console.log("默认点击事件");
   }
 };
 // 过滤
@@ -201,12 +202,18 @@ const handleNodeClick = (data: { [key: string]: any }) => {
 const handleCheckChange = () => {
   emit("change", [...treeRef.value!.getHalfCheckedKeys(), ...treeRef.value!.getCheckedKeys()]);
 };
+
+const handleSetCheckedKeys = (keys: any[] = []) => {
+  treeRef.value?.setCheckedKeys(keys);
+};
+
 // 清空选择
 const clearChecked = () => {
   treeRef.value?.setCheckedKeys([]);
 };
 defineExpose({
-  clearChecked
+  clearChecked,
+  handleSetCheckedKeys
 });
 </script>
 

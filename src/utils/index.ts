@@ -375,3 +375,15 @@ export function findItemNested(enumData: any, callValue: any, value: string, chi
     if (current[children]) return findItemNested(current[children], callValue, value, children);
   }, null);
 }
+
+export function flattenTree(tree: any[], children: string = "children"): number[] {
+  const result: number[] = [];
+
+  tree.forEach((item: any) => {
+    result.push(item.id);
+    if (item[children].length && item[children] instanceof Array) {
+      result.push(...flattenTree(item[children], children));
+    }
+  });
+  return result;
+}
