@@ -10,7 +10,6 @@ import "@/assets/iconfont/iconfont.scss";
 import "@/assets/fonts/font.scss";
 // element css
 import "element-plus/dist/index.css";
-import "vform3-builds/dist/designer.style.css"; //引入VForm3样式
 // element dark css
 import "element-plus/theme-chalk/dark/css-vars.css";
 // custom element dark css
@@ -21,8 +20,6 @@ import "@/styles/element.scss";
 import "virtual:svg-icons-register";
 // element plus
 import ElementPlus from "element-plus";
-//引入VForm3库
-import VForm3 from "vform3-builds";
 // element icons
 import * as Icons from "@element-plus/icons-vue";
 // custom directives
@@ -45,4 +42,4 @@ Object.keys(Icons).forEach(key => {
   app.component(key, Icons[key as keyof typeof Icons]);
 });
 
-app.use(ElementPlus).use(VForm3).use(directives).use(router).use(I18n).use(pinia).mount("#app");
+app.use(ElementPlus).use(directives).use(router).use(I18n).use(pinia).mount("#app");

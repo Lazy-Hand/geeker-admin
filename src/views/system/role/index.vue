@@ -21,10 +21,9 @@ const treeFilterRef = ref();
 // 点击当前行
 const handleCurrentChange = async (val: any) => {
   const { data } = await getRoleMenuList(val.id);
-  defaultValue.value = flattenTree(data, "childMenu");
+  treeFilterRef.value.handleSetCheckedKeys(flattenTree(data, "childMenu"));
+  selectVal.value = flattenTree(data, "childMenu");
 
-  treeFilterRef.value.handleSetCheckedKeys(defaultValue.value);
-  selectVal.value = defaultValue.value;
   roleId.value = val.id;
 };
 
@@ -104,8 +103,6 @@ const submit = async () => {
  * @param {Array} val 选中id集合
  */
 const changeTreeFilter = (val: number[]) => {
-  console.log("🚀 ~ file: index.vue:72 ~ changeTreeFilter ~ val", val);
-  ElMessage.success("请注意查看请求参数变化 🤔");
   selectVal.value = val;
 };
 

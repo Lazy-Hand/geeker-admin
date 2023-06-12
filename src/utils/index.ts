@@ -381,7 +381,7 @@ export function flattenTree(tree: any[], children: string = "children"): number[
 
   tree.forEach((item: any) => {
     result.push(item.id);
-    if (item[children].length && item[children] instanceof Array) {
+    if (item[children] instanceof Array && item[children].length) {
       result.push(...flattenTree(item[children], children));
     }
   });

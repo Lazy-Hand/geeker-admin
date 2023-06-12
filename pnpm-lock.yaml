@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@element-plus/icons-vue':
     specifier: ^2.1.0
@@ -64,9 +68,6 @@ dependencies:
   sortablejs:
     specifier: ^1.15.0
     version: 1.15.0
-  vform3-builds:
-    specifier: ^3.0.10
-    version: registry.npmmirror.com/vform3-builds@3.0.10
   vue:
     specifier: ^3.3.4
     version: registry.npmmirror.com/vue@3.3.4
@@ -10412,12 +10413,6 @@ packages:
     dependencies:
       punycode: registry.npmmirror.com/punycode@2.3.0
     dev: true
-
-  registry.npmmirror.com/vform3-builds@3.0.10:
-    resolution: {integrity: sha512-sULNk72Z6NG94X9MMgpBwinaIOYjtl7Bn5jZbV9iZaglSYr2SHm/wpXPAjl8F8OW6SzOOJgIpRek+NvOvN7wsg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vform3-builds/-/vform3-builds-3.0.10.tgz}
-    name: vform3-builds
-    version: 3.0.10
-    dev: false
 
   registry.npmmirror.com/vite-plugin-pwa@0.15.0(vite@4.3.8)(workbox-build@6.5.4)(workbox-window@6.5.4):
     resolution: {integrity: sha512-gpmx3BeubsRIXRBkjPToOTJbo8fknNmZFQs24i0TPZyaNVa0n27YHDo0Y72amnO70WvHKGE3e1fn8SYUP7e8SA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vite-plugin-pwa/-/vite-plugin-pwa-0.15.0.tgz}
