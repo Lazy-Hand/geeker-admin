@@ -1,15 +1,21 @@
 <script setup lang="ts" name="AddEmployee">
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 export interface AddRole {
   id?: number;
-  roleCode: string;
-  roleName: string;
-  validFlag: number;
-  roleDesc: string;
-  sequenceNo: number;
+  account: string;
+  phone: string;
+  name: string;
+  realName: string;
+  email: string;
+  sex: number;
+  status: number;
+  dept: any;
+  job: any;
+  role: any;
 }
 import type { FormInstance, FormRules } from "element-plus";
+import { reqGetDeptSelect, reqGetPostSelect, reqGetRoleSelect } from "@/api/modules/system/employee";
 const dialogVisible = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({});
@@ -34,7 +40,14 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async valid => {
     if (!valid) return console.log("submit!");
     try {
-      await dialogProps.value.api!(dialogProps.value.rowData!);
+      console.log(dialogProps.value.rowData!);
+
+      await dialogProps.value.api!({
+        ...dialogProps.value.rowData!,
+        dept: dialogProps.value.rowData!.dept!.join(","),
+        job: dialogProps.value.rowData!.job!.join(","),
+        role: dialogProps.value.rowData!.role!.join(",")
+      });
       ElMessage.success({ message: `${dialogProps.value.title}成功！` });
       await dialogProps.value.getTableList!();
       dialogVisible.value = false;
@@ -43,10 +56,28 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     }
   });
 };
-const options = ref([
-  { label: "启用", value: 1 },
-  { label: "禁用", value: 0 }
-]);
+const selectDept = ref<any[]>([]);
+const selectJob = ref<any[]>([]);
+const selectRole = ref<any[]>([]);
+const getSelectDept = async () => {
+  const { data } = await reqGetDeptSelect();
+
+  selectDept.value = data;
+};
+const getSelectJob = async () => {
+  const { data } = await reqGetPostSelect();
+
+  selectJob.value = data;
+};
+const getSelectRole = async () => {
+  const { data } = await reqGetRoleSelect();
+  selectRole.value = data;
+};
+onMounted(() => {
+  getSelectDept();
+  getSelectJob();
+  getSelectRole();
+});
 
 // 暴露方法
 defineExpose({
@@ -59,64 +90,64 @@ defineExpose({
       <el-row>
         <el-col :span="12">
           <el-form-item label="用户名">
-            <el-input></el-input>
+            <el-input v-model="dialogProps.rowData!.account"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="电话">
-            <el-input></el-input>
+            <el-input v-model="dialogProps.rowData!.phone"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="昵称">
-            <el-input></el-input>
+            <el-input v-model="dialogProps.rowData!.name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="真实姓名">
-            <el-input></el-input>
+            <el-input v-model="dialogProps.rowData!.realName"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="邮箱">
-            <el-input></el-input>
+            <el-input v-model="dialogProps.rowData!.email"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="性别">
-            <el-radio-group>
-              <el-radio>男</el-radio>
-              <el-radio>女</el-radio>
-              <el-radio>保密</el-radio>
+            <el-radio-group v-model="dialogProps.rowData!.sex">
+              <el-radio :label="1">男</el-radio>
+              <el-radio :label="2">女</el-radio>
+              <el-radio :label="0">保密</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="部门">
-            <el-select>
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="dialogProps.rowData!.dept" multiple>
+              <el-option v-for="item in selectDept" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="岗位">
-            <el-select>
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="dialogProps.rowData!.job" multiple>
+              <el-option v-for="item in selectJob" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="角色">
-            <el-select>
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="dialogProps.rowData!.role" multiple>
+              <el-option v-for="item in selectRole" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="状态">
-            <el-radio-group>
-              <el-radio>正常</el-radio>
-              <el-radio>禁用</el-radio>
+            <el-radio-group v-model="dialogProps.rowData!.status">
+              <el-radio :label="1">正常</el-radio>
+              <el-radio :label="0">禁用</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>

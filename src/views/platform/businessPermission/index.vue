@@ -1,7 +1,14 @@
 <script setup lang="tsx" name="BusinessPermission">
 import TreeFilter from "@/components/TreeFilter/index.vue";
 import ProTable from "@/components/ProTable/index.vue";
-import { getRoleList, getRoleMenuList, addRoleMenu, reqAddRole, reqPutRole, reqDelRole } from "@/api/modules/system/role";
+import {
+  reqGetBusinessPermissionList,
+  reqGetPermissionTree,
+  reqAssignPermission,
+  reqAddBusinessPermission,
+  reqEditBusinessPermission,
+  reqDelBusinessPermission
+} from "@/api/modules/platform/businessPermission";
 import { ref } from "vue";
 import { ColumnProps, ProTableInstance } from "@/components/ProTable/interface";
 import { Plus, Delete, EditPen } from "@element-plus/icons-vue";
@@ -20,7 +27,7 @@ const proTable = ref<ProTableInstance>();
 const treeFilterRef = ref();
 // 点击当前行
 const handleCurrentChange = async (val: any) => {
-  const { data } = await getRoleMenuList(val.id);
+  const { data } = await reqGetPermissionTree(val.id);
   defaultValue.value = flattenTree(data, "childMenu");
 
   treeFilterRef.value.handleSetCheckedKeys(defaultValue.value);
@@ -33,9 +40,9 @@ const handleCurrentChange = async (val: any) => {
  */
 const columns: ColumnProps[] = [
   { type: "index", label: "#", width: 80 },
-  { prop: "roleName", label: "权限名称", width: 120, search: { el: "input", props: { placeholder: "角色名称" } } },
+  { prop: "name", label: "权限名称", width: 120, search: { el: "input", props: { placeholder: "角色名称" } } },
   {
-    prop: "roleDesc",
+    prop: "description",
     label: "描述"
   },
   {
@@ -74,7 +81,7 @@ const columns: ColumnProps[] = [
     format: "YYYY-MM-DD HH:mm:ss"
   },
   {
-    prop: "gmtCreate",
+    prop: "createBy",
     label: "创建人",
     width: 180
   },
@@ -94,7 +101,7 @@ const roleId = ref<number>();
  * @description 权限保存按钮
  */
 const submit = async () => {
-  const res = await addRoleMenu(selectVal.value, roleId.value as number);
+  const res = await reqAssignPermission({ id: roleId.value as number, roleIds: selectVal.value });
   if (res.code === ResultEnum.SUCCESS) ElMessage.success("权限分配完成");
 };
 
@@ -114,7 +121,7 @@ const openDialog = (title: string, rowData: any = {}) => {
     title,
     rowData: { ...rowData, validFlag: title === "新增" ? 1 : title === "编辑" && rowData.validFlag ? 1 : 0 },
     isView: title === "查看",
-    api: title === "新增" ? reqAddRole : title === "编辑" ? reqPutRole : null,
+    api: title === "新增" ? reqAddBusinessPermission : title === "编辑" ? reqEditBusinessPermission : null,
     getTableList: proTable.value?.getTableList
   };
   addBusPermissionRef.value.acceptParams(params);
@@ -122,24 +129,19 @@ const openDialog = (title: string, rowData: any = {}) => {
 
 // 单条删除
 const deleteRole = async (row: any) => {
-  await useHandleData(reqDelRole, { id: row.id }, `删除【${row.roleName}】角色`);
+  await useHandleData(reqDelBusinessPermission, { id: row.id }, `删除【${row.roleName}】角色`);
   proTable.value?.getTableList();
 };
 
 // 改变角色状态
 const changeStatus = async (e: any, row: any) => {
   e.stopPropagation();
-  await useHandleData(reqPutRole, { validFlag: row.validFlag ? 0 : 1, id: row.id }, `切换【${row.roleName}】角色状态`);
+  await useHandleData(
+    reqEditBusinessPermission,
+    { validFlag: row.validFlag ? 0 : 1, id: row.id },
+    `切换【${row.roleName}】角色状态`
+  );
   proTable.value?.getTableList();
-};
-
-// 处理列表请求数据
-const getTableList = (params: any) => {
-  const newParams = { ...params };
-  newParams.startTime = params.gmtCreate?.[0];
-  newParams.endTime = params.gmtCreate?.[1];
-  delete newParams.gmtCreate;
-  return getRoleList(newParams);
 };
 
 const { BUTTONS } = useAuthButtons();
@@ -151,23 +153,12 @@ const { BUTTONS } = useAuthButtons();
         ref="proTable"
         title="用户列表"
         :columns="columns"
-        :requestApi="getTableList"
+        :requestApi="reqGetBusinessPermissionList"
         highlight-current-row
-        :pagination="false"
         @current-change="handleCurrentChange"
       >
         <template #tableHeader>
           <el-button type="primary" :icon="Plus" @click="openDialog('新增')">新增</el-button>
-          <!-- <el-button type="primary" plain :icon="EditPen" :disabled="scope.selectedListIds.length !== 1">修改</el-button>
-          <el-button
-            type="danger"
-            plain
-            :icon="Delete"
-            :disabled="!scope.isSelected"
-            @click="batchDelRoles(scope.selectedListIds)"
-            >删除</el-button
-          >
-          <el-button type="primary" plain :icon="Download">导出</el-button> -->
         </template>
         <!-- 表格操作 -->
         <template #operation="scope">

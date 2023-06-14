@@ -1,49 +1,67 @@
 <template>
   <div class="table-box">
-    <ProTable ref="proTableRef" title="部门列表" :request-api="reqGetEmpList" :columns="columns">
+    <ProTable
+      ref="proTableRef"
+      title="部门列表"
+      :request-api="reqGetDepartList"
+      :columns="columns"
+      :pagination="false"
+      rowKey="id"
+      :tree-props="{ children: 'childMenu' }"
+      :border="false"
+    >
       <template #tableHeader>
         <el-button type="primary" :icon="Plus" @click="openDialog('新增')">新增部门</el-button>
       </template>
       <template #operation="scope">
         <el-button type="primary" link :icon="EditPen" @click="openDialog('编辑', scope.row)"> 编辑 </el-button>
-        <el-button type="primary" link :icon="Delete"> 删除 </el-button>
+        <el-button type="danger" link :icon="Delete" @click="delDepart(scope.row)"> 删除 </el-button>
       </template>
     </ProTable>
-    <Adddepartment ref="adddepartment" />
+    <Adddepartment ref="addDepartment" />
   </div>
 </template>
 
 <script setup lang="tsx" name="DepartmentManage">
 import ProTable from "@/components/ProTable/index.vue";
-import { reqGetEmpList } from "@/api/modules/system/employee";
+import { reqGetDepartList, reqDelDepart } from "@/api/modules/system/department";
 import { ref } from "vue";
 import { ColumnProps, ProTableInstance } from "@/components/ProTable/interface";
-import { roleStatus } from "@/utils/serviceDict";
+import { twoStatus } from "@/utils/serviceDict";
 import { Plus } from "@element-plus/icons-vue";
 import Adddepartment from "./components/Adddepartment.vue";
 import { Delete, EditPen } from "@element-plus/icons-vue";
+import { useHandleData } from "@/hooks/useHandleData";
+import { reqAddDepart } from "@/api/modules/system/department";
+import { reqEditDepart } from "@/api/modules/system/department";
+import { useAuthButtons } from "@/hooks/useAuthButtons";
 const proTableRef = ref<ProTableInstance>();
-const adddepartment = ref();
+const addDepartment = ref();
+const { BUTTONS } = useAuthButtons();
 const columns: ColumnProps[] = [
   { type: "index", label: "#" },
-  { prop: "nickName", label: "部门名称", search: { el: "input", props: { placeholder: "部门名称" } } },
-  { prop: "userName", label: "描述" },
-  { prop: "name", label: "排序" },
+  { prop: "name", label: "部门名称", search: { el: "input", props: { placeholder: "部门名称" } } },
+  { prop: "description", label: "描述" },
+  { prop: "sort", label: "排序" },
   {
     prop: "status",
     label: "部门状态",
-    enum: roleStatus,
-
+    enum: twoStatus,
     search: { el: "select", props: { placeholder: "部门状态" } },
     render: scope => {
       return (
         <>
-          <el-switch
-            model-value={scope.row.validFlag}
-            active-text={scope.row.validFlag ? "启用" : "禁用"}
-            active-value={true}
-            inactive-value={false}
-          />
+          {BUTTONS.value.status ? (
+            <el-switch
+              model-value={scope.row.status}
+              active-text={scope.row.status === 1 ? "启用" : "禁用"}
+              active-value={1}
+              inactive-value={0}
+              onClick={() => handleStatus(scope.row)}
+            />
+          ) : (
+            <el-tag type={scope.row.status === 1 ? "success" : "danger"}>{scope.row.status === 1 ? "启用" : "禁用"}</el-tag>
+          )}
         </>
       );
     }
@@ -61,12 +79,28 @@ const columns: ColumnProps[] = [
 const openDialog = (title: string, rowData: any = {}) => {
   let params = {
     title,
-    rowData: { ...rowData, validFlag: title === "新增" ? 1 : title === "编辑" && rowData.validFlag ? 1 : 0 },
+    rowData: {
+      ...rowData,
+      pid: rowData.pid === 0 ? "" : rowData.pid,
+      isTop: title === "新增" || rowData.pid === 0 ? 0 : 1,
+      status: title === "新增" ? 1 : rowData.status
+    },
     isView: title === "查看",
-    api: title === "新增" ? null : title === "编辑" ? null : null,
-    getTableList: proTableRef.value?.getTableList
+    api: title === "新增" ? reqAddDepart : title === "编辑" ? reqEditDepart : null,
+    getTableList: proTableRef.value?.getTableList,
+    treeList: proTableRef.value?.tableData
   };
-  adddepartment.value.acceptParams(params);
+  addDepartment.value.acceptParams(params);
+};
+
+const delDepart = async (row: any) => {
+  await useHandleData(reqDelDepart, { id: row.id }, `删除【${row.name}】部门`);
+  proTableRef.value?.getTableList();
+};
+
+const handleStatus = async (row: any) => {
+  await useHandleData(reqEditDepart, { id: row.id, status: row.status === 1 ? 0 : 1 }, `切换【${row.name}】部门状态`);
+  proTableRef.value?.getTableList();
 };
 </script>
 

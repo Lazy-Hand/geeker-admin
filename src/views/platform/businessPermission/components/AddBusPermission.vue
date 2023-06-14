@@ -1,13 +1,11 @@
 <script setup lang="ts" name="AddBusinessPermissionRef">
 import { ref, reactive } from "vue";
 import { ElMessage } from "element-plus";
-export interface AddRole {
+export interface AddBusPermission {
   id?: number;
-  roleCode: string;
-  roleName: string;
+  name: string;
+  description: string;
   validFlag: number;
-  roleDesc: string;
-  sequenceNo: number;
 }
 import type { FormInstance, FormRules } from "element-plus";
 const dialogVisible = ref(false);
@@ -15,9 +13,9 @@ const ruleFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({});
 interface DialogProps {
   title: string;
-  rowData?: AddRole;
+  rowData?: AddBusPermission;
   isView: boolean;
-  api?: (params: AddRole) => Promise<any>;
+  api?: (params: AddBusPermission) => Promise<any>;
   getTableList?: () => Promise<any>;
 }
 const dialogProps = ref<DialogProps>({
@@ -51,23 +49,17 @@ defineExpose({
 <template>
   <el-dialog el-dialog v-model="dialogVisible" :title="dialogProps.title" width="500" draggable destroy-on-close>
     <el-form ref="ruleFormRef" :model="dialogProps.rowData" label-width="80px" :rules="rules">
-      <el-form-item label="角色标识" prop="roleCode">
-        <el-input v-model="dialogProps.rowData!.roleCode"></el-input>
+      <el-form-item label="权限名称" prop="roleName">
+        <el-input v-model="dialogProps.rowData!.name"></el-input>
       </el-form-item>
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="dialogProps.rowData!.roleName"></el-input>
+      <el-form-item label="描述" prop="roleDesc">
+        <el-input v-model="dialogProps.rowData!.description"></el-input>
       </el-form-item>
-      <el-form-item label="角色状态">
+      <el-form-item label="权限状态">
         <el-radio-group v-model="dialogProps.rowData!.validFlag">
           <el-radio :label="1">启用</el-radio>
           <el-radio :label="0">禁用</el-radio>
         </el-radio-group>
-      </el-form-item>
-      <el-form-item label="描述" prop="roleDesc">
-        <el-input v-model="dialogProps.rowData!.roleDesc"></el-input>
-      </el-form-item>
-      <el-form-item label="排序">
-        <el-input v-model.number="dialogProps.rowData!.sequenceNo" controls-position="right"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>

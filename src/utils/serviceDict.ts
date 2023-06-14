@@ -43,3 +43,8 @@ export const roleStatus = [
   { label: "启用", value: true },
   { label: "禁用", value: false }
 ];
+
+export const twoStatus = [
+  { label: "启用", value: 1 },
+  { label: "禁用", value: 0 }
+];

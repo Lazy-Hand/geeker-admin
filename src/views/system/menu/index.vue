@@ -10,15 +10,9 @@ import ProTable from "@/components/ProTable/index.vue";
 import { useHandleData } from "@/hooks/useHandleData";
 import { getSortData, getPresentMenu } from "@/utils";
 import { PresentMenu } from "@/api/interface";
-const init = async () => {
-  const { data } = await getAuthMenuListApi();
-  const newMenu = getPresentMenu(data);
-  tableData.value = await getSortData(newMenu);
-};
-const tableData = ref<Menu.MenuOptions[]>();
+
 const addRef = ref();
 const openDialog = async (title: string, rowData: any = {}) => {
-  await init();
   let params = {
     title,
     rowData:
@@ -38,7 +32,9 @@ const openDialog = async (title: string, rowData: any = {}) => {
     isView: title === "查看",
     api: title === "新增" ? reqAddMenu : title === "编辑" ? reqPutMenu : null,
     getTableList: proTable.value?.getTableList,
-    tableData: [{ id: 0, title: "顶级目录", children: tableData.value }]
+    tableData: [
+      { id: 0, title: "顶级目录", children: getSortData(getPresentMenu(proTable.value?.tableData as PresentMenu.Datum[])) }
+    ]
   };
   addRef.value.acceptParams(params);
 };

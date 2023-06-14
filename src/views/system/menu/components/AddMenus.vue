@@ -8,14 +8,10 @@ const ruleFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({
   title: [{ required: true, message: "请输入菜单标题", trigger: "change" }],
   path: [{ required: true, message: "请输入路由地址", trigger: "change" }],
-  name: [{ required: true, message: "请输入组件name", trigger: "change" }]
-});
-const directoryRules = reactive<FormRules>({
-  title: [{ required: true, message: "请输入菜单标题", trigger: "change" }],
-  path: [{ required: true, message: "请输入路由地址", trigger: "change" }]
+  name: [{ required: true, message: "请输入路由名称", trigger: "change" }]
 });
 const buttonRules = reactive<FormRules>({
-  title: [{ required: true, message: "请输入按钮名称", trigger: "change" }]
+  title: [{ required: true, message: "请输入按钮标题", trigger: "change" }]
 });
 interface DialogProps {
   title: string;
@@ -113,11 +109,7 @@ defineExpose({
 </script>
 <template>
   <el-dialog el-dialog v-model="dialogVisible" :title="dialogProps.title" width="700" draggable destroy-on-close>
-    <el-form
-      ref="ruleFormRef"
-      :model="dialogProps.rowData"
-      :rules="dialogProps.rowData.menuType === 'C' ? rules : dialogProps.rowData.menuType === 'M' ? directoryRules : buttonRules"
-    >
+    <el-form ref="ruleFormRef" :model="dialogProps.rowData" :rules="dialogProps.rowData.menuType === 'C' ? rules : buttonRules">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="菜单类型">
@@ -130,12 +122,12 @@ defineExpose({
         </el-col>
         <el-col :span="12" v-if="dialogProps.rowData.menuType !== 'M'">
           <el-form-item label="权限标识">
-            <el-input v-model="dialogProps.rowData.permission"></el-input>
+            <el-input v-model="dialogProps.rowData.permission" placeholder="权限标识 system:menuManage:add"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12" v-if="dialogProps.rowData.menuType === 'A'">
-          <el-form-item label="按钮名称" prop="title">
-            <el-input v-model="dialogProps.rowData.title"></el-input>
+          <el-form-item label="按钮标题" prop="title">
+            <el-input v-model="dialogProps.rowData.title" placeholder="按钮标题"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -187,36 +179,38 @@ defineExpose({
       <el-row :gutter="20">
         <el-col :span="24" v-if="dialogProps.rowData.menuType !== 'A'">
           <el-form-item label="菜单标题" prop="title">
-            <el-input v-model="dialogProps.rowData.title"></el-input>
+            <el-input v-model="dialogProps.rowData.title" placeholder="菜单标题"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12" v-if="dialogProps.rowData.menuType !== 'A'">
           <el-form-item label="路由地址" prop="path">
-            <el-input v-model="dialogProps.rowData.path"></el-input>
+            <el-input v-model="dialogProps.rowData.path" placeholder="路由地址"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="菜单排序">
             <el-input-number
+              placeholder="菜单排序"
               v-model.number="dialogProps.rowData.menuSort"
               controls-position="right"
               style="width: 100%"
             ></el-input-number>
           </el-form-item>
         </el-col>
-        <el-col :span="12" v-if="dialogProps.rowData.menuType == 'C'">
-          <el-form-item label="组件名称" prop="name">
-            <el-input v-model="dialogProps.rowData.name"></el-input>
+        <el-col :span="12" v-if="dialogProps.rowData.menuType !== 'A'">
+          <el-form-item label="路由名称" prop="name">
+            <el-input v-model="dialogProps.rowData.name" placeholder="路由名称"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12" v-if="dialogProps.rowData.menuType === 'C'">
           <el-form-item label="组件路径">
-            <el-input v-model="dialogProps.rowData.component"></el-input>
+            <el-input v-model="dialogProps.rowData.component" placeholder="组件路径"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-form-item label="上级目录">
         <el-tree-select
+          placeholder="请选择上级菜单"
           accordion
           style="width: 100%"
           v-model="dialogProps.rowData.parentId"

@@ -5,7 +5,6 @@ import { getRoleList, getRoleMenuList, addRoleMenu, reqAddRole, reqPutRole, reqD
 import { ref } from "vue";
 import { ColumnProps, ProTableInstance } from "@/components/ProTable/interface";
 import { Plus, Delete, EditPen } from "@element-plus/icons-vue";
-// import { getRoleMenus } from '@/api/modules/user'
 import { getAuthMenuListApi } from "@/api/modules/login";
 import { ElMessage } from "element-plus";
 import { roleStatus } from "@/utils/serviceDict";
@@ -124,13 +123,6 @@ const deleteRole = async (row: any) => {
   proTable.value?.getTableList();
 };
 
-// // 批量删除
-// const batchDelRoles = async (id: string[]) => {
-//   await useHandleData(reqBatchDelRoles, id, "删除所选角色");
-//   proTable.value.clearSelection();
-//   proTable.value.getTableList();
-// };
-
 // 改变角色状态
 const changeStatus = async (e: any, row: any) => {
   e.stopPropagation();
@@ -163,16 +155,6 @@ const { BUTTONS } = useAuthButtons();
       >
         <template #tableHeader>
           <el-button type="primary" :icon="Plus" @click="openDialog('新增')">新增</el-button>
-          <!-- <el-button type="primary" plain :icon="EditPen" :disabled="scope.selectedListIds.length !== 1">修改</el-button>
-          <el-button
-            type="danger"
-            plain
-            :icon="Delete"
-            :disabled="!scope.isSelected"
-            @click="batchDelRoles(scope.selectedListIds)"
-            >删除</el-button
-          >
-          <el-button type="primary" plain :icon="Download">导出</el-button> -->
         </template>
         <!-- 表格操作 -->
         <template #operation="scope">

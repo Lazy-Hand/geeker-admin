@@ -1,27 +1,22 @@
 <script setup lang="ts" name="AddPost">
 import { ref, reactive } from "vue";
 import { ElMessage } from "element-plus";
-export interface AddRole {
+export interface AddPost {
   id?: number;
-  roleCode: string;
-  roleName: string;
-  validFlag: number;
-  roleDesc: string;
-  sequenceNo: number;
+  name: string;
+  sort: number;
+  description: string;
+  status: number;
 }
 import type { FormInstance, FormRules } from "element-plus";
 const dialogVisible = ref(false);
 const ruleFormRef = ref<FormInstance>();
-const rules = reactive<FormRules>({
-  roleCode: [{ required: true, message: "请输入角色标识", trigger: "change" }],
-  roleName: [{ required: true, message: "请输入角色名称", trigger: "change" }],
-  roleDesc: [{ required: true, message: "请输入角色描述", trigger: "change" }]
-});
+const rules = reactive<FormRules>({});
 interface DialogProps {
   title: string;
-  rowData?: AddRole;
+  rowData?: AddPost;
   isView: boolean;
-  api?: (params: AddRole) => Promise<any>;
+  api?: (params: AddPost) => Promise<any>;
   getTableList?: () => Promise<any>;
 }
 const dialogProps = ref<DialogProps>({
@@ -57,18 +52,18 @@ defineExpose({
   <el-dialog el-dialog v-model="dialogVisible" :title="dialogProps.title" width="30%" draggable destroy-on-close>
     <el-form ref="ruleFormRef" :model="dialogProps.rowData" label-width="80px" :rules="rules">
       <el-form-item label="岗位名称">
-        <el-input />
+        <el-input v-model="dialogProps.rowData!.name" />
       </el-form-item>
       <el-form-item label="描述">
-        <el-input />
+        <el-input v-model="dialogProps.rowData!.description" />
       </el-form-item>
       <el-form-item label="排序">
-        <el-input />
+        <el-input-number v-model="dialogProps.rowData!.sort" controls-position="right" />
       </el-form-item>
       <el-form-item label="状态">
-        <el-radio-group>
-          <el-radio>正常</el-radio>
-          <el-radio>禁用</el-radio>
+        <el-radio-group v-model="dialogProps.rowData!.status">
+          <el-radio :label="true">启用</el-radio>
+          <el-radio :label="false">禁用</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>

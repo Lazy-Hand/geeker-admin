@@ -112,8 +112,10 @@ const login = (formEl: FormInstance | undefined) => {
         type: "success",
         duration: 3000
       });
-    } finally {
+    } catch (error) {
+      console.log(error);
       await getCode();
+    } finally {
       loading.value = false;
     }
   });
