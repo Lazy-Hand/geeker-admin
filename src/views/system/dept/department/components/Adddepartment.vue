@@ -1,4 +1,4 @@
-<script setup lang="ts" name="AddEmployee">
+<script setup lang="ts" name="AddDepartment">
 import { ref, reactive } from "vue";
 import { ElMessage } from "element-plus";
 export interface AddDepart {

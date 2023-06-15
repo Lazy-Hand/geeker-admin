@@ -1,6 +1,6 @@
 <template>
   <div class="table-box">
-    <ProTable ref="proTableRef" title="岗位列表" :request-api="reqGetPostList" :columns="columns">
+    <ProTable ref="proTableRef" title="岗位列表" :request-api="getTableList" :columns="columns">
       <template #tableHeader>
         <el-button type="primary" :icon="Plus" @click="openDialog('新增')">新增岗位</el-button>
       </template>
@@ -44,7 +44,9 @@ const columns: ColumnProps[] = [
           {BUTTONS.value.status ? (
             <el-switch
               model-value={scope.row.status}
-              active-text={scope.row.status ? "启用" : "禁用"}
+              inline-prompt
+              active-text={"启用"}
+              inactive-text={"禁用"}
               active-value={true}
               inactive-value={false}
               onClick={() => handleStatus(scope.row)}
@@ -85,6 +87,14 @@ const delPost = async (row: any) => {
 const handleStatus = async (row: any) => {
   await useHandleData(reqEditPost, { id: row.id, status: !row.status }, `切换【${row.name}】岗位状态`);
   proTableRef.value?.getTableList();
+};
+// 处理列表请求数据
+const getTableList = (params: any) => {
+  const newParams = { ...params };
+  if (newParams.status !== undefined) {
+    newParams.status = newParams.status ? 1 : 0;
+  }
+  return reqGetPostList(newParams);
 };
 </script>
 

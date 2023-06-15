@@ -19,10 +19,16 @@ const proTable = ref<ProTableInstance>();
 const treeFilterRef = ref();
 // 点击当前行
 const handleCurrentChange = async (val: any) => {
+  if (!val) {
+    treeFilterRef.value?.clearChecked();
+    selectVal.value = [];
+    roleId.value = undefined;
+    return;
+  }
+
   const { data } = await getRoleMenuList(val.id);
   treeFilterRef.value.handleSetCheckedKeys(flattenTree(data, "childMenu"));
   selectVal.value = flattenTree(data, "childMenu");
-
   roleId.value = val.id;
 };
 
@@ -30,13 +36,12 @@ const handleCurrentChange = async (val: any) => {
  * @description 表格配置项
  */
 const columns: ColumnProps[] = [
-  { type: "selection", fixed: "left", width: 80 },
   { type: "index", label: "#", width: 80 },
   { prop: "roleName", label: "角色名称", width: 120, search: { el: "input", props: { placeholder: "角色名称" } } },
   {
     prop: "roleCode",
     label: "角色标识",
-    width: 120
+    width: 180
   },
   {
     prop: "roleDesc",
@@ -59,7 +64,9 @@ const columns: ColumnProps[] = [
           {BUTTONS.value.validFlag ? (
             <el-switch
               model-value={scope.row.validFlag}
-              active-text={scope.row.validFlag ? "启用" : "禁用"}
+              inline-prompt
+              active-text={"启用"}
+              inactive-text={"禁用"}
               active-value={true}
               inactive-value={false}
               onClick={(event: Event) => changeStatus(event, scope.row)}
@@ -133,9 +140,9 @@ const changeStatus = async (e: any, row: any) => {
 // 处理列表请求数据
 const getTableList = (params: any) => {
   const newParams = { ...params };
-  newParams.startTime = params.gmtCreate?.[0];
-  newParams.endTime = params.gmtCreate?.[1];
-  delete newParams.gmtCreate;
+  if (newParams.validFlag !== undefined) {
+    newParams.validFlag = newParams.validFlag ? 1 : 0;
+  }
   return getRoleList(newParams);
 };
 
@@ -150,7 +157,6 @@ const { BUTTONS } = useAuthButtons();
         :columns="columns"
         :requestApi="getTableList"
         highlight-current-row
-        :pagination="false"
         @current-change="handleCurrentChange"
       >
         <template #tableHeader>
@@ -175,6 +181,8 @@ const { BUTTONS } = useAuthButtons();
       :requestApi="getAuthMenuListApi"
       @change="changeTreeFilter"
       :defaultValue="defaultValue"
+      treeChildren="childMenu"
+      checkStrictly
     />
   </div>
 </template>

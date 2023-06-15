@@ -3,6 +3,7 @@ import { ref, reactive } from "vue";
 import SelectIcon from "@/components/SelectIcon/index.vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
+import { QuestionFilled } from "@element-plus/icons-vue";
 const dialogVisible = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({
@@ -121,8 +122,19 @@ defineExpose({
           </el-form-item>
         </el-col>
         <el-col :span="12" v-if="dialogProps.rowData.menuType !== 'M'">
-          <el-form-item label="权限标识">
+          <el-form-item>
             <el-input v-model="dialogProps.rowData.permission" placeholder="权限标识 system:menuManage:add"></el-input>
+            <template #label>
+              <span style="display: flex; align-items: center">
+                <el-tooltip
+                  content="定义权限字符，如：('system:MenuManage:list'), 说明：(一级菜单路由名称:权限所属菜单路由名称:操作)"
+                  placement="top"
+                >
+                  <el-icon style="margin-right: 3px"><QuestionFilled /></el-icon>
+                </el-tooltip>
+                权限标识
+              </span>
+            </template>
           </el-form-item>
         </el-col>
         <el-col :span="12" v-if="dialogProps.rowData.menuType === 'A'">
@@ -136,43 +148,83 @@ defineExpose({
       </el-form-item>
       <el-row>
         <el-col :span="8" v-if="dialogProps.rowData.menuType === 'C'">
-          <el-form-item label="固定导航">
+          <el-form-item>
             <el-radio-group v-model="dialogProps.rowData.affix" :disabled="dialogProps.rowData.isLink">
               <el-radio-button :label="true">是</el-radio-button>
               <el-radio-button :label="false">否</el-radio-button>
             </el-radio-group>
+            <template #label>
+              <span style="display: flex; align-items: center">
+                <el-tooltip content="tabs导航栏是否固定不能删除" placement="top">
+                  <el-icon style="margin-right: 3px"><QuestionFilled /></el-icon>
+                </el-tooltip>
+                固定导航
+              </span>
+            </template>
           </el-form-item>
         </el-col>
         <el-col :span="8" v-if="dialogProps.rowData.menuType === 'C'">
-          <el-form-item label="是否全屏">
+          <el-form-item>
             <el-radio-group v-model="dialogProps.rowData.full" :disabled="dialogProps.rowData.isLink">
               <el-radio-button :label="true">是</el-radio-button>
               <el-radio-button :label="false">否</el-radio-button>
             </el-radio-group>
+            <template #label>
+              <span style="display: flex; align-items: center">
+                <el-tooltip content="是否是全屏页面" placement="top">
+                  <el-icon style="margin-right: 3px"><QuestionFilled /></el-icon>
+                </el-tooltip>
+                是否全屏
+              </span>
+            </template>
           </el-form-item>
         </el-col>
         <el-col :span="8" v-if="dialogProps.rowData.menuType !== 'A'">
-          <el-form-item label="菜单可见">
+          <el-form-item>
             <el-radio-group v-model="dialogProps.rowData.hidden">
               <el-radio-button :label="false">是</el-radio-button>
               <el-radio-button :label="true">否</el-radio-button>
             </el-radio-group>
+            <template #label>
+              <span style="display: flex; align-items: center">
+                <el-tooltip content="菜单是否显示在侧边栏menu" placement="top">
+                  <el-icon style="margin-right: 3px"><QuestionFilled /></el-icon>
+                </el-tooltip>
+                菜单可见
+              </span>
+            </template>
           </el-form-item>
         </el-col>
         <el-col :span="8" v-if="dialogProps.rowData.menuType === 'C'">
-          <el-form-item label="菜单缓存">
+          <el-form-item>
             <el-radio-group v-model="dialogProps.rowData.cache">
               <el-radio-button :label="true">是</el-radio-button>
               <el-radio-button :label="false">否</el-radio-button>
             </el-radio-group>
+            <template #label>
+              <span style="display: flex; align-items: center">
+                <el-tooltip content="页面是否启用keep-alive页面缓存" placement="top">
+                  <el-icon style="margin-right: 3px"><QuestionFilled /></el-icon>
+                </el-tooltip>
+                菜单缓存
+              </span>
+            </template>
           </el-form-item>
         </el-col>
         <el-col :span="8" v-if="dialogProps.rowData.menuType !== 'A'">
-          <el-form-item label="外链菜单">
+          <el-form-item>
             <el-radio-group v-model="dialogProps.rowData.isLink">
               <el-radio-button :label="true">是</el-radio-button>
               <el-radio-button :label="false">否</el-radio-button>
             </el-radio-group>
+            <template #label>
+              <span style="display: flex; align-items: center">
+                <el-tooltip content="是否是外链菜单，如果是，路由地址默认填写外链跳转地址" placement="top">
+                  <el-icon style="margin-right: 3px"><QuestionFilled /></el-icon>
+                </el-tooltip>
+                外链菜单
+              </span>
+            </template>
           </el-form-item>
         </el-col>
       </el-row>
@@ -183,28 +235,60 @@ defineExpose({
           </el-form-item>
         </el-col>
         <el-col :span="12" v-if="dialogProps.rowData.menuType !== 'A'">
-          <el-form-item label="路由地址" prop="path">
+          <el-form-item prop="path">
             <el-input v-model="dialogProps.rowData.path" placeholder="路由地址"></el-input>
+            <template #label>
+              <span style="display: flex; align-items: center">
+                <el-tooltip content="访问的路由地址， 如：（/menu）,如外网地址需内链访问则以`http(s)://`开头" placement="top">
+                  <el-icon style="margin-right: 3px"><QuestionFilled /></el-icon>
+                </el-tooltip>
+                路由地址
+              </span>
+            </template>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="菜单排序">
+          <el-form-item>
             <el-input-number
               placeholder="菜单排序"
               v-model.number="dialogProps.rowData.menuSort"
               controls-position="right"
               style="width: 100%"
             ></el-input-number>
+            <template #label>
+              <span style="display: flex; align-items: center">
+                <el-tooltip content="菜单顺序，侧边栏菜单显示的顺序" placement="top">
+                  <el-icon style="margin-right: 3px"><QuestionFilled /></el-icon>
+                </el-tooltip>
+                菜单排序
+              </span>
+            </template>
           </el-form-item>
         </el-col>
         <el-col :span="12" v-if="dialogProps.rowData.menuType !== 'A'">
-          <el-form-item label="路由名称" prop="name">
+          <el-form-item prop="name">
             <el-input v-model="dialogProps.rowData.name" placeholder="路由名称"></el-input>
+            <template #label>
+              <span style="display: flex; align-items: center">
+                <el-tooltip content="访问的路由名称， 如：（system）,用来关联按钮权限" placement="top">
+                  <el-icon style="margin-right: 3px"><QuestionFilled /></el-icon>
+                </el-tooltip>
+                路由名称
+              </span>
+            </template>
           </el-form-item>
         </el-col>
         <el-col :span="12" v-if="dialogProps.rowData.menuType === 'C'">
-          <el-form-item label="组件路径">
+          <el-form-item>
             <el-input v-model="dialogProps.rowData.component" placeholder="组件路径"></el-input>
+            <template #label>
+              <span style="display: flex; align-items: center">
+                <el-tooltip content="访问的组件路径，如：`/system/menu/index`，默认在`views`目录下" placement="top">
+                  <el-icon style="margin-right: 3px"><QuestionFilled /></el-icon>
+                </el-tooltip>
+                组件路径
+              </span>
+            </template>
           </el-form-item>
         </el-col>
       </el-row>
@@ -218,6 +302,14 @@ defineExpose({
           :props="loadProps"
           :data="dialogProps.tableData"
         ></el-tree-select>
+        <template #label>
+          <span style="display: flex; align-items: center">
+            <el-tooltip content="当前页面放在哪一级下面，默认在一级菜单" placement="top">
+              <el-icon style="margin-right: 3px"><QuestionFilled /></el-icon>
+            </el-tooltip>
+            上级目录
+          </span>
+        </template>
       </el-form-item>
     </el-form>
     <template #footer>

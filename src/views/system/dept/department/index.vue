@@ -54,7 +54,9 @@ const columns: ColumnProps[] = [
           {BUTTONS.value.status ? (
             <el-switch
               model-value={scope.row.status}
-              active-text={scope.row.status === 1 ? "启用" : "禁用"}
+              inline-prompt
+              active-text={"启用"}
+              inactive-text={"禁用"}
               active-value={1}
               inactive-value={0}
               onClick={() => handleStatus(scope.row)}

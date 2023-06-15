@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="Menus">
-import { Delete, Download, Plus, Edit, EditPen } from "@element-plus/icons-vue";
+import { Delete, Download, Plus, EditPen } from "@element-plus/icons-vue";
 import { getAuthMenuListApi } from "@/api/modules/login";
 import { ref } from "vue";
 import Add from "./components/AddMenus.vue";
@@ -46,6 +46,8 @@ const deleteMenu = async (row: any) => {
   await useHandleData(reqDelMenu, { id: row.id }, `删除【${row.title}】菜单`);
   proTable.value?.getTableList();
 };
+
+// 批量删除菜单
 const batchDel = async (ids: string[]) => {
   await useHandleData(reqBatchDelMenu, ids, `删除所选菜单`);
   proTable.value?.getTableList();
@@ -148,13 +150,11 @@ const getTableList = (params: any) => {
         :columns="columns"
         row-key="id"
         :requestApi="getTableList"
-        highlight-current-row
         :pagination="false"
         :border="false"
       >
         <template #tableHeader="scope">
           <el-button class="btn" type="primary" v-auth="['add']" :icon="Plus" @click="openDialog('新增')">新增</el-button>
-          <el-button class="btn" type="primary" plain :icon="Edit" :disabled="scope.selectedListIds.length !== 1">修改</el-button>
           <el-button
             class="btn"
             type="danger"

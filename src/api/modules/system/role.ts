@@ -8,7 +8,7 @@ import { AddRole } from "@/views/system/role/components/AddRoles.vue";
  * @description 查询角色列表
  */
 export const getRoleList = (params: any) => {
-  return http.get<Role.RoleList>(PORT1 + "/role", params);
+  return http.get<Role.RoleList>(PORT1 + "/role/pageT", params);
 };
 
 /**

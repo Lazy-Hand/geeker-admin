@@ -1,14 +1,14 @@
 <script setup lang="ts" name="AddBusiness">
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import UploadImg from "@/components/Upload/Img.vue";
+import { reqSelectBusinessAuthList } from "@/api/modules/platform/business";
 export interface AddRole {
   id?: number;
-  roleCode: string;
-  roleName: string;
-  validFlag: number;
-  roleDesc: string;
-  sequenceNo: number;
+  logo?: any;
+  name?: string;
+  trole?: any;
+  status?: number;
 }
 import type { FormInstance, FormRules } from "element-plus";
 const dialogVisible = ref(false);
@@ -35,7 +35,11 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async valid => {
     if (!valid) return console.log("submit!");
     try {
-      await dialogProps.value.api!(dialogProps.value.rowData!);
+      await dialogProps.value.api!({
+        ...dialogProps.value.rowData!,
+        trole: dialogProps.value.rowData!.trole!.join(","),
+        logo: dialogProps.value.rowData!.logo!.httpUrl
+      });
       ElMessage.success({ message: `${dialogProps.value.title}成功！` });
       await dialogProps.value.getTableList!();
       dialogVisible.value = false;
@@ -44,10 +48,14 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     }
   });
 };
-const options = ref([
-  { label: "启用", value: 1 },
-  { label: "禁用", value: 0 }
-]);
+const selectBusAuth = ref<any[]>([]);
+const getSelectBusAuth = async () => {
+  const { data } = await reqSelectBusinessAuthList();
+  selectBusAuth.value = data;
+};
+onMounted(() => {
+  getSelectBusAuth();
+});
 // 暴露方法
 defineExpose({
   acceptParams
@@ -57,20 +65,20 @@ defineExpose({
   <el-dialog el-dialog v-model="dialogVisible" :title="dialogProps.title" width="30%" draggable destroy-on-close>
     <el-form ref="ruleFormRef" :model="dialogProps.rowData" label-width="80px" :rules="rules">
       <el-form-item label="商户Logo">
-        <UploadImg></UploadImg>
+        <UploadImg v-model:imageUrl="dialogProps.rowData!.logo"></UploadImg>
       </el-form-item>
       <el-form-item label="商户名称">
-        <el-input></el-input>
+        <el-input v-model="dialogProps.rowData!.name"></el-input>
       </el-form-item>
       <el-form-item label="商户权限">
-        <el-select>
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        <el-select v-model="dialogProps.rowData!.trole" multiple>
+          <el-option v-for="item in selectBusAuth" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="状态">
-        <el-radio-group>
-          <el-radio>正常</el-radio>
-          <el-radio>禁用</el-radio>
+        <el-radio-group v-model="dialogProps.rowData!.status">
+          <el-radio :label="0">启用</el-radio>
+          <el-radio :label="1">禁用</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>

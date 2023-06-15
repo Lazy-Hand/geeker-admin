@@ -20,16 +20,20 @@ import { ResultEnum } from "@/enums/httpEnum";
 import AddBusPermission from "./components/AddBusPermission.vue";
 import { useHandleData } from "@/hooks/useHandleData";
 import { useAuthButtons } from "@/hooks/useAuthButtons";
-import { flattenTree } from "@/utils";
 const addBusPermissionRef = ref();
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
 const proTable = ref<ProTableInstance>();
 const treeFilterRef = ref();
 // 点击当前行
 const handleCurrentChange = async (val: any) => {
+  if (!val) {
+    treeFilterRef.value?.clearChecked();
+    selectVal.value = [];
+    roleId.value = undefined;
+    return;
+  }
   const { data } = await reqGetPermissionTree(val.id);
-  defaultValue.value = flattenTree(data, "childMenu");
-
+  defaultValue.value = data.map((item: any) => item.menuId);
   treeFilterRef.value.handleSetCheckedKeys(defaultValue.value);
   selectVal.value = defaultValue.value;
   roleId.value = val.id;
@@ -40,7 +44,7 @@ const handleCurrentChange = async (val: any) => {
  */
 const columns: ColumnProps[] = [
   { type: "index", label: "#", width: 80 },
-  { prop: "name", label: "权限名称", width: 120, search: { el: "input", props: { placeholder: "角色名称" } } },
+  { prop: "name", label: "权限名称", width: 120, search: { el: "input", props: { placeholder: "权限名称" } } },
   {
     prop: "description",
     label: "描述"
@@ -55,14 +59,16 @@ const columns: ColumnProps[] = [
     label: "状态",
     enum: roleStatus,
     width: 120,
-    search: { el: "select", props: { placeholder: "角色状态" } },
+    search: { el: "select", props: { placeholder: "权限状态" } },
     render: scope => {
       return (
         <>
           {BUTTONS.value.validFlag ? (
             <el-switch
               model-value={scope.row.validFlag}
-              active-text={scope.row.validFlag ? "启用" : "禁用"}
+              active-text={"启用"}
+              inactive-text={"禁用"}
+              inline-prompt
               active-value={true}
               inactive-value={false}
               onClick={(event: Event) => changeStatus(event, scope.row)}
@@ -110,8 +116,6 @@ const submit = async () => {
  * @param {Array} val 选中id集合
  */
 const changeTreeFilter = (val: number[]) => {
-  console.log("🚀 ~ file: index.vue:72 ~ changeTreeFilter ~ val", val);
-  ElMessage.success("请注意查看请求参数变化 🤔");
   selectVal.value = val;
 };
 
@@ -129,7 +133,7 @@ const openDialog = (title: string, rowData: any = {}) => {
 
 // 单条删除
 const deleteRole = async (row: any) => {
-  await useHandleData(reqDelBusinessPermission, { id: row.id }, `删除【${row.roleName}】角色`);
+  await useHandleData(reqDelBusinessPermission, row.id, `删除【${row.name}】商户`);
   proTable.value?.getTableList();
 };
 
@@ -139,21 +143,29 @@ const changeStatus = async (e: any, row: any) => {
   await useHandleData(
     reqEditBusinessPermission,
     { validFlag: row.validFlag ? 0 : 1, id: row.id },
-    `切换【${row.roleName}】角色状态`
+    `切换【${row.name}】商户权限状态`
   );
   proTable.value?.getTableList();
 };
 
 const { BUTTONS } = useAuthButtons();
+// 处理列表请求数据
+const getTableList = (params: any) => {
+  const newParams = { ...params };
+  if (newParams.validFlag !== undefined) {
+    newParams.validFlag = newParams.validFlag ? 1 : 0;
+  }
+  return reqGetBusinessPermissionList(newParams);
+};
 </script>
 <template>
   <div class="main-box">
     <div class="table-box" style="margin-right: 0.75rem">
       <ProTable
         ref="proTable"
-        title="用户列表"
+        title="商户权限"
         :columns="columns"
-        :requestApi="reqGetBusinessPermissionList"
+        :requestApi="getTableList"
         highlight-current-row
         @current-change="handleCurrentChange"
       >
@@ -174,11 +186,12 @@ const { BUTTONS } = useAuthButtons();
       submit-btn="保存"
       :submit="submit"
       label="title"
-      title="菜单权限"
+      title="商户菜单权限"
       multiple
       :requestApi="getAuthMenuListApi"
       @change="changeTreeFilter"
       :defaultValue="defaultValue"
+      treeChildren="childMenu"
     />
   </div>
 </template>

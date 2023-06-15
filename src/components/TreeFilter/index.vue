@@ -18,9 +18,9 @@
         :lazy="lazy"
         :load="load"
         :node-key="id"
-        :data="treeData"
+        :data="treeList"
         :show-checkbox="multiple"
-        :check-strictly="false"
+        :check-strictly="checkStrictly"
         :current-node-key="!multiple ? defaultValue : ''"
         :highlight-current="!multiple"
         :expand-on-click-node="false"
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts" name="TreeFilter">
-import { ref, watch, onBeforeMount } from "vue";
+import { ref, watch, onBeforeMount, nextTick, computed } from "vue";
 import { ElTree } from "element-plus";
 
 // 接收父组件参数并设置默认值
@@ -127,35 +127,63 @@ interface TreeFilterProps {
    * @default true
    */
   searchVisibel?: boolean;
+
+  /**
+   * @name checkStrictly
+   * @description 父子级强关联 ==> 非必传，默认为false
+   * @type {boolean}
+   * @default false
+   */
+  checkStrictly?: boolean;
+
+  /**
+   * @name checkStrictly
+   * @description 递归树形字段 ==> 非必传，默认为children
+   * @type {string}
+   * @default children
+   */
+  treeChildren?: string;
 }
 const props = withDefaults(defineProps<TreeFilterProps>(), {
   id: "id",
   label: "label",
   multiple: false,
   lazy: false,
-  searchVisibel: true
+  searchVisibel: true,
+  checkStrictly: false,
+  treeChildren: "children"
 });
 const defaultProps = {
-  children: "children",
+  children: props.treeChildren,
   label: props.label
 };
 const filterText = ref<string>("");
 const treeRef = ref<InstanceType<typeof ElTree>>();
 const treeData = ref<{ [key: string]: any }[]>([]);
+const treeList = computed(() => props.data || treeData.value);
 const loading = ref(false);
 onBeforeMount(async () => {
-  if (props.data?.length) return (treeData.value = props.data);
+  if (props.data) return (treeData.value = props.data);
   const { data } = await props.requestApi!();
   const newData = treeDataEdit(data);
-  if (props.multiple) return (treeData.value = newData);
-  treeData.value = [{ id: "", [props.label]: "全部" }, ...newData];
+
+  treeData.value = newData;
+  nextTick(() => {
+    treeRef.value?.setCurrentKey(newData[0].id);
+  });
 });
 function treeDataEdit(data: any[]): any[] {
   return data.map((item: any) => {
-    return {
-      ...item,
-      children: item.children ? item.children : treeDataEdit(item.childMenu)
-    };
+    if (item[defaultProps.children]) {
+      return {
+        ...item,
+        [defaultProps.children]: item[defaultProps.children]
+      };
+    } else {
+      return {
+        ...item
+      };
+    }
   });
 }
 watch(filterText, val => {
@@ -202,7 +230,7 @@ const handleNodeClick = (data: { [key: string]: any }) => {
 const handleCheckChange = () => {
   emit("change", [...treeRef.value!.getHalfCheckedKeys(), ...treeRef.value!.getCheckedKeys()]);
 };
-
+// 设置选中节点
 const handleSetCheckedKeys = (keys: any[] = []) => {
   treeRef.value?.setCheckedKeys(keys);
 };

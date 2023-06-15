@@ -113,7 +113,6 @@ const login = (formEl: FormInstance | undefined) => {
         duration: 3000
       });
     } catch (error) {
-      console.log(error);
       await getCode();
     } finally {
       loading.value = false;

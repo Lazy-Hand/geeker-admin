@@ -29,7 +29,7 @@ const proTableRef = ref<ProTableInstance>();
 const addEmployeeRef = ref();
 const columns: ColumnProps[] = [
   { type: "index", label: "#", width: 80 },
-  { prop: "name", label: "用户昵称", width: 120, search: { el: "input", props: { placeholder: "用户昵称" } } },
+  { prop: "name", label: "用户昵称", width: 120, search: { el: "input", key: "keyWord", props: { placeholder: "关键词搜索" } } },
   { prop: "account", label: "用户账号", width: 120 },
   { prop: "realName", label: "真实姓名", width: 120 },
   { prop: "phone", label: "手机号码", width: 120, search: { el: "input", props: { placeholder: "手机号码" } } },
@@ -48,7 +48,7 @@ const columns: ColumnProps[] = [
                   </el-tag>
                 );
               })
-            : ""}
+            : "--"}
         </>
       );
     }
@@ -68,7 +68,7 @@ const columns: ColumnProps[] = [
                   </el-tag>
                 );
               })
-            : ""}
+            : "--"}
         </>
       );
     }
@@ -88,7 +88,7 @@ const columns: ColumnProps[] = [
                   </el-tag>
                 );
               })
-            : ""}
+            : "--"}
         </>
       );
     }
@@ -104,9 +104,11 @@ const columns: ColumnProps[] = [
         <>
           {BUTTONS.value.status ? (
             <el-switch
+              inline-prompt
+              active-text={"启用"}
+              inactive-text={"禁用"}
               onClick={() => switchStatus(scope.row)}
               model-value={scope.row.status}
-              active-text={scope.row.status === 1 ? "启用" : "禁用"}
               active-value={1}
               inactive-value={0}
             />

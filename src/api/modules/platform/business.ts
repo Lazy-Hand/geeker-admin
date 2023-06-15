@@ -8,7 +8,10 @@ export const reqGetBusinessList = (params: any) => http.get(PORT1 + "/tenant/pag
 export const reqAddBusiness = (params: any) => http.post(PORT1 + "/tenant/insert", params);
 
 // 平台管理-商户修改
-export const reqEditBusiness = (params: any) => http.put(PORT1 + "/tenant/insert", params);
+export const reqEditBusiness = (params: any) => http.post(PORT1 + "/tenant/insert", params);
 
 // 平台管理-商户删除
 export const reqDelBusiness = (id: number) => http.delete(PORT1 + `/tenant/${id}`);
+
+// 平台管理-租户权限选择
+export const reqSelectBusinessAuthList = () => http.get<any>(PORT1 + `/t-role/selectAll`);
