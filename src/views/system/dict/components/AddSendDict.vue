@@ -2,6 +2,7 @@
 import { ref, reactive } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
+import { Dict } from "@/api/interface/dict";
 const dialogVisible = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({
@@ -10,9 +11,9 @@ const rules = reactive<FormRules>({
 });
 interface DialogProps {
   title: string;
-  rowData?: any;
+  rowData?: Dict.DictValueAddParam;
   isView: boolean;
-  api?: (params: any) => Promise<any>;
+  api?: (params: Dict.DictValueAddParam) => Promise<any>;
   getTableList?: () => Promise<any>;
 }
 const dialogProps = ref<DialogProps>({
@@ -24,7 +25,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async valid => {
     if (!valid) return console.log("submit!");
     try {
-      await dialogProps.value.api!(dialogProps.value.rowData);
+      await dialogProps.value.api!(dialogProps.value.rowData!);
       ElMessage.success({ message: `${dialogProps.value.title}成功！` });
       dialogProps.value.getTableList!();
       dialogVisible.value = false;
@@ -54,13 +55,13 @@ defineExpose({
       :hide-required-asterisk="dialogProps.isView"
     >
       <el-form-item label="字典名称" prop="paramName">
-        <el-input v-model="dialogProps.rowData.paramName"></el-input>
+        <el-input v-model="dialogProps.rowData!.paramName"></el-input>
       </el-form-item>
       <el-form-item label="字典键值" prop="paramValue">
-        <el-input v-model="dialogProps.rowData.paramValue"></el-input>
+        <el-input v-model="dialogProps.rowData!.paramValue"></el-input>
       </el-form-item>
       <el-form-item label="描述" prop="remark">
-        <el-input v-model="dialogProps.rowData.remark"></el-input>
+        <el-input v-model="dialogProps.rowData!.remark"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>

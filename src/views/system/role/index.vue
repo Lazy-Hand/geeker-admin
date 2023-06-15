@@ -13,12 +13,13 @@ import AddRoles from "./components/AddRoles.vue";
 import { useHandleData } from "@/hooks/useHandleData";
 import { useAuthButtons } from "@/hooks/useAuthButtons";
 import { flattenTree } from "@/utils";
+import { Role } from "@/api/interface/role";
 const addRoles = ref();
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
 const proTable = ref<ProTableInstance>();
 const treeFilterRef = ref();
 // 点击当前行
-const handleCurrentChange = async (val: any) => {
+const handleCurrentChange = async (val: Role.RoleList) => {
   if (!val) {
     treeFilterRef.value?.clearChecked();
     selectVal.value = [];
@@ -35,7 +36,7 @@ const handleCurrentChange = async (val: any) => {
 /**
  * @description 表格配置项
  */
-const columns: ColumnProps[] = [
+const columns: ColumnProps<Role.RoleList>[] = [
   { type: "index", label: "#", width: 80 },
   { prop: "roleName", label: "角色名称", width: 120, search: { el: "input", props: { placeholder: "角色名称" } } },
   {
@@ -113,7 +114,7 @@ const changeTreeFilter = (val: number[]) => {
 };
 
 // 新增编辑查看弹窗
-const openDialog = (title: string, rowData: any = {}) => {
+const openDialog = (title: string, rowData: Partial<Role.RoleList> = {}) => {
   let params = {
     title,
     rowData: { ...rowData, validFlag: title === "新增" ? 1 : title === "编辑" && rowData.validFlag ? 1 : 0 },
@@ -125,20 +126,20 @@ const openDialog = (title: string, rowData: any = {}) => {
 };
 
 // 单条删除
-const deleteRole = async (row: any) => {
+const deleteRole = async (row: Role.RoleList) => {
   await useHandleData(reqDelRole, { id: row.id }, `删除【${row.roleName}】角色`);
   proTable.value?.getTableList();
 };
 
 // 改变角色状态
-const changeStatus = async (e: any, row: any) => {
+const changeStatus = async (e: Event, row: Role.RoleList) => {
   e.stopPropagation();
   await useHandleData(reqPutRole, { validFlag: row.validFlag ? 0 : 1, id: row.id }, `切换【${row.roleName}】角色状态`);
   proTable.value?.getTableList();
 };
 
 // 处理列表请求数据
-const getTableList = (params: any) => {
+const getTableList = (params: Role.RoleParams) => {
   const newParams = { ...params };
   if (newParams.validFlag !== undefined) {
     newParams.validFlag = newParams.validFlag ? 1 : 0;

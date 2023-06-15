@@ -24,10 +24,12 @@ import AddEmployee from "./components/AddEmployee.vue";
 import { Delete, EditPen, Refresh, CirclePlus } from "@element-plus/icons-vue";
 import { useAuthButtons } from "@/hooks/useAuthButtons";
 import { useHandleData } from "@/hooks/useHandleData";
+import { Employee } from "@/api/interface/system.employee";
+
 const { BUTTONS } = useAuthButtons();
 const proTableRef = ref<ProTableInstance>();
 const addEmployeeRef = ref();
-const columns: ColumnProps[] = [
+const columns: ColumnProps<Employee.EmployeeData>[] = [
   { type: "index", label: "#", width: 80 },
   { prop: "name", label: "用户昵称", width: 120, search: { el: "input", key: "keyWord", props: { placeholder: "关键词搜索" } } },
   { prop: "account", label: "用户账号", width: 120 },
@@ -41,7 +43,7 @@ const columns: ColumnProps[] = [
       return (
         <>
           {scope.row.dept
-            ? scope.row.dept.map((item: any) => {
+            ? scope.row.dept.map((item: Employee.EmDept) => {
                 return (
                   <el-tag key={item.id} type="success" class="tag">
                     {item.deptName}
@@ -61,7 +63,7 @@ const columns: ColumnProps[] = [
       return (
         <>
           {scope.row.job
-            ? scope.row.job.map((item: any) => {
+            ? scope.row.job.map((item: Employee.EmJob) => {
                 return (
                   <el-tag key={item.id} type="success">
                     {item.jobName}
@@ -81,7 +83,7 @@ const columns: ColumnProps[] = [
       return (
         <>
           {scope.row.role
-            ? scope.row.role.map((item: any) => {
+            ? scope.row.role.map((item: Employee.EmRole) => {
                 return (
                   <el-tag key={item.id} type="success">
                     {item.roleName}
@@ -135,7 +137,7 @@ const columns: ColumnProps[] = [
 ];
 
 // 新增编辑查看弹窗
-const openDialog = async (title: string, rowData: any = {}) => {
+const openDialog = async (title: string, rowData: Partial<Employee.EmployeeData> = {}) => {
   let params = {
     title,
     rowData:
@@ -147,9 +149,9 @@ const openDialog = async (title: string, rowData: any = {}) => {
           }
         : {
             ...rowData,
-            dept: rowData.dept ? rowData.dept.map((item: any) => item.deptId) : [],
-            job: rowData.job ? rowData.job.map((item: any) => item.jobId) : [],
-            role: rowData.role ? rowData.role.map((item: any) => item.roleId) : []
+            dept: rowData.dept ? rowData.dept.map((item: Employee.EmDept) => item.deptId) : [],
+            job: rowData.job ? rowData.job.map((item: Employee.EmJob) => item.jobId) : [],
+            role: rowData.role ? rowData.role.map((item: Employee.EmRole) => item.roleId) : []
           },
     isView: title === "查看",
     api: title === "新增" ? reqAddEmp : title === "编辑" ? reqEditEmp : null,
@@ -159,19 +161,19 @@ const openDialog = async (title: string, rowData: any = {}) => {
 };
 
 // 重置密码
-const resetPwd = async (row: any) => {
+const resetPwd = async (row: Employee.EmployeeData) => {
   await useHandleData(reqResetPwd, row.id, `重置【${row.name}】密码`);
   proTableRef.value?.getTableList();
 };
 
 // 删除
-const delEmp = async (row: any) => {
+const delEmp = async (row: Employee.EmployeeData) => {
   await useHandleData(reqDeleteEmp, row.id, `删除【${row.name}员工】`);
   proTableRef.value?.getTableList();
 };
 
 // 切换状态
-const switchStatus = async (row: any) => {
+const switchStatus = async (row: Employee.EmployeeData) => {
   await useHandleData(reqEditEmp, { id: row.id, status: row.status === 1 ? 0 : 1 }, `切换【${row.name}】用户状态`);
   proTableRef.value?.getTableList();
 };

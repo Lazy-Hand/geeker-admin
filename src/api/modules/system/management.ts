@@ -1,25 +1,26 @@
+import { ResPage } from "@/api/interface";
 import http from "@/api";
 import { PORT1 } from "@/api/config/servicePort";
-import type { AddForm } from "@/views/system/menu/interface/addForm";
-import { DictSubItem } from "../../interface/dict";
+import type { PresentMenu } from "@/api/interface/menu";
+import { Dict } from "../../interface/dict";
 //*****************************菜单*************************/
 
 /**
  * @description 添加菜单
- * @param params AddForm
+ * @param {PresentMenu.MenuAddParams} params
  */
-export const reqAddMenu = (params: AddForm) => http.post(PORT1 + "/menu", params);
+export const reqAddMenu = (params: PresentMenu.MenuAddParams) => http.post(PORT1 + "/menu", params);
 
 /**
  * @description 修改菜单
- * @param params AddForm
+ * @param {PresentMenu.MenuAddParams} params
  * @param id 菜单id
  */
-export const reqPutMenu = (params: AddForm) => http.put(PORT1 + `/menu/${params.id}`, params);
+export const reqPutMenu = (params: PresentMenu.MenuAddParams) => http.put(PORT1 + `/menu/${params.id}`, params);
 
 /**
  * @description 删除菜单
- * @param params AddForm
+ * @param {{id: number}} params
  * @param id 菜单id
  */
 export const reqDelMenu = (params: { id: number }) => http.delete(PORT1 + `/menu/${params.id}`);
@@ -34,19 +35,19 @@ export const reqBatchDelMenu = (ids: string[]) => http.delete(PORT1 + `/menu/bat
 /**
  * @description 字典列表父项
  */
-export const reqGetDict = (params: any) => http.get(PORT1 + "/dict", params);
+export const reqGetDict = (params: any) => http.get<ResPage<Dict.DictList[]>>(PORT1 + "/dict", params);
 
 /**
  * @description 新增字典
  * @param params paramName 字典名称
  */
-export const reqAddDict = (params: { paramName: string }) => http.post(PORT1 + "/dict", params);
+export const reqAddDict = (params: Dict.DictAddParam) => http.post(PORT1 + "/dict", params);
 
 /**
  * @description 修改字典
  * @param params 修改数据
  */
-export const reqPutDict = (params: any) => http.put(PORT1 + `/dict/${params.id}`, params);
+export const reqPutDict = (params: Dict.DictAddParam) => http.put(PORT1 + `/dict/${params.id}`, params);
 
 /**
  * @description 删除字典
@@ -58,13 +59,13 @@ export const reqDelDict = (ids: string[]) => http.delete(PORT1 + `/dict/batch/${
  * @description 字典子项
  * @param parentCode 字典code
  */
-export const reqGetDictDetail = (parentCode: any) => http.get<DictSubItem[]>(PORT1 + `/dictChild/parentCode/${parentCode.id}`);
+export const reqGetDictDetail = (parentCode: any) => http.get<Dict.DictValue[]>(PORT1 + `/dictChild/parentCode/${parentCode.id}`);
 
 /**
  * @description 新增字典子项
  * @param params
  */
-export const reqAddDictChild = (params: any) => http.post(PORT1 + "/dictChild", params);
+export const reqAddDictChild = (params: Dict.DictValueAddParam) => http.post(PORT1 + "/dictChild", params);
 
 /**
  * @description 删除字典子项

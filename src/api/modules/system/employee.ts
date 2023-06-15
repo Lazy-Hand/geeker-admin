@@ -1,13 +1,15 @@
+import { Employee } from "./../../interface/system.employee";
+import { ResPage } from "./../../interface/index";
 import http from "@/api";
 import { PORT1 } from "@/api/config/servicePort";
 // 系统管理-员工管理
-export const reqGetEmpList = (params: any) => http.get(PORT1 + "/user/page", params);
+export const reqGetEmpList = (params: any) => http.get<ResPage<Employee.EmployeeData[]>>(PORT1 + "/user/page", params);
 
 // 系统管理-员工管理-新增
-export const reqAddEmp = (params: any) => http.post(PORT1 + "/user/insert", params);
+export const reqAddEmp = (params: Employee.EmAddParam) => http.post(PORT1 + "/user/insert", params);
 
 // 系统管理-员工管理-修改
-export const reqEditEmp = (params: any) => http.post(PORT1 + "/user/insert", params);
+export const reqEditEmp = (params: Employee.EmAddParam) => http.post(PORT1 + "/user/insert", params);
 
 // 系统管理-员工管理-删除
 export const reqDeleteEmp = (id: number) => http.delete(PORT1 + `/user/${id}`);

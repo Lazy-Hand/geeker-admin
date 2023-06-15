@@ -9,7 +9,7 @@ import { ColumnProps, ProTableInstance } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
 import { useHandleData } from "@/hooks/useHandleData";
 import { getSortData, getPresentMenu } from "@/utils";
-import { PresentMenu } from "@/api/interface";
+import { PresentMenu } from "@/api/interface/menu";
 
 const addRef = ref();
 const openDialog = async (title: string, rowData: any = {}) => {

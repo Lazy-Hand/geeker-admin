@@ -1,8 +1,7 @@
-import { PresentMenu } from "@/api/interface/index";
-import { Role } from "../../interface/user";
+import { PresentMenu } from "@/api/interface/menu";
 import { PORT1 } from "@/api/config/servicePort";
 import http from "@/api";
-import { AddRole } from "@/views/system/role/components/AddRoles.vue";
+import { Role } from "@/api/interface/role";
 
 /**
  * @description 查询角色列表
@@ -15,13 +14,13 @@ export const getRoleList = (params: any) => {
  * @description 新增角色
  * @param params AddRole
  */
-export const reqAddRole = (params: AddRole) => http.post(PORT1 + "/role", params, { noLoading: true });
+export const reqAddRole = (params: Role.RoleAddParams) => http.post(PORT1 + "/role", params, { noLoading: true });
 
 /**
  * @description 修改角色信息
  * @param params AddRole
  */
-export const reqPutRole = (params: AddRole) => http.put(PORT1 + `/role/${params.id}`, params, { noLoading: true });
+export const reqPutRole = (params: Role.RoleAddParams) => http.put(PORT1 + `/role/${params.id}`, params, { noLoading: true });
 
 /**
  * @description id删除角色

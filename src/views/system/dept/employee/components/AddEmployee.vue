@@ -1,29 +1,18 @@
 <script setup lang="ts" name="AddEmployee">
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
-export interface AddRole {
-  id?: number;
-  account: string;
-  phone: string;
-  name: string;
-  realName: string;
-  email: string;
-  sex: number;
-  status: number;
-  dept: any;
-  job: any;
-  role: any;
-}
+
 import type { FormInstance, FormRules } from "element-plus";
 import { reqGetDeptSelect, reqGetPostSelect, reqGetRoleSelect } from "@/api/modules/system/employee";
+import { Employee } from "@/api/interface/system.employee";
 const dialogVisible = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({});
 interface DialogProps {
   title: string;
-  rowData?: AddRole;
+  rowData?: Employee.EmAddParam;
   isView: boolean;
-  api?: (params: AddRole) => Promise<any>;
+  api?: (params: Employee.EmAddParam) => Promise<any>;
   getTableList?: () => Promise<any>;
 }
 const dialogProps = ref<DialogProps>({

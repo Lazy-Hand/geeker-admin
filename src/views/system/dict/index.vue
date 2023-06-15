@@ -9,12 +9,13 @@ import { reqAddDict } from "@/api/modules/system/management";
 import { useRouter } from "vue-router";
 import { dictStatus } from "@/utils/serviceDict";
 import { useHandleData } from "@/hooks/useHandleData";
+import { Dict } from "@/api/interface/dict";
 const router = useRouter();
 const proTable = ref<ProTableInstance>();
 const addDict = ref();
 // dataCallback 是对于返回的表格数据做处理，如果你后台返回的数据不是 datalist && total && pageNum && pageSize 这些字段，那么你可以在这里进行处理成这些字段
 // 表格配置项
-const columns: ColumnProps[] = [
+const columns: ColumnProps<Dict.DictList>[] = [
   { type: "selection", fixed: "left", width: 80 },
   {
     prop: "paramName",
@@ -38,7 +39,7 @@ const columns: ColumnProps[] = [
   },
   { prop: "operation", label: "操作", width: 220, fixed: "right" }
 ];
-const openDialog = (title: string, rowData: any = {}) => {
+const openDialog = (title: string, rowData: Partial<Dict.DictList> = {}) => {
   let params = {
     title,
     rowData: { ...rowData },
@@ -48,10 +49,10 @@ const openDialog = (title: string, rowData: any = {}) => {
   };
   addDict.value.acceptParams(params);
 };
-const toDictData = (row: any) => {
+const toDictData = (row: Dict.DictList) => {
   router.push(`/system/dict/DictData/${row.paramCode}?params=${row.paramName}`);
 };
-const deleteDict = async (ids: string[], row?: any) => {
+const deleteDict = async (ids: string[], row: Dict.DictList) => {
   await useHandleData(reqDelDict, ids, ids.length === 1 ? `删除【${row.paramName}】字典` : "删除选中字典");
   if (ids.length > 0) {
     proTable.value?.clearSelection();
@@ -62,12 +63,8 @@ const deleteDict = async (ids: string[], row?: any) => {
 <template>
   <div class="table-box">
     <ProTable ref="proTable" title="字典列表" :columns="columns" :requestApi="reqGetDict">
-      <template #tableHeader="scope">
+      <template #tableHeader>
         <el-button type="primary" :icon="CirclePlus" @click="openDialog('新增')">新增</el-button>
-        <el-button type="primary" plain :icon="EditPen" :disabled="scope.selectedListIds.length !== 1">修改</el-button>
-        <el-button type="danger" plain :icon="Delete" :disabled="!scope.isSelected" @click="deleteDict(scope.selectedListIds)"
-          >删除</el-button
-        >
         <el-button type="primary" plain :icon="Download">导出</el-button>
       </template>
       <!-- 表格操作 -->

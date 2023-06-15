@@ -1,15 +1,8 @@
 <script setup lang="ts" name="AddRoles">
 import { ref, reactive } from "vue";
 import { ElMessage } from "element-plus";
-export interface AddRole {
-  id?: number;
-  roleCode: string;
-  roleName: string;
-  validFlag: number;
-  roleDesc: string;
-  sequenceNo: number;
-}
 import type { FormInstance, FormRules } from "element-plus";
+import { Role } from "@/api/interface/role";
 const dialogVisible = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({
@@ -19,9 +12,9 @@ const rules = reactive<FormRules>({
 });
 interface DialogProps {
   title: string;
-  rowData?: AddRole;
+  rowData?: Role.RoleAddParams;
   isView: boolean;
-  api?: (params: AddRole) => Promise<any>;
+  api?: (params: Role.RoleAddParams) => Promise<any>;
   getTableList?: () => Promise<any>;
 }
 const dialogProps = ref<DialogProps>({

@@ -1,6 +1,6 @@
 import { isArray } from "@/utils/is";
 import { FieldNamesProps } from "@/components/ProTable/interface";
-import { PresentMenu } from "@/api/interface";
+import { PresentMenu } from "@/api/interface/menu";
 
 /**
  * @description 获取localStorage
