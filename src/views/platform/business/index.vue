@@ -38,7 +38,7 @@ const columns: ColumnProps[] = [
         <el-image
           preview-teleported
           src={scope.row.logo}
-          fit={"cover"}
+          fit="cover"
           style={{ width: "50px", height: "50px" }}
           previewSrcList={[scope.row.logo]}
         ></el-image>
@@ -69,7 +69,7 @@ const columns: ColumnProps[] = [
     render: scope => {
       return (
         <>
-          {BUTTONS.value.status ? (
+          {BUTTONS.value.status || BUTTONS.value.ROLE_ADMIN ? (
             <el-switch
               inline-prompt
               model-value={scope.row.status}
@@ -86,7 +86,10 @@ const columns: ColumnProps[] = [
       );
     }
   },
-
+  {
+    prop: "adminPhone",
+    label: "联系方式"
+  },
   {
     prop: "gmtCreate",
     label: "创建时间",

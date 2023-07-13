@@ -241,7 +241,8 @@ const clearChecked = () => {
 };
 defineExpose({
   clearChecked,
-  handleSetCheckedKeys
+  handleSetCheckedKeys,
+  treeRef
 });
 </script>
 

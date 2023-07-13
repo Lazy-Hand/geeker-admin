@@ -83,7 +83,7 @@
         </UploadImg>
       </el-form-item>
       <el-form-item label="内容" v-if="dialogProps.title === '新增'">
-        <WangEditor height="400px" v-model:value="dialogProps.rowData.content" customize-img customize-video />
+        <WangEditor height="400px" v-model:value="dialogProps.rowData.content" customize-img />
         <el-button type="primary" @click="htmlVisible = true" mt-1>预览</el-button>
       </el-form-item>
     </el-form>

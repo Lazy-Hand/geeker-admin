@@ -23,7 +23,7 @@
 /* custom card */
 .card {
   box-sizing: border-box;
-  padding: 20px;
+  padding: 12px;
   overflow-x: hidden;
   background-color: var(--el-bg-color);
   border: 1px solid var(--el-border-color-light);
@@ -93,7 +93,7 @@
   // table-search 表格搜索样式
   .table-search {
     padding: 18px 18px 0;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
     .el-form {
       .el-form-item__content > * {
         width: 100%;
@@ -114,6 +114,7 @@
 
   // 表格 header 样式
   .table-header {
+    height: 40px;
     .header-button-lf {
       float: left;
     }
@@ -176,7 +177,7 @@
   .el-pagination {
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
+    margin-top: 12px;
   }
 }
 
@@ -246,4 +247,7 @@
       font-size: 17px;
     }
   }
+}
+.el-message {
+  z-index: 99999 !important;
 }

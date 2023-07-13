@@ -8,6 +8,7 @@ import { reqGetDictDetail, reqAddDictChild, reqDelDictChild } from "@/api/module
 import { dictStatus } from "@/utils/serviceDict";
 import AddSendDict from "./components/AddSendDict.vue";
 import { useHandleData } from "@/hooks/useHandleData";
+import { useAuthButtons } from "@/hooks/useAuthButtons";
 const proTable = ref<ProTableInstance>();
 const route = useRoute();
 
@@ -39,7 +40,30 @@ const columns: ColumnProps[] = [
   },
   { prop: "paramCode", label: "字典编号", width: 220 },
   { prop: "sequence", label: "字典排序", width: 220 },
-  { prop: "display", label: "状态", width: "100", sortable: true, tag: true, enum: dictStatus },
+  {
+    prop: "display",
+    label: "状态",
+    enum: dictStatus,
+    width: "100",
+    render: ({ row }) => {
+      return (
+        <>
+          {BUTTONS.value.display || BUTTONS.value.ROLE_ADMIN ? (
+            <el-switch
+              model-value={row.display}
+              inline-prompt
+              active-text="启用"
+              inactive-text="禁用"
+              active-value={true}
+              inactive-value={false}
+            />
+          ) : (
+            <el-tag type={row.display ? "success" : "danger"}>{row.display ? "启用" : "禁用"}</el-tag>
+          )}
+        </>
+      );
+    }
+  },
   {
     prop: "remark",
     label: "描述"
@@ -60,6 +84,8 @@ const deleteRole = async (row: any) => {
   await useHandleData(reqDelDictChild, { id: row.id }, `删除【${row.paramName}】字典子项`);
   proTable.value?.getTableList();
 };
+const { BUTTONS } = useAuthButtons();
+console.log(BUTTONS);
 </script>
 
 <template>

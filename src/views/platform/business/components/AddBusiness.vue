@@ -7,6 +7,7 @@ export interface AddRole {
   id?: number;
   logo?: any;
   name?: string;
+  adminPhone?: string;
   trole?: any;
   status?: number;
 }
@@ -69,6 +70,9 @@ defineExpose({
       </el-form-item>
       <el-form-item label="商户名称">
         <el-input v-model="dialogProps.rowData!.name"></el-input>
+      </el-form-item>
+      <el-form-item label="联系方式" v-if="dialogProps.title === '新增'">
+        <el-input v-model="dialogProps.rowData!.adminPhone"></el-input>
       </el-form-item>
       <el-form-item label="商户权限">
         <el-select v-model="dialogProps.rowData!.trole" multiple>

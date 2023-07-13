@@ -10,6 +10,7 @@
         row-key="id"
         :tree-props="{ children: 'childMenu' }"
         :pagination="false"
+        :request-auto="false"
       >
         <!-- <template #tableHeader>
           <el-button type="primary" :icon="CirclePlus">新增</el-button>
@@ -27,7 +28,7 @@
 <script setup lang="tsx" name="DepartmentData">
 import TreeFilter from "@/components/TreeFilter/index.vue";
 import ProTable from "@/components/ProTable/index.vue";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { reqGetTenantList } from "@/api/modules/platform/tdepartment";
 import { twoStatus } from "@/utils/serviceDict";
@@ -60,7 +61,7 @@ const columns: ColumnProps[] = [
     render: scope => {
       return (
         <>
-          {BUTTONS.value.status ? (
+          {BUTTONS.value.status || BUTTONS.value.ROLE_ADMIN ? (
             <el-switch
               model-value={scope.row.status}
               active-text={"启用"}
@@ -89,6 +90,11 @@ const changeTreeFilter = (val: string) => {
   proTableRef.value!.reset();
   initParam.tenantId = val;
 };
+onMounted(() => {
+  setTimeout(() => {
+    initParam.tenantId = treeFilterRef.value.treeRef.data[0].id;
+  }, 300);
+});
 </script>
 
 <style scoped lang="scss">

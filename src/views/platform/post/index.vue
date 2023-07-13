@@ -2,7 +2,14 @@
   <div class="main-box">
     <TreeFilter ref="treeFilterRef" :request-api="reqGetTenantList" label="name" class="tree_filter" @change="changeTreeFilter" />
     <div class="table-box">
-      <ProTable ref="proTableRef" :request-api="getTableList" :columns="columns" :init-param="initParam" row-key="id">
+      <ProTable
+        ref="proTableRef"
+        :request-api="getTableList"
+        :columns="columns"
+        :init-param="initParam"
+        row-key="id"
+        :request-auto="false"
+      >
         <!-- <template #tableHeader>
           <el-button type="primary" :icon="CirclePlus">新增</el-button>
         </template> -->
@@ -17,12 +24,12 @@
 </template>
 
 <script setup lang="tsx" name="PostData">
+// import { Delete, EditPen, CirclePlus } from "@element-plus/icons-vue";
 import TreeFilter from "@/components/TreeFilter/index.vue";
 import ProTable from "@/components/ProTable/index.vue";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { reqGetTenantList } from "@/api/modules/platform/tdepartment";
-// import { Delete, EditPen, CirclePlus } from "@element-plus/icons-vue";
 import { useAuthButtons } from "@/hooks/useAuthButtons";
 import { roleStatus } from "@/utils/serviceDict";
 import { reqBusPostList } from "@/api/modules/platform/busPost";
@@ -53,7 +60,7 @@ const columns: ColumnProps[] = [
     render: scope => {
       return (
         <>
-          {BUTTONS.value.status ? (
+          {BUTTONS.value.status || BUTTONS.value.ROLE_ADMIN ? (
             <el-switch
               model-value={scope.row.status}
               active-text={"启用"}
@@ -92,6 +99,11 @@ const getTableList = (params: any) => {
 
   return reqBusPostList(newParams);
 };
+onMounted(() => {
+  setTimeout(() => {
+    initParam.tenantId = treeFilterRef.value.treeRef.data[0].id;
+  }, 300);
+});
 </script>
 
 <style scoped lang="scss">

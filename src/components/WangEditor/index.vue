@@ -23,6 +23,7 @@ import { formContextKey, formItemContextKey } from "element-plus";
 import markdownModule from "@wangeditor/plugin-md";
 import { addDialog } from "@/components/OpenDialog";
 import SelectServerAssets from "@/components/SelectServerAssets/index.vue";
+import { Uploads } from "@/api/interface/upload";
 
 const editorRef = shallowRef();
 // // 注册插件markdown
@@ -170,12 +171,15 @@ const handleBlur = () => {
 // 自定义上传图片dialog
 const open = () => {
   addDialog({
-    title: "上传图片",
-    width: "45%",
+    title: "选择图片",
+    width: "50%",
     draggable: true,
     component: markRaw(SelectServerAssets),
-    callBack: (data: { submit: boolean; url: string }) => {
-      data.submit && insert.value(data.url);
+    callBack: (data: { submit: boolean; pictrueList: Uploads.AccessoryResult[] }) => {
+      data.submit &&
+        data.pictrueList.map(item => {
+          insert.value(item.httpUrl);
+        });
     }
   });
 };

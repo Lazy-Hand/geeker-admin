@@ -10,10 +10,10 @@ import { useRouter } from "vue-router";
 import { dictStatus } from "@/utils/serviceDict";
 import { useHandleData } from "@/hooks/useHandleData";
 import { Dict } from "@/api/interface/dict";
+import { useAuthButtons } from "@/hooks/useAuthButtons";
 const router = useRouter();
 const proTable = ref<ProTableInstance>();
 const addDict = ref();
-// dataCallback 是对于返回的表格数据做处理，如果你后台返回的数据不是 datalist && total && pageNum && pageSize 这些字段，那么你可以在这里进行处理成这些字段
 // 表格配置项
 const columns: ColumnProps<Dict.DictList>[] = [
   { type: "selection", fixed: "left", width: 80 },
@@ -32,7 +32,30 @@ const columns: ColumnProps<Dict.DictList>[] = [
   },
   { prop: "paramCode", label: "字典编号", width: 220, search: { el: "input" } },
   { prop: "sequence", label: "字典排序", width: 220 },
-  { prop: "display", label: "状态", width: "100", sortable: true, tag: true, enum: dictStatus },
+  {
+    prop: "display",
+    label: "状态",
+    enum: dictStatus,
+    width: "100",
+    render: ({ row }) => {
+      return (
+        <>
+          {BUTTONS.value.display || BUTTONS.value.ROLE_ADMIN ? (
+            <el-switch
+              model-value={row.display}
+              inline-prompt
+              active-text="启用"
+              inactive-text="禁用"
+              active-value={true}
+              inactive-value={false}
+            />
+          ) : (
+            <el-tag type={row.display ? "success" : "danger"}>{row.display ? "启用" : "禁用"}</el-tag>
+          )}
+        </>
+      );
+    }
+  },
   {
     prop: "remark",
     label: "描述"
@@ -59,6 +82,7 @@ const deleteDict = async (ids: string[], row: Dict.DictList) => {
   }
   proTable.value?.getTableList();
 };
+const { BUTTONS } = useAuthButtons();
 </script>
 <template>
   <div class="table-box">

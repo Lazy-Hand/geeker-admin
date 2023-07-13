@@ -62,7 +62,7 @@ const columns: ColumnProps<Role.RoleList>[] = [
     render: scope => {
       return (
         <>
-          {BUTTONS.value.validFlag ? (
+          {BUTTONS.value.validFlag || BUTTONS.value.ROLE_ADMIN ? (
             <el-switch
               model-value={scope.row.validFlag}
               inline-prompt

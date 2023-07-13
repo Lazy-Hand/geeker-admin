@@ -41,7 +41,7 @@ const columns: ColumnProps[] = [
     render: scope => {
       return (
         <>
-          {BUTTONS.value.status ? (
+          {BUTTONS.value.status || BUTTONS.value.ROLE_ADMIN ? (
             <el-switch
               model-value={scope.row.status}
               inline-prompt

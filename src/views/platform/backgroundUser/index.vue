@@ -98,7 +98,7 @@ const columns: ColumnProps[] = [
     render: scope => {
       return (
         <>
-          {BUTTONS.value.status ? (
+          {BUTTONS.value.status || BUTTONS.value.ROLE_ADMIN ? (
             <el-switch
               inline-prompt
               active-text={"启用"}

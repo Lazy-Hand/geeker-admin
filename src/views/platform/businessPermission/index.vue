@@ -63,7 +63,7 @@ const columns: ColumnProps[] = [
     render: scope => {
       return (
         <>
-          {BUTTONS.value.validFlag ? (
+          {BUTTONS.value.validFlag || BUTTONS.value.ROLE_ADMIN ? (
             <el-switch
               model-value={scope.row.validFlag}
               active-text={"启用"}
