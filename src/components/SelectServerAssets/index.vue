@@ -70,7 +70,7 @@
                 </el-badge>
               </div>
               <div>
-                <div>1.png</div>
+                <div style="font-size: 10px">{{ item.fileName }}</div>
                 <div class="clickHandle">
                   <i @click.stop="delImg(item)">删除</i>
                   <i>改名</i>
@@ -78,6 +78,9 @@
                 </div>
               </div>
             </div>
+          </el-col>
+          <el-col :span="24" v-if="!pictrueList.length">
+            <el-empty description="暂无资源"></el-empty>
           </el-col>
         </el-row>
       </div>
@@ -172,7 +175,7 @@ const handleNodeClick = async (data: { [key: string]: any }) => {
 
 // 获取文件夹附件
 const getAccessory = async (id: number | null) => {
-  const { data } = await getFolderAccessory({ id, ...state });
+  const { data } = await getFolderAccessory({ sortId: id, ...state });
   pictrueList.value = data.list.map(item => {
     return {
       ...item,
@@ -186,7 +189,7 @@ const getAccessory = async (id: number | null) => {
 
 // 分页切换
 const handleCurrentChange = () => {
-  getAccessory(selectFolderId.value);
+  getAccessory(selectFolderId.value === -1 ? null : selectFolderId.value);
 };
 
 // 添加分类/编辑分类 - 操作分类弹框控制

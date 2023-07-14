@@ -186,6 +186,7 @@ const getTableList = (params: any) => {
       @change="changeTreeFilter"
       :defaultValue="defaultValue"
       treeChildren="childMenu"
+      :check-strictly="false"
     />
   </div>
 </template>

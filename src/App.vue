@@ -1,23 +1,25 @@
 <template>
   <el-config-provider :locale="locale" :size="assemblySize" :button="buttonConfig">
-    <OpenDialog></OpenDialog>
+    <Suspense>
+      <OpenDialog></OpenDialog>
+    </Suspense>
     <router-view></router-view>
   </el-config-provider>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, computed } from "vue";
+import { onMounted, reactive, computed, defineAsyncComponent } from "vue";
 import { useI18n } from "vue-i18n";
 import { getBrowserLang } from "@/utils";
 import { useTheme } from "@/hooks/useTheme";
 import { ElConfigProvider } from "element-plus";
 import { LanguageType } from "./stores/interface";
 import { useGlobalStore } from "@/stores/modules/global";
-import OpenDialog from "./components/OpenDialog/OpenDialog.vue";
+// import OpenDialog from "./components/OpenDialog/OpenDialog.vue";
 
 import en from "element-plus/es/locale/lang/en";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
-
+const OpenDialog = defineAsyncComponent(() => import("./components/OpenDialog/OpenDialog.vue"));
 const globalStore = useGlobalStore();
 
 // init theme

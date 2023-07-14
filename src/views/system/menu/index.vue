@@ -1,5 +1,5 @@
 <script setup lang="tsx" name="Menus">
-import { Delete, Download, Plus, EditPen } from "@element-plus/icons-vue";
+import { Delete, Download, CirclePlus, EditPen } from "@element-plus/icons-vue";
 import { getAuthMenuListApi } from "@/api/modules/login";
 import { ref } from "vue";
 import Add from "./components/AddMenus.vue";
@@ -154,7 +154,7 @@ const getTableList = (params: any) => {
         :border="false"
       >
         <template #tableHeader="scope">
-          <el-button class="btn" type="primary" v-auth="['add']" :icon="Plus" @click="openDialog('新增')">新增</el-button>
+          <el-button class="btn" type="primary" v-auth="['add']" :icon="CirclePlus" @click="openDialog('新增')">新增</el-button>
           <el-button
             class="btn"
             type="danger"

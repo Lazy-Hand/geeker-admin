@@ -116,6 +116,8 @@ const submit = async () => {
  * @param {Array} val 选中id集合
  */
 const changeTreeFilter = (val: number[]) => {
+  console.log(val);
+
   selectVal.value = val;
 };
 
@@ -192,6 +194,7 @@ const getTableList = (params: any) => {
       @change="changeTreeFilter"
       :defaultValue="defaultValue"
       treeChildren="childMenu"
+      :check-strictly="true"
     />
   </div>
 </template>

@@ -12,3 +12,14 @@ export function checkPhoneNumber(rule: any, value: any, callback: any) {
     return callback();
   }
 }
+
+// 短信模板rule
+export const noteValidate = (rule: any, value: any, callback: any) => {
+  const regexp = /^.+?(?=退订回T$)/;
+  if (value === "") callback("请填写短信模板");
+  if (!regexp.test(value)) {
+    callback(new Error("请在模板结尾填写 退订回T， 可点击下方复制按钮复制文本"));
+  } else {
+    return callback();
+  }
+};

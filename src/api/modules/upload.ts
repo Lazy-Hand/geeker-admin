@@ -29,7 +29,7 @@ export const editorFolder = (params: { name: string; remark: string }, id: numbe
 export const delFolder = (id: number) => http.delete(`/attachment-sort/${id}`);
 
 // 根据分类id查询附件
-export const getFolderAccessory = (params: { id: number | null; pageSize: number; pageNum: number; total?: number }) =>
+export const getFolderAccessory = (params: { sortId: number | null; pageSize: number; pageNum: number; total?: number }) =>
   http.get<ResPage<Uploads.AccessoryResult>>("/attachment/selectBySortId", params);
 
 // 批量删除上传文件

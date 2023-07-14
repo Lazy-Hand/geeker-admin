@@ -11,14 +11,13 @@
   </div>
 </template>
 
-<script setup lang="ts" name="cropper">
+<script setup lang="ts" name="Log">
 import ProTable from "@/components/ProTable/index.vue";
 import { reqGetLogList } from "@/api/modules/log";
 import { ColumnProps, ProTableInstance } from "@/components/ProTable/interface";
 import { ref } from "vue";
-import { Employee } from "@/api/interface/system.employee";
 const proTableRef = ref<ProTableInstance>();
-const columns: ColumnProps<Employee.EmployeeData>[] = [
+const columns: ColumnProps[] = [
   { type: "expand", label: "", width: 100 },
   { type: "index", label: "#", width: 80 },
   { prop: "method", label: "方法名" },

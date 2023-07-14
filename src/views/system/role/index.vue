@@ -28,8 +28,9 @@ const handleCurrentChange = async (val: Role.RoleList) => {
   }
 
   const { data } = await getRoleMenuList(val.id);
-  treeFilterRef.value.handleSetCheckedKeys(flattenTree(data, "childMenu"));
-  selectVal.value = flattenTree(data, "childMenu");
+  defaultValue.value = flattenTree(data, "childMenu");
+  treeFilterRef.value.handleSetCheckedKeys(defaultValue.value);
+  selectVal.value = defaultValue.value;
   roleId.value = val.id;
 };
 

@@ -1,5 +1,10 @@
 // ? 系统全局字典
 
+interface ServiceEnum {
+  label: string;
+  value: boolean | number;
+}
+
 /**
  * @description：用户性别
  */
@@ -52,4 +57,9 @@ export const twoStatus = [
 export const twoStatus1 = [
   { label: "启用", value: 0 },
   { label: "禁用", value: 1 }
+];
+
+export const noteType: ServiceEnum[] = [
+  { label: "会员营销", value: 1 },
+  { label: "订单通知", value: 2 }
 ];
